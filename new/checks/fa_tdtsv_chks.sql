@@ -1,0 +1,4 @@
+ALTER TABLE fa_tdtsv 
+ADD CONSTRAINT DTSV_CON_DESC_chk 
+CHECK (DTSV_CON_DESC in ('S','N'))
+;
