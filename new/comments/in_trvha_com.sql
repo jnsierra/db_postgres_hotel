@@ -8,5 +8,5 @@ COMMENT ON COLUMN IN_TRVHA.RVHA_FECHA_FIN           IS          'Fecha en la cua
 COMMENT ON COLUMN IN_TRVHA.RVHA_NUM_DIAS            IS          'Numero de dias por el cual se hara la reservación';
 COMMENT ON COLUMN IN_TRVHA.RVHA_FECHA_VENCI         IS          'Fecha en la cual se vencera la reserva si no se confirma';
 COMMENT ON COLUMN IN_TRVHA.RVHA_CONFIRMADA          IS          'Indica si la reservacion ya fue confirmada por el cliente (pagada)';
-COMMENT ON COLUMN IN_TRVHA.RVHA_ESTADO              IS          'Estado de la reservación (R) Reservada (V) vencida (C) confirmada (U) en uso (D) disponible';
+COMMENT ON COLUMN IN_TRVHA.RVHA_ESTADO              IS          'Estado de la reservación (R) Reservada (V) vencida (C) confirmada (U) en uso (D) disponible (X) cancelada';
 COMMENT ON COLUMN IN_TRVHA.RVHA_TIUS                IS          'Llave foranea con la tabla de usuarios de la aplicacion (us_ttius)';

@@ -48,7 +48,7 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
                 FETCH c_valor_sv INTO v_valor;
                 CLOSE c_valor_sv;
             
-            ELSE p_accion = 3 THEN 
+            ELSIF p_accion = 3 THEN 
             
                 OPEN c_valor_iva;
                 FETCH c_valor_iva INTO v_valor;

@@ -8,3 +8,4 @@ COMMENT ON COLUMN  FA_TDTSV.DTSV_VALOR_SV       IS      'Valor del servicio';
 COMMENT ON COLUMN  FA_TDTSV.DTSV_DESC           IS      'Identificador del descuento';
 COMMENT ON COLUMN  FA_TDTSV.DTSV_CON_DESC       IS      'Valor del servicio con descuento';
 COMMENT ON COLUMN  FA_TDTSV.DTSV_VALOR_DESC     IS      'Valor del descuento el cual se aplico al detalle';
+COMMENT ON COLUMN  FA_TDTSV.DTSV_ESTADO         IS      'Indica en que estado esta el detalle de factura (A) Activo,  (C) cancelada';

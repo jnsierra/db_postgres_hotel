@@ -10,7 +10,7 @@ CREATE OR REPLACE FUNCTION US_FRECUPERAR_DATOS (
    rta          return_usuario;
    
    c_usuario CURSOR FOR 
-      SELECT cedula, nombre, apellido, correo, telefono, tipoUsuario, perfil_usuario, permisos_usuario, id_tipo_usuario
+      SELECT cedula, nombre, apellido, correo, telefono, tipoUsuario, perfil_usuario, permisos_usuario, id_tipo_usuario, to_char(tius_ultimo_ingreso,'DD/MM/YYYY HH:MI AM')
       FROM us_vusuarios
       WHERE UPPER(usuario) = UPPER(p_user)
       ;

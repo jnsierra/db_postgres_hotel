@@ -106,6 +106,7 @@
 \i C:/db_postgres_hotel/new/functions/FA_CREA_FACTURA.sql;
 \i C:/db_postgres_hotel/new/functions/FA_RESERVA_HABITACION.sql;
 \i C:/db_postgres_hotel/new/functions/FA_CONSLUTA_COSTS_FACT.sql;
+\i C:/db_postgres_hotel/new/functions/FA_CONFIRMA_FACTURA.sql;
 --
 -- Triggers
 --
