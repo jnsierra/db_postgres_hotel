@@ -16,32 +16,48 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
          v_cod_prod     varchar(1);
          v_tius_tius    integer;
          rta            varchar(10) := 'Err';
-         v_dska_dska    integer;
          v_cost_tot     Numeric(50,6) := 0;         
-      
+         
+         c_dska_dska CURSOR FOR
+         SELECT coalesce(max(dska_dska),0)+ 1 as dska_dska
+           FROM in_tdska
+           ;
+        v_dska_dska     INTEGER := 0;
+        
+        c_kapr_kapr CURSOR FOR
+         SELECT coalesce(max(kapr_kapr),0)+ 1 as kapr_kapr
+           FROM in_tkapr
+           ;
+        --
+        v_kapr_kapr     INTEGER := 0;
+         
+        
       BEGIN
+      
+         OPEN c_dska_dska;
+         FETCH c_dska_dska INTO v_dska_dska;
+         CLOSE c_dska_dska;
+         
+         OPEN c_kapr_kapr;
+         FETCH c_kapr_kapr INTO v_kapr_kapr;
+         CLOSE c_kapr_kapr;
+         
          v_cod_prod  :=   US_FVERIFICA_COD_PROD(p_cod);
          
          
          IF v_cod_prod = 'N' THEN
             
-            insert into in_tdska(DSKA_REFE,DSKA_COD, DSKA_NOM_PROD, DSKA_DESC, DSKA_IVA, DSKA_PORC_IVA, DSKA_MARCA)
-                          values(p_ref,p_cod,p_nom_prod,p_desc,upper(p_iva),p_porc_iva,p_marca);
-            
-            SELECT dska_dska
-              FROM in_tdska
-              into v_dska_dska
-             WHERE dska_cod = p_cod
-             ;
-             
+            insert into in_tdska(dska_dska,DSKA_REFE,DSKA_COD, DSKA_NOM_PROD, DSKA_DESC, DSKA_IVA, DSKA_PORC_IVA, DSKA_MARCA)
+                          values(v_dska_dska,p_ref,p_cod,p_nom_prod,p_desc,upper(p_iva),p_porc_iva,p_marca);
+                         
              IF v_dska_dska IS NOT NULL THEN
                
                v_cost_tot := p_cant*p_cost;
                
                v_tius_tius := US_FRETORNA_ID_USUARIO(trim(p_usua));
                
-               insert into in_tkapr (KAPR_DSKA, KAPR_FECHA, KAPR_MVIN, KAPR_CANT_MVTO, KAPR_COST_MVTO_UNI, KAPR_COST_MVTO_TOT, KAPR_COST_SALDO_UNI, KAPR_COST_SALDO_TOT, KAPR_CANT_SALDO, KAPR_TIUS,KAPR_CONS_PRO)
-                              values(v_dska_dska, now(), 2, p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1 )
+               insert into in_tkapr (KAPR_KAPR,KAPR_DSKA, KAPR_FECHA, KAPR_MVIN, KAPR_CANT_MVTO, KAPR_COST_MVTO_UNI, KAPR_COST_MVTO_TOT, KAPR_COST_SALDO_UNI, KAPR_COST_SALDO_TOT, KAPR_CANT_SALDO, KAPR_TIUS,KAPR_CONS_PRO)
+                              values(v_kapr_kapr,v_dska_dska, now(), 2, p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1 )
                               ;
              END IF;
                           

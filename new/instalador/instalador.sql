@@ -15,6 +15,7 @@
 \i C:/db_postgres_hotel/new/tables/fa_tdtsv.sql;
 \i C:/db_postgres_hotel/new/tables/fa_tdtpr.sql;
 \i C:/db_postgres_hotel/new/tables/in_tprha.sql;
+\i C:/db_postgres_hotel/new/tables/in_tprpr.sql;
 --
 -- Cheks constrains
 --
@@ -66,6 +67,7 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_fa_tdtsv.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_fa_tdtpr.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tprha.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_in_tprpr.sql;
 --
 --Vistas
 --
@@ -107,11 +109,13 @@
 \i C:/db_postgres_hotel/new/functions/FA_RESERVA_HABITACION.sql;
 \i C:/db_postgres_hotel/new/functions/FA_CONSLUTA_COSTS_FACT.sql;
 \i C:/db_postgres_hotel/new/functions/FA_CONFIRMA_FACTURA.sql;
+\i C:/db_postgres_hotel/new/functions/FA_ELIMINA_SERVICIOSXDTSV.sql;
 --
 -- Triggers
 --
 \i C:/db_postgres_hotel/new/triggers/fa_trvha_before_insert.sql;
 \i C:/db_postgres_hotel/new/triggers/fa_trvha_before_insert.sql;
+\i C:/db_postgres_hotel/new/triggers/in_tprpr_before_insert.sql;
 --
 --  Inserts
 --

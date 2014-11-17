@@ -14,7 +14,8 @@ select pers.pers_nombre                         nombre,
        perf.perf_nomb                           perfil_usuario,
        to_char(pers.pers_fecha_nac,'DD/MM/YY')  fecha_nacimiento,
        perf.perf_perf                           id_perfil_usuario,
-       tius.tius_tius                           id_tipo_usuario
+       tius.tius_tius                           id_tipo_usuario,
+       to_char(tius.tius_ultimo_ingreso, 'DD/MM/YYYY HH:MI AM') tius_ultimo_ingreso               
 FROM us_ttius tius, us_tpers pers, us_tperf perf
 WHERE tius.tius_pers = pers_pers
   AND tius.tius_estado = 'A'

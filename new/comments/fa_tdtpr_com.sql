@@ -2,11 +2,13 @@ COMMENT ON TABLE    FA_TDTPR                    IS     'Tabla encargada de almac
 COMMENT ON COLUMN   FA_TDTPR.DTPR_DTPR          IS     'Identificador primario de la tabla';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_DSKA          IS     'Llave foranea con el movimento de inventario implicado';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_FACT          IS     'Factura asociada a al detalle del producto';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_FECHA         IS     'Fecha en la cual se registro la venta';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_NUM_PROD      IS     'Numero de productos vendidos en la factura';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_CANT          IS     'Cantidad de productos vendidos';
-COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_PR      IS     'Valor total de todos los productos';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_PR      IS     'Valor total de todos los productos sin iva';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_IVA     IS     'Valor del iva de todos los producto';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_VL_UNI_PROD   IS     'Valor unitario de los productos';
-COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_VENTA   IS     'Valor de venta de todos los productos';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_VENTA   IS     'Valor de venta de todos los productos con el iva';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_DESC          IS     'Identificador del descuento del cual se aplico al detalle de la venta';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_CON_DESC      IS     'Valor de los productos con descuentos';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_DESC    IS     'Valor del descuento del detalle del producto';

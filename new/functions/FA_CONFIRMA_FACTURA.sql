@@ -1,5 +1,5 @@
 --
--- Funcion con la cual aprubo la creacion de una factura
+-- Funcion con la cual apruebo la creacion de una factura
 --
 CREATE OR REPLACE FUNCTION FA_CONFIRMA_FACTURA(   
                                             p_fact_fact     INT

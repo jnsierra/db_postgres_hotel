@@ -9,25 +9,28 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
         --Suma el valor del iva de las habitaciones
         --
         c_valor_iva CURSOR FOR
-        SELECT sum(dtsv_valor_iva)
+        SELECT coalesce(sum(dtsv_valor_iva),0)
           FROM fa_tdtsv
          WHERE dtsv_fact = p_fact_fact
+           AND UPPER(dtsv_estado) = 'A'
         ;
         --
         -- Suma el valor de las habitaciones sin iva
         --
         c_valor_sv CURSOR FOR
-        SELECT sum(dtsv_valor_sv)
+        SELECT coalesce(sum(dtsv_valor_sv),0)
           FROM fa_tdtsv
          WHERE dtsv_fact = p_fact_fact
+           AND UPPER(dtsv_estado) = 'A'
          ;
         --
         -- Suma el valor total de las habitaciones y el iva
         --
         c_valor_total CURSOR FOR
-        SELECT SUM(dtsv_valor_venta)
+        SELECT coalesce(SUM(dtsv_valor_venta), 0)
           FROM fa_tdtsv
          WHERE dtsv_fact = p_fact_fact
+           AND UPPER(dtsv_estado) = 'A'
          ;
         
         v_valor     NUMERIC := 0;
