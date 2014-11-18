@@ -101,11 +101,11 @@ BEGIN
                         dtpr_dtpr, dtpr_dska, dtpr_fact, 
                         dtpr_num_prod, dtpr_cant, dtpr_valor_pr, 
                         dtpr_valor_iva, dtpr_vl_uni_prod,dtpr_valor_venta, 
-                        dtpr_desc)
+                        dtpr_desc, dtpr_kapr)
             VALUES (v_dtpr_dtpr, p_id_producto, p_fact_fact,
                     p_cant, p_cant, v_valor_prod , 
                     v_valor_iva, v_valor_uni, v_valor_total, 
-                    'N');
+                    'N',v_kapr_kapr);
             
         ELSE  
             --Retorna el error que devuelve la funcion que retorna el 

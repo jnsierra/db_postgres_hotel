@@ -17,5 +17,12 @@ CREATE TABLE fa_tdtpr(
     DTPR_DESC           VARCHAR(1)       NOT NULL                 , --DESCUENTO
     DTPR_CON_DESC       VARCHAR(1)       NOT NULL   DEFAULT 'N'   ,
     DTPR_VALOR_DESC     VARCHAR(1)       NOT NULL   DEFAULT 0     ,
+    DTPR_ESTADO         VARCHAR(1)       NOT NULL   DEFAULT 'A'   ,
+    DTPR_KAPR           INT              NOT NULL   DEFAULT 0     ,
+    DTPR_DEV_KAPR       INT                         DEFAULT 0     , --Devolucion de un producto ya vendido
 PRIMARY KEY (DTPR_DTPR)
 );
+
+
+
+

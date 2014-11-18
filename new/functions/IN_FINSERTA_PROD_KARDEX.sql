@@ -95,14 +95,15 @@ CREATE OR REPLACE FUNCTION IN_FINSERTA_PROD_KARDEX (
       CLOSE c_kapr_kapr;
       
       INSERT INTO in_tkapr(
-            kapr_kapr,kapr_cons_pro, kapr_dska, kapr_mvin, kapr_cant_mvto, 
-            kapr_cost_mvto_uni, kapr_cost_mvto_tot, kapr_cost_saldo_uni, 
-            kapr_cost_saldo_tot, kapr_cant_saldo, kapr_tius)
+            kapr_kapr,kapr_cons_pro, kapr_dska, 
+            kapr_mvin, kapr_cant_mvto, kapr_cost_mvto_uni, 
+            kapr_cost_mvto_tot, kapr_cost_saldo_uni, kapr_cost_saldo_tot, 
+            kapr_cant_saldo, kapr_tius)
       VALUES(
-            v_kapr_kapr, v_consecutivo, p_id_producto, p_id_moviInv, p_numProd,
-            v_valorUnitario, v_costoTotalMovi, v_uniPonderado,
-            v_costTotProdNew, v_cantSaldoSig, p_id_tius
-            );
+            v_kapr_kapr, v_consecutivo, p_id_producto, 
+            p_id_moviInv, p_numProd, v_valorUnitario, 
+            v_costoTotalMovi, v_uniPonderado, v_costTotProdNew, 
+            v_cantSaldoSig, p_id_tius);
             
         RETURN 'OK-'||v_kapr_kapr;
       

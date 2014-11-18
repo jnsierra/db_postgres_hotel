@@ -12,3 +12,6 @@ COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_VENTA   IS     'Valor de venta de todos 
 COMMENT ON COLUMN   FA_TDTPR.DTPR_DESC          IS     'Identificador del descuento del cual se aplico al detalle de la venta';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_CON_DESC      IS     'Valor de los productos con descuentos';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_DESC    IS     'Valor del descuento del detalle del producto';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_ESTADO        IS     'Indica el estado en el cual se encuentra el detalle del producto A(Activa) C(Cancelada)';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_KAPR          IS     'Llave foranea con la tabla que referencia el kardex del producto movimiento de venta';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_DEV_KAPR      IS     'Llave foranea con la tabla que referencia el kardex del producto movimiento de devolucion solo aplica si es una devolucion de lo contrario sera 0';

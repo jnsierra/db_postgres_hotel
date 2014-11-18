@@ -110,12 +110,15 @@
 \i C:/db_postgres_hotel/new/functions/FA_CONSLUTA_COSTS_FACT.sql;
 \i C:/db_postgres_hotel/new/functions/FA_CONFIRMA_FACTURA.sql;
 \i C:/db_postgres_hotel/new/functions/FA_ELIMINA_SERVICIOSXDTSV.sql;
+\i C:/db_postgres_hotel/new/functions/FA_ELIMINA_PRODUCTOSXDTPR.sql;
 --
 -- Triggers
 --
 \i C:/db_postgres_hotel/new/triggers/fa_trvha_before_insert.sql;
 \i C:/db_postgres_hotel/new/triggers/fa_trvha_before_insert.sql;
 \i C:/db_postgres_hotel/new/triggers/in_tprpr_before_insert.sql;
+\i C:/db_postgres_hotel/new/triggers/fa_tdtpr_after_insert_or_update.sql;
+\i C:/db_postgres_hotel/new/triggers/fa_tdtsv_after_insert_or_update.sql;
 --
 --  Inserts
 --
