@@ -11,5 +11,5 @@ CREATE TYPE return_usuario AS (
   perfil_usuario    varchar(50),
   permisos_usuario  varchar(200),
   idUsuario         varchar(20),
-  ultimoIngreso     varchar(200),
+  ultimoIngreso     varchar(200)
 );
