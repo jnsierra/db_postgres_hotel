@@ -13,6 +13,7 @@ CREATE OR REPLACE FUNCTION FA_VERF_RESERVA_HABITACION (
       FROM in_trvha
      WHERE rvha_dsha = p_dsha_dsha
        AND fecha between rvha_fecha_ini and rvha_fecha_fin
+       AND rvha_estado = 'R'
     ;
     
     v_count         INTEGER := 0;
