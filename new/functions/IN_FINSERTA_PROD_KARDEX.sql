@@ -108,6 +108,6 @@ CREATE OR REPLACE FUNCTION IN_FINSERTA_PROD_KARDEX (
         RETURN 'OK-'||v_kapr_kapr;
       
         EXCEPTION WHEN OTHERS THEN
-               RETURN 'ERR' || ' Error postgres: ' || SQLERRM;
+               RETURN 'ERR IN_FINSERTA_PROD_KARDEX ' || ' Error postgres: ' || SQLERRM;
        END;
 $$ LANGUAGE 'plpgsql';

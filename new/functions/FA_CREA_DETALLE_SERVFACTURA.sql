@@ -92,9 +92,9 @@ FUNCTION FA_CREA_DETALLE_SERVFACTURA (
 
         INSERT INTO fa_tdtsv(
                 dtsv_rvha, dtsv_fact, dtsv_valor_venta, 
-                dtsv_valor_sv, dtsv_desc,dtsv_valor_iva)
+                dtsv_valor_sv, dtsv_desc,dtsv_valor_iva,dtsv_costo_hab)
         VALUES (to_number(v_verf_reservacion,'9999G999D9S'), p_fact_fact, v_valorTotal,
-                v_valor_reservacion, 0,v_valorIva);
+                v_valor_reservacion, 0,v_valorIva,v_precioHabitacion);
         
         RETURN 'OK';
         

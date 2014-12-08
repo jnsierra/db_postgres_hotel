@@ -16,6 +16,7 @@
 \i C:/db_postgres_hotel/new/tables/fa_tdtpr.sql;
 \i C:/db_postgres_hotel/new/tables/in_tprha.sql;
 \i C:/db_postgres_hotel/new/tables/in_tprpr.sql;
+\i C:/db_postgres_hotel/new/tables/em_tpara.sql;
 --
 -- Cheks constrains
 --
@@ -39,6 +40,7 @@
 \i C:/db_postgres_hotel/new/uniques/IN_TPROV_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TDSKA_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TDSHA_UNIQUES.sql;
+\i C:/db_postgres_hotel/new/uniques/EM_TPARA_UNIQUES.sql;
 --
 -- Comentarios de las tablas
 --
