@@ -15,5 +15,6 @@ CREATE TABLE fa_tdtsv(
     DTSV_CON_DESC       VARCHAR(1)       NOT NULL   DEFAULT 'N'   ,
     DTSV_VALOR_DESC     NUMERIC(50,6)    NOT NULL   DEFAULT 0     ,
     DTSV_ESTADO         VARCHAR(1)       NOT NULL   DEFAULT 'A'   , 
+	DTSV_COSTO_HAB		NUMERIC(50,6)                             ,
 PRIMARY KEY (DTSV_DTSV)
 );
