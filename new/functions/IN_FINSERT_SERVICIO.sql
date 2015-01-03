@@ -19,9 +19,9 @@ CREATE OR REPLACE FUNCTION IN_FINSERT_SERVICIO (
     INSERT INTO in_tdsha(
             dsha_num_hab, dsha_num_max_pers, 
             dsha_num_min_pers, dsha_bano, dsha_televison, 
-            dsha_cable, dsha_num_camas, dsha_cama_aux,dsha_iva)
+            dsha_cable, dsha_num_camas, dsha_cama_aux,dsha_iva,dsha_disp_actu)
     VALUES (p_numHab, p_num_max_pers, p_num_min_pers, p_bano , 
-            p_televison, p_cable, p_num_camas, p_cama_aux,p_iva );
+            p_televison, p_cable, p_num_camas, p_cama_aux,p_iva,'D');
 
     
     RETURN 'OK';
