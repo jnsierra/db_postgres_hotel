@@ -1,4 +1,4 @@
-COMMENT ON TABLE  IN_TPROV                          IS            'Tabla la cual almacenara la informacion basica de lo0s proveedores';
+COMMENT ON TABLE  IN_TPROV                          IS            'Tabla la cual almacenara la informacion basica de los proveedores';
 COMMENT ON COLUMN IN_TPROV.PROV_PROV                  IS          'Identificador del proveedor';
 COMMENT ON COLUMN IN_TPROV.PROV_NOMBRE                IS          'Nombre del proveedor';
 COMMENT ON COLUMN IN_TPROV.PROV_NIT                   IS          'Nit perteniciente a la empreza proveedora del producto';

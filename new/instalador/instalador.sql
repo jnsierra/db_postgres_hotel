@@ -125,4 +125,4 @@
 --
 --  Inserts
 --
-\i C:/db_postgres_hotel/new/inserts/ins_in_tmvin.sql;
+--\i C:/db_postgres_hotel/new/inserts/ins_in_tmvin.sql;
