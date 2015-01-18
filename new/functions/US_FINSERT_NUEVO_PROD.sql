@@ -29,8 +29,16 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
            FROM in_tkapr
            ;
         --
+        c_mvin_inicial CURSOR FOR
+        SELECT mvin_mvin, count(1) contador
+         FROM in_tmvin
+        WHERE mvin_inicial = 'S'
+        GROUP BY mvin_mvin
+        ;
+        --
         v_kapr_kapr     INTEGER := 0;
-         
+        v_cont_mvin     INTEGER := 0;       -- cuenta cuantos movimientos de inventario inicial existen
+        v_mvin_inicial  INTEGER := 0;       -- Obtiene el identificador del movimiento inicial de inventario 
         
       BEGIN
       
@@ -56,9 +64,27 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                
                v_tius_tius := US_FRETORNA_ID_USUARIO(trim(p_usua));
                
-               insert into in_tkapr (KAPR_KAPR,KAPR_DSKA, KAPR_FECHA, KAPR_MVIN, KAPR_CANT_MVTO, KAPR_COST_MVTO_UNI, KAPR_COST_MVTO_TOT, KAPR_COST_SALDO_UNI, KAPR_COST_SALDO_TOT, KAPR_CANT_SALDO, KAPR_TIUS,KAPR_CONS_PRO)
-                              values(v_kapr_kapr,v_dska_dska, now(), 2, p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1 )
-                              ;
+               OPEN c_mvin_inicial;
+               FETCH c_mvin_inicial INTO v_mvin_inicial, v_cont_mvin;
+               CLOSE c_mvin_inicial;
+               
+               IF v_mvin_inicial = 1 THEN
+                    --
+                    insert into in_tkapr (KAPR_KAPR,KAPR_DSKA, KAPR_FECHA, KAPR_MVIN, KAPR_CANT_MVTO, KAPR_COST_MVTO_UNI, KAPR_COST_MVTO_TOT, KAPR_COST_SALDO_UNI, KAPR_COST_SALDO_TOT, KAPR_CANT_SALDO, KAPR_TIUS,KAPR_CONS_PRO)
+                          values(v_kapr_kapr,v_dska_dska, now(), v_mvin_inicial , p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1 )
+                          ;
+                    --
+               ELSIF v_mvin_inicial = 0 THEN 
+                    --
+                    RAISE EXCEPTION 'Error US_FINSERT_NUEVO_PROD no esta referenciado ningun movimiento de inventario en el sistema porfavor referencie un movimiento e intente de nuevo';
+                    --
+               ELSE
+                    --
+                    RAISE EXCEPTION 'Error US_FINSERT_NUEVO_PROD hay mas de un movimiento de inventario parametrizado en el sistema ';
+                    --
+               END IF;
+               
+               
              END IF;
                           
             rta = 'Ok';

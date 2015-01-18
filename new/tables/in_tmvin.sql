@@ -9,5 +9,7 @@ MVIN_DESCR                VARCHAR(70)    NOT NULL     ,
 MVIN_NATU                 VARCHAR(1)     NOT NULL     ,
 MVIN_USIM                 VARCHAR(20)    NOT NULL     ,
 MVIN_VENTA                VARCHAR(2)     NOT NULL     ,
+MVIN_INICIAL              VARCHAR(2)     NOT NULL     ,
+MVIN_REVFACT              VARCHAR(2)     NOT NULL     ,
 PRIMARY KEY (MVIN_MVIN)
 );
