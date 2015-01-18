@@ -17,6 +17,7 @@
 \i C:/db_postgres_hotel/new/tables/in_tprha.sql;
 \i C:/db_postgres_hotel/new/tables/in_tprpr.sql;
 \i C:/db_postgres_hotel/new/tables/em_tpara.sql;
+\i C:/db_postgres_hotel/new/tables/em_tsede.sql;
 --
 -- Cheks constrains
 --
