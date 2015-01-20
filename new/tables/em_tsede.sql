@@ -11,5 +11,6 @@ CREATE TABLE em_tsede(
    sede_telefono            varchar(20)                  , 
    sede_fecin               date default now()           ,
    sede_tius                int                          ,
+   sede_estado              varchar(2) default   'A'     ,
    PRIMARY KEY (sede_sede)	
 ); 
