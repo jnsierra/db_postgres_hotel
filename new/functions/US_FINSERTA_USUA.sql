@@ -1,13 +1,14 @@
 -- Funcion encargada de insertar la base de los usuarios
 
-CREATE OR REPLACE FUNCTION US_FINSERTA_USUA (     p_nombre      varchar(50),
-                                       p_apellido    varchar(50),
-                                       p_cedula      varchar(50),
-                                       p_email       varchar(50),
-                                       p_fecha_nac   DATE,
-                                       p_usuario     varchar(20),
-                                       p_contra      varchar(20),
-                                       p_perfil      INT
+CREATE OR REPLACE FUNCTION US_FINSERTA_USUA (   p_nombre      varchar(50),
+                                                p_apellido    varchar(50),
+                                                p_cedula      varchar(50),
+                                                p_email       varchar(50),
+                                                p_fecha_nac   DATE,
+                                                p_usuario     varchar(20),
+                                                p_contra      varchar(20),
+                                                p_perfil      INT        ,
+                                                p_sede        INT
                                     ) RETURNS VARCHAR AS $$
    DECLARE 
    c_pers_usua cursor for
@@ -30,8 +31,8 @@ CREATE OR REPLACE FUNCTION US_FINSERTA_USUA (     p_nombre      varchar(50),
       CLOSE c_pers_usua;
       
       IF v_pers_pers <> -1  THEN
-         insert into us_ttius (tius_pers, tius_tipo_usuario, tius_usuario, tius_contra_act,tius_perf,tius_cambio_contra)
-         values (v_pers_pers,'AD', UPPER(trim(p_usuario)), trim(p_contra), p_perfil, 'S')
+         insert into us_ttius (tius_pers, tius_tipo_usuario, tius_usuario, tius_contra_act,tius_perf,tius_cambio_contra,tius_sede)
+         values (v_pers_pers,'AD', UPPER(trim(p_usuario)), trim(p_contra), p_perfil, 'S',p_sede)
          ;
          RETURN 'OK';
       ELSE 

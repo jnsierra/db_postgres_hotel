@@ -16,5 +16,6 @@ TIUS_CONTRA_ACT          VARCHAR(50)                               , -- Contrase
 TIUS_CONTRA_FUTURA       VARCHAR(50)                               , -- Contraseña con la cual podra entrar al sistema
 TIUS_CAMBIO_CONTRA       VARCHAR(1)       NOT NULL DEFAULT('N')    , -- Indica Si el usuario solicito cambio de contraseña (S) si o (N) no
 TIUS_ESTADO              VARCHAR(1)       NOT NULL DEFAULT('A')    , -- Estado de el usuario A(activo) I(inactivo)
+TIUS_SEDE                INT              NOT NULL                 ,
 PRIMARY KEY (TIUS_TIUS)
 );

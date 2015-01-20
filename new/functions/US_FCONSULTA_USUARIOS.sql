@@ -22,7 +22,8 @@ CREATE OR REPLACE FUNCTION US_FCONSULTA_USUARIOS (  p_usuario       varchar(50),
              COALESCE(fecha_nacimiento    ,v_nulo),
              COALESCE(estado_usuario    ,'Err'),
              COALESCE(id_perfil_usuario ,0),
-             COALESCE(id_tipo_usuario ,0)             
+             COALESCE(id_tipo_usuario ,0),             
+             COALESCE(sede , 0 )
       FROM us_vusuarios
       WHERE UPPER(usuario)  LIKE '%'||COALESCE(UPPER(p_usuario)  ,UPPER(usuario))  ||'%'
       AND   UPPER(apellido) LIKE '%'||COALESCE(UPPER(p_apellido) ,UPPER(apellido)) ||'%'
@@ -33,7 +34,7 @@ CREATE OR REPLACE FUNCTION US_FCONSULTA_USUARIOS (  p_usuario       varchar(50),
    BEGIN
       OPEN c_usuario;
       LOOP 
-         FETCH c_usuario INTO rta.cedula, rta.nombre, rta.apellido, rta.correo, rta.telefono, rta.tipoUsuario, rta.usuario, rta.perfil, rta.fecha_nac, rta.estado, rta.id_perfil, rta.id_tipo_usuario;
+         FETCH c_usuario INTO rta.cedula, rta.nombre, rta.apellido, rta.correo, rta.telefono, rta.tipoUsuario, rta.usuario, rta.perfil, rta.fecha_nac, rta.estado, rta.id_perfil, rta.id_tipo_usuario, rta.sede;
          IF rta IS NULL THEN EXIT;
          END IF;
          rtafinal[v_iterator] := rta;

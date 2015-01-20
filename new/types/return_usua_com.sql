@@ -14,5 +14,6 @@ CREATE TYPE return_usua_com AS (
   fecha_nac         varchar(50),
   estado            varchar(50),
   id_perfil         varchar(50),
-  id_tipo_usuario   varchar(50)
+  id_tipo_usuario   varchar(50),
+  sede              varchar(50)
 );

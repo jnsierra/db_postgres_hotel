@@ -15,10 +15,13 @@ select pers.pers_nombre                         nombre,
        to_char(pers.pers_fecha_nac,'DD/MM/YY')  fecha_nacimiento,
        perf.perf_perf                           id_perfil_usuario,
        tius.tius_tius                           id_tipo_usuario,
-       to_char(tius.tius_ultimo_ingreso, 'DD/MM/YYYY HH:MI AM') tius_ultimo_ingreso               
-FROM us_ttius tius, us_tpers pers, us_tperf perf
+       to_char(tius.tius_ultimo_ingreso, 'DD/MM/YYYY HH:MI AM') tius_ultimo_ingreso,
+       tius_sede                                sede,
+       sede_nombre                              nombreSede
+FROM us_ttius tius, us_tpers pers, us_tperf perf, em_tsede
 WHERE tius.tius_pers = pers_pers
   AND tius.tius_estado = 'A'
   AND tius.tius_perf = perf.perf_perf
+  AND tius_sede = sede_sede
 ;
 

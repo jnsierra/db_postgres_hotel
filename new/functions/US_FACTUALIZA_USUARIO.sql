@@ -6,7 +6,8 @@ CREATE OR REPLACE FUNCTION US_FACTUALIZA_USUARIO (
                                             p_fecha_nac   date,
                                             p_perf_id     int,
                                             p_estado      varchar(50),
-                                            p_usuario     varchar(50)
+                                            p_usuario     varchar(50),
+                                            p_sede        int
                                             ) RETURNS VARCHAR AS $$
     DECLARE 
     
@@ -24,6 +25,7 @@ CREATE OR REPLACE FUNCTION US_FACTUALIZA_USUARIO (
     UPDATE us_ttius
     SET tius_estado = p_estado
     , tius_perf = p_perf_id
+    , tius_sede = p_sede
     WHERE tius_usuario = p_usuario
     ;
     

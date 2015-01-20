@@ -10,3 +10,4 @@ COMMENT ON COLUMN US_TTIUS.TIUS_CONTRA_ACT      IS          'Contraseña activa 
 COMMENT ON COLUMN US_TTIUS.TIUS_CONTRA_FUTURA   IS          'Contraseña con la cual podra entrar al sistema en caso de confirmar el cambio de clave';
 COMMENT ON COLUMN US_TTIUS.TIUS_CAMBIO_CONTRA   IS          'Indica Si el usuario solicito cambio de contraseña (S) si o (N) no';
 COMMENT ON COLUMN US_TTIUS.TIUS_ESTADO          IS          'Estado de el usuario A(activo), I(inactivo), X(Eliminado)';
+COMMENT ON COLUMN US_TTIUS.TIUS_SEDE            IS          'Llave foranea con la tabla de sedes';
