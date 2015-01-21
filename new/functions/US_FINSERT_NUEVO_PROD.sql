@@ -68,13 +68,13 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                FETCH c_mvin_inicial INTO v_mvin_inicial, v_cont_mvin;
                CLOSE c_mvin_inicial;
                
-               IF v_mvin_inicial = 1 THEN
+               IF v_cont_mvin = 1 THEN
                     --
                     insert into in_tkapr (KAPR_KAPR,KAPR_DSKA, KAPR_FECHA, KAPR_MVIN, KAPR_CANT_MVTO, KAPR_COST_MVTO_UNI, KAPR_COST_MVTO_TOT, KAPR_COST_SALDO_UNI, KAPR_COST_SALDO_TOT, KAPR_CANT_SALDO, KAPR_TIUS,KAPR_CONS_PRO)
                           values(v_kapr_kapr,v_dska_dska, now(), v_mvin_inicial , p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1 )
                           ;
                     --
-               ELSIF v_mvin_inicial = 0 THEN 
+               ELSIF v_cont_mvin = 0 THEN 
                     --
                     RAISE EXCEPTION 'Error US_FINSERT_NUEVO_PROD no esta referenciado ningun movimiento de inventario en el sistema porfavor referencie un movimiento e intente de nuevo';
                     --
