@@ -8,7 +8,10 @@ INSERT INTO us_tperf(
 insert into em_tsede (sede_nombre,sede_direccion, sede_telefono)
     values ('Unicentro', 'Cra 14 No. 112' , '778899')
  
- inse
+INSERT INTO in_tcate(
+            cate_desc, cate_estado, cate_runic, cate_feven)
+    VALUES ('Celular', 'A', 'S', 'S');
+
  
 select * 
 from pg_stat_activity 

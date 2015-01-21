@@ -9,7 +9,9 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                                                       p_marca      VARCHAR(20)  ,      -- Marca del producto el cual se 
                                                       p_cant       INTEGER      ,      -- Cantidad de productos que se desean inventariar
                                                       p_cost       NUMERIC(50,6),      -- Costo del producto por unidad
-                                                      p_usua       VARCHAR(50)        -- Usuario el cual registra el inventario
+                                                      p_usua       VARCHAR(50)  ,      -- Usuario el cual registra el inventario
+                                                      p_sede       INTEGER      ,      -- Sede a la cual ingresa el producto al sitema
+                                                      p_cate       INTEGER            -- Categoria a la cual pertenece el producto
                                     ) RETURNS VARCHAR AS $$
       DECLARE 
       
@@ -55,8 +57,8 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
          
          IF v_cod_prod = 'N' THEN
             
-            insert into in_tdska(dska_dska,DSKA_REFE,DSKA_COD, DSKA_NOM_PROD, DSKA_DESC, DSKA_IVA, DSKA_PORC_IVA, DSKA_MARCA)
-                          values(v_dska_dska,p_ref,p_cod,p_nom_prod,p_desc,upper(p_iva),p_porc_iva,p_marca);
+            insert into in_tdska(dska_dska,DSKA_REFE,DSKA_COD, DSKA_NOM_PROD, DSKA_DESC, DSKA_IVA, DSKA_PORC_IVA, DSKA_MARCA,DSKA_CATE)
+                          values(v_dska_dska,p_ref,p_cod,p_nom_prod,p_desc,upper(p_iva),p_porc_iva,p_marca,p_cate);
                          
              IF v_dska_dska IS NOT NULL THEN
                
@@ -70,8 +72,8 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                
                IF v_cont_mvin = 1 THEN
                     --
-                    insert into in_tkapr (KAPR_KAPR,KAPR_DSKA, KAPR_FECHA, KAPR_MVIN, KAPR_CANT_MVTO, KAPR_COST_MVTO_UNI, KAPR_COST_MVTO_TOT, KAPR_COST_SALDO_UNI, KAPR_COST_SALDO_TOT, KAPR_CANT_SALDO, KAPR_TIUS,KAPR_CONS_PRO)
-                          values(v_kapr_kapr,v_dska_dska, now(), v_mvin_inicial , p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1 )
+                    insert into in_tkapr (KAPR_KAPR,KAPR_DSKA, KAPR_FECHA, KAPR_MVIN, KAPR_CANT_MVTO, KAPR_COST_MVTO_UNI, KAPR_COST_MVTO_TOT, KAPR_COST_SALDO_UNI, KAPR_COST_SALDO_TOT, KAPR_CANT_SALDO, KAPR_TIUS,KAPR_CONS_PRO,KAPR_SEDE)
+                          values(v_kapr_kapr,v_dska_dska, now(), v_mvin_inicial , p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1, p_sede )
                           ;
                     --
                ELSIF v_cont_mvin = 0 THEN 

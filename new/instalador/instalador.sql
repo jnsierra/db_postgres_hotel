@@ -18,6 +18,7 @@
 \i C:/db_postgres_hotel/new/tables/in_tprpr.sql;
 \i C:/db_postgres_hotel/new/tables/em_tpara.sql;
 \i C:/db_postgres_hotel/new/tables/em_tsede.sql;
+\i C:/db_postgres_hotel/new/tables/in_tcate.sql;
 --
 -- Cheks constrains
 --
@@ -59,6 +60,7 @@
 \i C:/db_postgres_hotel/new/comments/fa_tdtpr_com.sql;
 \i C:/db_postgres_hotel/new/comments/fa_tdtsv_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_tprha_com.sql;
+\i C:/db_postgres_hotel/new/comments/in_tprha_com.sql;
 --
 -- Llaves foraneas
 --
@@ -71,6 +73,7 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_fa_tdtpr.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tprha.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tprpr.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_in_tdska.sql;
 --
 --Vistas
 --

@@ -12,7 +12,8 @@ DSKA_DESC                VARCHAR(100)     ,
 DSKA_IVA                 VARCHAR(1)       ,
 DSKA_PORC_IVA            INT              ,
 DSKA_MARCA               VARCHAR(50)      ,
-DSKA_ESTADO              VARCHAR(1)       NOT NULL   DEFAULT 'A',
+DSKA_ESTADO              VARCHAR(1)       NOT NULL   DEFAULT 'A'   ,
 DSKA_FEC_INGRESO         TIMESTAMP        NOT NULL   DEFAULT NOW() ,
+DSKA_CATE                INT              NOT NULL                 , 
 PRIMARY KEY (DSKA_DSKA)
 );

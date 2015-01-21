@@ -17,5 +17,6 @@ KAPR_COST_SALDO_TOT      NUMERIC(50,6)    NOT NULL                 ,
 KAPR_CANT_SALDO          INT              NOT NULL                 ,
 KAPR_PROV                INT                                       ,
 KAPR_TIUS                INT              NOT NULL                 ,
+KAPR_SEDE                INT              NOT NULL                 ,
 PRIMARY KEY (KAPR_KAPR)
 );
