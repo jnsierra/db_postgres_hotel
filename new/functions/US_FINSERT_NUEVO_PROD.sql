@@ -11,7 +11,9 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                                                       p_cost       NUMERIC(50,6),      -- Costo del producto por unidad
                                                       p_usua       VARCHAR(50)  ,      -- Usuario el cual registra el inventario
                                                       p_sede       INTEGER      ,      -- Sede a la cual ingresa el producto al sitema
-                                                      p_cate       INTEGER            -- Categoria a la cual pertenece el producto
+                                                      p_cate       INTEGER      ,      -- Categoria a la cual pertenece el producto
+                                                      p_runic      VARCHAR(200) ,      -- Valor el cual es un registro unico para los productos si aplica
+                                                      p_fecVen     DATE                -- Fecha de vencimiento del producto si aplica
                                     ) RETURNS VARCHAR AS $$
       DECLARE 
       

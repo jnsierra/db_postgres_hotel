@@ -11,6 +11,10 @@ insert into em_tsede (sede_nombre,sede_direccion, sede_telefono)
 INSERT INTO in_tcate(
             cate_desc, cate_estado, cate_runic, cate_feven)
     VALUES ('Celular', 'A', 'S', 'S');
+    
+INSERT INTO in_tcate(
+            cate_desc, cate_estado, cate_runic, cate_feven)
+    VALUES ('Flip Cover', 'A', 'N', 'N');
 
  
 select * 
