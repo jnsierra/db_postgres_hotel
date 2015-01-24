@@ -20,6 +20,7 @@
 \i C:/db_postgres_hotel/new/tables/em_tsede.sql;
 \i C:/db_postgres_hotel/new/tables/in_tcate.sql;
 \i C:/db_postgres_hotel/new/tables/in_trmce.sql;
+\i C:/db_postgres_hotel/new/tables/in_trefe.sql;
 --
 -- Cheks constrains
 --
@@ -64,6 +65,7 @@
 \i C:/db_postgres_hotel/new/comments/in_tprha_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_tprha_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_trmce_com.sql;
+\i C:/db_postgres_hotel/new/comments/in_trefe_com.sql;
 --
 -- Llaves foraneas
 --
