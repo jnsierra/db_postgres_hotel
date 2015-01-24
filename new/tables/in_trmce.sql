@@ -6,7 +6,7 @@
 
 CREATE TABLE in_trmce(
    rmce_rmce                SERIAL                       ,
-   rmce_rfce                int                          ,
+   rmce_refe                int                          ,
    rmce_imei                VARCHAR(150)                 ,
    rmce_iccid               VARCHAR(150)                 ,
    rmce_valor               NUMERIC(50,6)                ,

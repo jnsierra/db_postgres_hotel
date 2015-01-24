@@ -133,5 +133,6 @@
 --
 --  Inserts
 --
-\i C:/db_postgres_hotel/new/usuario_maestro.sql;   --Usuario maestro de la aplicacion
+\i C:/db_postgres_hotel/new/usuario_maestro.sql;   
+--Usuario maestro de la aplicacion
 --\i C:/db_postgres_hotel/new/inserts/ins_in_tmvin.sql;

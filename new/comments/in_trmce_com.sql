@@ -1,6 +1,6 @@
 COMMENT ON TABLE  in_trmce                      IS          'Tabla en la cual se almacenara las remisiones de celulares';
 COMMENT ON COLUMN in_trmce.rmce_rmce            IS          'Identificador primario de la tabla';
-COMMENT ON COLUMN in_trmce.rmce_rfce            IS          'Identificador de la tabla de referencia de celulares';
+COMMENT ON COLUMN in_trmce.rmce_refe            IS          'Identificador de la tabla de referencia de celulares';
 COMMENT ON COLUMN in_trmce.rmce_imei            IS          'Identificador unico de celular. ';
 COMMENT ON COLUMN in_trmce.rmce_iccid           IS          'Identificador unico del plan';
 COMMENT ON COLUMN in_trmce.rmce_valor           IS          'Valor por el cual fue vendido el celular';
