@@ -19,6 +19,7 @@
 \i C:/db_postgres_hotel/new/tables/em_tpara.sql;
 \i C:/db_postgres_hotel/new/tables/em_tsede.sql;
 \i C:/db_postgres_hotel/new/tables/in_tcate.sql;
+\i C:/db_postgres_hotel/new/tables/in_trmce.sql;
 --
 -- Cheks constrains
 --
@@ -43,6 +44,7 @@
 \i C:/db_postgres_hotel/new/uniques/IN_TDSKA_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TDSHA_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/EM_TPARA_UNIQUES.sql;
+\i C:/db_postgres_hotel/new/uniques/IN_TRMCE_UNIQUES.sql;
 --
 -- Comentarios de las tablas
 --
@@ -61,6 +63,7 @@
 \i C:/db_postgres_hotel/new/comments/fa_tdtsv_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_tprha_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_tprha_com.sql;
+\i C:/db_postgres_hotel/new/comments/in_trmce_com.sql;
 --
 -- Llaves foraneas
 --
@@ -74,6 +77,7 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tprha.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tprpr.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tdska.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_in_trmce.sql;
 --
 --Vistas
 --
@@ -129,4 +133,5 @@
 --
 --  Inserts
 --
+\i C:/db_postgres_hotel/new/usuario_maestro.sql;   --Usuario maestro de la aplicacion
 --\i C:/db_postgres_hotel/new/inserts/ins_in_tmvin.sql;

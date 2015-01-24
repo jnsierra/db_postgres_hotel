@@ -1,0 +1,15 @@
+COMMENT ON TABLE  in_trmce                      IS          'Tabla en la cual se almacenara las remisiones de celulares';
+COMMENT ON COLUMN in_trmce.rmce_rmce            IS          'Identificador primario de la tabla';
+COMMENT ON COLUMN in_trmce.rmce_rfce            IS          'Identificador de la tabla de referencia de celulares';
+COMMENT ON COLUMN in_trmce.rmce_imei            IS          'Identificador unico de celular. ';
+COMMENT ON COLUMN in_trmce.rmce_iccid           IS          'Identificador unico del plan';
+COMMENT ON COLUMN in_trmce.rmce_valor           IS          'Valor por el cual fue vendido el celular';
+COMMENT ON COLUMN in_trmce.rmce_comision        IS          'Comision obtenida por la venta del producto ';
+COMMENT ON COLUMN in_trmce.rmce_tppl            IS          'Tipo de plan del celular ingresado';
+COMMENT ON COLUMN in_trmce.rmce_fcve            IS          'Fecha de vencimiento del equipo';
+COMMENT ON COLUMN in_trmce.rmce_fcsl            IS          'Fecha de salida del producto';
+COMMENT ON COLUMN in_trmce.rmce_fcen            IS          'Fecha en la cual entro el producto';
+COMMENT ON COLUMN in_trmce.rmce_tius_ent        IS          'Usuario el cual ingreso el celular';
+COMMENT ON COLUMN in_trmce.rmce_tius_sal        IS          'Usuario el cual vendio el celular';
+COMMENT ON COLUMN in_trmce.rmce_codigo          IS          'Codigo con el cual se identificara en el codigo de barras';
+COMMENT ON COLUMN in_trmce.rmce_codigo          IS          'Sede en el cual se encuentra el equipo celular';
