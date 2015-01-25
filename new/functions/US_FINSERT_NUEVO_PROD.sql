@@ -78,9 +78,9 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                           values(v_kapr_kapr,v_dska_dska, now(), v_mvin_inicial , p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1, p_sede )
                           ;
                     --
-               ELSIF v_cont_mvin = 0 THEN 
+               ELSIF v_cont_mvin = 0 OR v_cont_mvin is null THEN 
                     --
-                    RAISE EXCEPTION 'Error US_FINSERT_NUEVO_PROD no esta referenciado ningun movimiento de inventario en el sistema porfavor referencie un movimiento e intente de nuevo';
+                    RAISE EXCEPTION 'Error US_FINSERT_NUEVO_PROD no esta referenciado ningun movimiento de inventario en el sistema para inventario inicial porfavor referencie un movimiento e intente de nuevo';
                     --
                ELSE
                     --
