@@ -12,4 +12,7 @@ COMMENT ON COLUMN in_trmce.rmce_fcen            IS          'Fecha en la cual en
 COMMENT ON COLUMN in_trmce.rmce_tius_ent        IS          'Usuario el cual ingreso el celular';
 COMMENT ON COLUMN in_trmce.rmce_tius_sal        IS          'Usuario el cual vendio el celular';
 COMMENT ON COLUMN in_trmce.rmce_codigo          IS          'Codigo con el cual se identificara en el codigo de barras';
-COMMENT ON COLUMN in_trmce.rmce_codigo          IS          'Sede en el cual se encuentra el equipo celular';
+COMMENT ON COLUMN in_trmce.rmce_sede            IS          'Sede en el cual se encuentra el equipo celular';
+COMMENT ON COLUMN in_trmce.rmce_estado          IS          'Indica el estado en cual se encuentra en el momento el equipo celular E(En estand listo para vender) V(Vendido) D(Devuelto)';
+COMMENT ON COLUMN in_trmce.rmce_pagado          IS          'Indica si el equipo ya fue pagado a el proveedor si ya fue cancelado';
+COMMENT ON COLUMN in_trmce.rmce_comdev          IS          'Aplica si es equipo fue devuelto a el proveedor por alguna razon (Comentario de devolucion)';

@@ -34,6 +34,7 @@
 \i C:/db_postgres_hotel/new/checks/fa_tdtsv_chks.sql;
 \i C:/db_postgres_hotel/new/checks/fa_tdtpr_chks.sql;
 \i C:/db_postgres_hotel/new/checks/in_tprha_chks.sql;
+\i C:/db_postgres_hotel/new/checks/in_trmce_chks.sql;
 --
 -- Uniques Constrains
 --
