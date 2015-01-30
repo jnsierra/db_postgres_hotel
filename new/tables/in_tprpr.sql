@@ -9,5 +9,6 @@ CREATE TABLE in_tprpr(
     prpr_tius_update    int                  NOT NULL        ,
     prpr_estado         VARCHAR(1)           NOT NULL   DEFAULT 'A'      ,
     prpr_fecha          DATE                 NOT NULL   DEFAULT NOW()    ,
+    prpr_sede           int                  NOT NULL        ,
 PRIMARY KEY (prpr_prpr)
 );
