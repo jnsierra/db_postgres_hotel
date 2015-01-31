@@ -8,6 +8,7 @@ CREATE OR REPLACE FUNCTION f_cont_est_preciosProd() RETURNS trigger AS $f_cont_e
     SELECT count(*) 
       FROM in_tprpr
      WHERE prpr_dska = NEW.prpr_dska
+       AND prpr_sede = NEW.prpr_sede
      ;
      
      v_precios_activos      NUMERIC := 0;
@@ -24,6 +25,7 @@ CREATE OR REPLACE FUNCTION f_cont_est_preciosProd() RETURNS trigger AS $f_cont_e
             UPDATE in_tprpr
                SET prpr_estado = 'I'
              WHERE prpr_dska = NEW.prpr_dska
+               AND prpr_sede = NEW.prpr_sede
              ;
 
              RETURN NEW;
