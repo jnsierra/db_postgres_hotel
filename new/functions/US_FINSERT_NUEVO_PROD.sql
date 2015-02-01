@@ -40,10 +40,16 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
         GROUP BY mvin_mvin
         ;
         --
+        c_codigo CURSOR FOR
+        SELECT '1-' || coalesce(count(*), 0 )+1 AS Id
+          FROM in_tdska 
+          ;
+        --
         v_kapr_kapr     INTEGER := 0;
         v_cont_mvin     INTEGER := 0;       -- cuenta cuantos movimientos de inventario inicial existen
         v_mvin_inicial  INTEGER := 0;       -- Obtiene el identificador del movimiento inicial de inventario 
-        
+        v_codigo        varchar(100) := '';
+        --
       BEGIN
       
          OPEN c_dska_dska;
@@ -53,14 +59,18 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
          OPEN c_kapr_kapr;
          FETCH c_kapr_kapr INTO v_kapr_kapr;
          CLOSE c_kapr_kapr;
-         
-         v_cod_prod  :=   US_FVERIFICA_COD_PROD(p_cod);
+         --
+         OPEN c_codigo;
+         FETCH c_codigo INTO v_codigo ;
+         CLOSE c_codigo;
+         --         
+         v_cod_prod  :=   US_FVERIFICA_COD_PROD(v_codigo);
          
          
          IF v_cod_prod = 'N' THEN
-            
+            --
             insert into in_tdska(dska_dska,DSKA_REFE,DSKA_COD, DSKA_NOM_PROD, DSKA_DESC, DSKA_IVA, DSKA_PORC_IVA, DSKA_MARCA,DSKA_CATE)
-                          values(v_dska_dska,p_ref,p_cod,p_nom_prod,p_desc,upper(p_iva),p_porc_iva,p_marca,p_cate);
+                          values(v_dska_dska,p_ref,v_codigo,p_nom_prod,p_desc,upper(p_iva),p_porc_iva,p_marca,p_cate);
                          
              IF v_dska_dska IS NOT NULL THEN
                
@@ -93,7 +103,7 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                           
             rta = 'Ok';
          ELSE 
-            rta = 'Error';
+            rta = 'Error existe un codigo repetido';
          END IF;
          
          RETURN rta;
