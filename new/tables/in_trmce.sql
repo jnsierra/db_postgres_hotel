@@ -17,7 +17,7 @@ CREATE TABLE in_trmce(
    rmce_fcen                date default NOW()              ,
    rmce_tius_ent            int                 NOT NULL    ,
    rmce_tius_sal            int                             ,
-   rmce_codigo              VARCHAR(2)                      ,
+   rmce_codigo              VARCHAR(25)     	NOT NULL    ,
    rmce_sede                int                 NOT NULL    ,
    rmce_estado              VARCHAR(2)          NOT NULL  DEFAULT 'E' ,
    rmce_pagado              VARCHAR(2)          NOT NULL  DEFAULT 'N' ,
