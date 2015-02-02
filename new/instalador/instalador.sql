@@ -21,6 +21,10 @@
 \i C:/db_postgres_hotel/new/tables/in_tcate.sql;
 \i C:/db_postgres_hotel/new/tables/in_trmce.sql;
 \i C:/db_postgres_hotel/new/tables/in_trefe.sql;
+\i C:/db_postgres_hotel/new/tables/co_tclas.sql;
+\i C:/db_postgres_hotel/new/tables/co_tgru.sql;
+\i C:/db_postgres_hotel/new/tables/co_tcue.sql;
+\i C:/db_postgres_hotel/new/tables/co_tsbc.sql;
 --
 -- Cheks constrains
 --
@@ -35,6 +39,10 @@
 \i C:/db_postgres_hotel/new/checks/fa_tdtpr_chks.sql;
 \i C:/db_postgres_hotel/new/checks/in_tprha_chks.sql;
 \i C:/db_postgres_hotel/new/checks/in_trmce_chks.sql;
+\i C:/db_postgres_hotel/new/checks/co_tclas_chks.sql;
+\i C:/db_postgres_hotel/new/checks/co_tgru_chks.sql;
+\i C:/db_postgres_hotel/new/checks/co_tcue_chks.sql;
+\i C:/db_postgres_hotel/new/checks/co_tsbc_chks.sql;
 --
 -- Uniques Constrains
 --
@@ -81,6 +89,9 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tprpr.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tdska.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_trmce.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_co_tgru.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_co_tcue.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_co_tsbc.sql;
 --
 --Vistas
 --
