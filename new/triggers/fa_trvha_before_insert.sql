@@ -39,7 +39,7 @@ CREATE OR REPLACE FUNCTION f_control_reserva() RETURNS trigger AS $f_control_res
         CLOSE c_reservas;
         
         IF v_reserva > 0 THEN
-            RAISE EXCEPTION '% Error Ya existen reservas para esos dias en los cuales quiere reservar',NEW.rvha_fecha_ini ;
+            RAISE EXCEPTION '% Error Ya existen reservas para esos dias en los cuales quiere reservar ',NEW.rvha_fecha_ini ;
         END IF;
         
         IF NOW() > NEW.rvha_fecha_ini THEN

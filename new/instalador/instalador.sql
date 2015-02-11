@@ -144,9 +144,13 @@
 \i C:/db_postgres_hotel/new/triggers/in_tprpr_before_insert.sql;
 \i C:/db_postgres_hotel/new/triggers/fa_tdtpr_after_insert_or_update.sql;
 \i C:/db_postgres_hotel/new/triggers/fa_tdtsv_after_insert_or_update.sql;
+\i C:/db_postgres_hotel/new/triggers/co_tcue_before_insert.sql;
 --
 --  Inserts
 --
-\i C:/db_postgres_hotel/new/usuario_maestro.sql;   
+\i C:/db_postgres_hotel/new/usuario_maestro.sql;
+\i C:/db_postgres_hotel/new/inserts/ins_co_tclas.sql;    
+\i C:/db_postgres_hotel/new/inserts/ins_co_tgru.sql;  
+\i C:/db_postgres_hotel/new/inserts/ins_co_tcue.sql;  
 --Usuario maestro de la aplicacion
 --\i C:/db_postgres_hotel/new/inserts/ins_in_tmvin.sql;
