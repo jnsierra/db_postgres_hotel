@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION f_ins_cuenta() RETURNS trigger AS $f_ins_cuenta$
         c_grupo CURSOR FOR
         SELECT grup_grup
           FROM co_tgrup
-         WHERE grup_codigo = NEW.cue_grup
+         WHERE grup_codigo = NEW.cuen_grup
          ;
     
         v_grup_grup             NUMERIC :=0;
