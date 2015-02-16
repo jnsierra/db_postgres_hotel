@@ -36,7 +36,7 @@ CREATE OR REPLACE FUNCTION US_FINSERT_CLIENTE (
                 p_nombres, 
                 p_apellidos, 
                 p_telefono, 
-                p_telefono);
+                p_email);
         RETURN 'Ok';
         --        
     ELSE
