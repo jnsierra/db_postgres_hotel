@@ -55,6 +55,7 @@
 \i C:/db_postgres_hotel/new/uniques/IN_TDSHA_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/EM_TPARA_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TRMCE_UNIQUES.sql;
+\i C:/db_postgres_hotel/new/uniques/CO_TSBCU_UNIQUES.sql;
 --
 -- Comentarios de las tablas
 --
