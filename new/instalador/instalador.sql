@@ -25,6 +25,9 @@
 \i C:/db_postgres_hotel/new/tables/co_tgrup.sql;
 \i C:/db_postgres_hotel/new/tables/co_tcuen.sql;
 \i C:/db_postgres_hotel/new/tables/co_tsbcu.sql;
+\i C:/db_postgres_hotel/new/tables/co_tmvco.sql;
+\i C:/db_postgres_hotel/new/tables/co_ttido.sql;
+\i C:/db_postgres_hotel/new/tables/co_tsbft.sql;
 --
 -- Cheks constrains
 --
@@ -43,6 +46,8 @@
 \i C:/db_postgres_hotel/new/checks/co_tgrup_chks.sql;
 \i C:/db_postgres_hotel/new/checks/co_tcuen_chks.sql;
 \i C:/db_postgres_hotel/new/checks/co_tsbcu_chks.sql;
+\i C:/db_postgres_hotel/new/checks/co_ttido_chks.sql;
+\i C:/db_postgres_hotel/new/checks/co_tsbft_chks.sql;
 --
 -- Uniques Constrains
 --
@@ -56,6 +61,7 @@
 \i C:/db_postgres_hotel/new/uniques/EM_TPARA_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TRMCE_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/CO_TSBCU_UNIQUES.sql;
+\i C:/db_postgres_hotel/new/uniques/CO_TTIDO_UNIQUES.sql;
 --
 -- Comentarios de las tablas
 --
@@ -76,6 +82,9 @@
 \i C:/db_postgres_hotel/new/comments/in_tprha_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_trmce_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_trefe_com.sql;
+\i C:/db_postgres_hotel/new/comments/co_tmvco_com.sql;
+\i C:/db_postgres_hotel/new/comments/co_ttido_com.sql;
+\i C:/db_postgres_hotel/new/comments/co_tsbft_com.sql;
 --
 -- Llaves foraneas
 --
@@ -93,6 +102,8 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tgrup.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tcuen.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsbcu.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_co_tsbft.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_co_tmvco.sql;
 --
 --Vistas
 --
@@ -146,12 +157,15 @@
 \i C:/db_postgres_hotel/new/triggers/fa_tdtpr_after_insert_or_update.sql;
 \i C:/db_postgres_hotel/new/triggers/fa_tdtsv_after_insert_or_update.sql;
 \i C:/db_postgres_hotel/new/triggers/co_tcuen_before_insert.sql;
+\i C:/db_postgres_hotel/new/triggers/co_tsbcu_before_insert.sql;
 --
 --  Inserts
 --
+--Usuario maestro de la aplicacion
 \i C:/db_postgres_hotel/new/usuario_maestro.sql;
+--inserts de parametrizacion
 \i C:/db_postgres_hotel/new/inserts/ins_co_tclas.sql;    
 \i C:/db_postgres_hotel/new/inserts/ins_co_tgrup.sql;  
-\i C:/db_postgres_hotel/new/inserts/ins_co_tcuen.sql;  
---Usuario maestro de la aplicacion
+\i C:/db_postgres_hotel/new/inserts/ins_co_tcuen.sql; 
+
 --\i C:/db_postgres_hotel/new/inserts/ins_in_tmvin.sql;
