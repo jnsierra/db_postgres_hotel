@@ -28,6 +28,7 @@
 \i C:/db_postgres_hotel/new/tables/co_tmvco.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttido.sql;
 \i C:/db_postgres_hotel/new/tables/co_tsbft.sql;
+\i C:/db_postgres_hotel/new/tables/co_ttem_mvco.sql;
 --
 -- Cheks constrains
 --
@@ -85,6 +86,7 @@
 \i C:/db_postgres_hotel/new/comments/co_tmvco_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_ttido_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_tsbft_com.sql;
+\i C:/db_postgres_hotel/new/comments/co_ttem_mvco_com.sql;
 --
 -- Llaves foraneas
 --
@@ -158,6 +160,10 @@
 \i C:/db_postgres_hotel/new/triggers/fa_tdtsv_after_insert_or_update.sql;
 \i C:/db_postgres_hotel/new/triggers/co_tcuen_before_insert.sql;
 \i C:/db_postgres_hotel/new/triggers/co_tsbcu_before_insert.sql;
+--
+--SECUENCIAS
+--
+\i C:/db_postgres_hotel/new/secuence/co_temp_movi_contables_sec.sql;
 --
 --  Inserts
 --
