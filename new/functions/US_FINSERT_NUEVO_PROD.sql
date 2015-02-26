@@ -13,7 +13,8 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                                                       p_sede       INTEGER      ,      -- Sede a la cual ingresa el producto al sitema
                                                       p_cate       INTEGER      ,      -- Categoria a la cual pertenece el producto
                                                       p_runic      VARCHAR(200) ,      -- Valor el cual es un registro unico para los productos si aplica
-                                                      p_fecVen     DATE                -- Fecha de vencimiento del producto si aplica
+                                                      p_fecVen     DATE         ,      -- Fecha de vencimiento del producto si aplica
+                                                      p_idTrans    INTEGER             -- Id Utilizado para las transacciones de movimientos contables
                                     ) RETURNS VARCHAR AS $$
       DECLARE 
       
@@ -44,12 +45,43 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
         SELECT '1-' || coalesce(count(*), 0 )+1 AS Id
           FROM in_tdska 
           ;
+         --
+         --Obtiene el valor de la secuencia para la insecion de subcuentas
+         --
+        c_sec_sbcu CURSOR FOR
+        SELECT nextval('co_tsbcu_sbcu_sbcu_seq');
+        
         --
         v_kapr_kapr     INTEGER := 0;
         v_cont_mvin     INTEGER := 0;       -- cuenta cuantos movimientos de inventario inicial existen
         v_mvin_inicial  INTEGER := 0;       -- Obtiene el identificador del movimiento inicial de inventario 
         v_codigo        varchar(100) := '';
+        v_codigosbcu    varchar(50) :='';
+        v_sbcu_sbcu     INTEGER := 0;        --Id de la futura subcuenta
         --
+        --Contabilidad
+        --
+        --
+        --Verifica si existen subcuentas parametrizadas para el documento factura de compra
+        --
+        c_cn_sbcu_para CURSOR FOR
+        SELECT count(*)
+          FROM co_ttido,co_tsbft
+         WHERE upper(tido_nombre) = 'FACTCOMPRA'
+           AND sbft_tido = tido_tido
+        ;
+        --
+        --Obtiene los datos necesarios para la contabilizacion de una factura de compra
+        --
+        c_tido_sbcu CURSOR FOR
+        SELECT sbft_sbcu_codigo , sbft_naturaleza,sbft_porcentaje
+          FROM co_ttido,co_tsbft,co_tsbcu
+         WHERE upper(tido_nombre) = 'FACTCOMPRA'
+           AND sbft_tido = tido_tido 
+          AND sbcu_codigo = sbft_sbcu_codigo
+        ;
+        
+        
       BEGIN
       
          OPEN c_dska_dska;
@@ -84,6 +116,30 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                
                IF v_cont_mvin = 1 THEN
                     --
+                    --Creacion de la subcuenta por productos                    
+                    --
+                    IF v_dska_dska < 10 THEN
+                        
+                        v_codigosbcu := '0'||CAST(v_dska_dska AS VARCHAR);
+                    
+                    ELSE
+                        v_codigosbcu := cast(v_dska_dska as VARCHAR);
+                                            
+                    END IF;
+                    
+                    OPEN c_sec_sbcu;
+                    FETCH c_sec_sbcu INTO v_sbcu_sbcu;
+                    CLOSE c_sec_sbcu;
+                    
+                    
+                    INSERT INTO co_tsbcu(
+                            sbcu_sbcu,sbcu_cuen, sbcu_clas, sbcu_grup, sbcu_estado, sbcu_nombre, 
+                            sbcu_codigo, sbcu_descripcion, sbcu_naturaleza)
+                    VALUES (v_sbcu_sbcu,47, 1, 4, 'A', 'PRODUCTOS '|| p_nom_prod , 
+                            v_codigosbcu,'Se almacenaran las entradas y salidas del producto ' , 'C')
+                            ;
+
+                    --
                     insert into in_tkapr (KAPR_KAPR,KAPR_DSKA, KAPR_FECHA, KAPR_MVIN, KAPR_CANT_MVTO, KAPR_COST_MVTO_UNI, KAPR_COST_MVTO_TOT, KAPR_COST_SALDO_UNI, KAPR_COST_SALDO_TOT, KAPR_CANT_SALDO, KAPR_TIUS,KAPR_CONS_PRO,KAPR_SEDE)
                           values(v_kapr_kapr,v_dska_dska, now(), v_mvin_inicial , p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1, p_sede )
                           ;
@@ -105,6 +161,15 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
          ELSE 
             rta = 'Error existe un codigo repetido';
          END IF;
+         --
+         --
+         --
+         
+         --
+         --Acciones para realizar la contabilidad de las facturas de compra
+         --
+         
+         
          
          RETURN rta;
          
