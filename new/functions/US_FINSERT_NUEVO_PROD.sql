@@ -89,10 +89,10 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
           AND sbcu_codigo = sbft_sbcu_codigo
         ;
         
-        v_creditos          numeric(10,5) := 0;
-        v_debitos           numeric(10,5) := 0;
-        v_cre_usu           numeric(10,5) := 0;
-        v_deb_usu           numeric(10,5) := 0;
+        v_creditos          numeric(15,5) := 0;
+        v_debitos           numeric(15,5) := 0;
+        v_cre_usu           numeric(15,5) := 0;
+        v_deb_usu           numeric(15,5) := 0;
         v_tipoDocumento     integer := 0;
         --
         --Obtiene debtitos parametrizados en el sistema
