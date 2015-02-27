@@ -71,6 +71,14 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
            AND sbft_tido = tido_tido
         ;
         --
+        -- Obtiene el identificador del tipo de documento 
+        --
+        c_id_ttido CURSOR FOR
+        SELECT tido_tido
+          FROM co_ttido
+         WHERE upper(tido_nombre) = 'FACTCOMPRA'
+         ;
+        --
         --Obtiene los datos necesarios para la contabilizacion de una factura de compra
         --
         c_tido_sbcu CURSOR FOR
@@ -81,7 +89,93 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
           AND sbcu_codigo = sbft_sbcu_codigo
         ;
         
+        v_creditos          numeric(10,5) := 0;
+        v_debitos           numeric(10,5) := 0;
+        v_cre_usu           numeric(10,5) := 0;
+        v_deb_usu           numeric(10,5) := 0;
+        v_tipoDocumento     integer := 0;
+        --
+        --Obtiene debtitos parametrizados en el sistema
+        --
+        c_deb_param CURSOR FOR
+        SELECT (p_cost * (select coalesce(sum(sbft_porcentaje),0) sumaPorc
+          FROM co_ttido, co_tsbft
+         WHERE tido_nombre = 'FACTCOMPRA'
+           AND tido_tido = sbft_tido
+           AND sbft_naturaleza = 'D')/100) valorPorcentajes
+        ;
+        --
+        --Obtiene creditos parametrizados en el sistema
+        --
+        c_cre_param CURSOR FOR
+        SELECT (p_cost * (select coalesce(sum(sbft_porcentaje),0) sumaPorc
+          FROM co_ttido, co_tsbft
+         WHERE tido_nombre = 'FACTCOMPRA'
+           AND tido_tido = sbft_tido
+           AND sbft_naturaleza = 'C')/100) valorPorcentajes
+        ;
+        --
+        --Obtiene debitos ingresados por el usuario
+        --
+        c_deb_usua CURSOR FOR
+        SELECT coalesce(sum(cast(tem_mvco_valor as numeric)),0)
+          FROM co_ttem_mvco
+         WHERE tem_mvco_naturaleza = 'D'
+           AND tem_mvco_trans = p_idTrans
+           ;
+        --
+        --Obtiene creditos por el usuario por el usuario
+        --
+        c_cre_usua CURSOR FOR
+        SELECT coalesce(sum(cast(tem_mvco_valor as numeric)),0)
+          FROM co_ttem_mvco
+         WHERE tem_mvco_naturaleza = 'C'
+           AND tem_mvco_trans = p_idTrans
+           ;
+        --
+        --Obtiene todas las subcuentas implicadas para validar que todas existan antes de empezar a insertar los movimientos contables
+        --
+        c_sbcu_impli CURSOR (codigoProd varchar) IS
+        SELECT tem_mvco_sbcu subcuenta
+          FROM co_ttem_mvco
+         WHERE tem_mvco_trans = p_idTrans
+         UNION ALL
+        SELECT sbft_sbcu_codigo
+          FROM co_ttido,co_tsbft
+         WHERE upper(tido_nombre) = 'FACTCOMPRA'
+           AND sbft_tido = tido_tido 
+         UNION ALL
+        SELECT '1435' || codigoProd 
+        ;        
+        --
+        --Cursor en el cual valido que una subucuenta exista
+        --
+        c_valida_sbcu CURSOR (vc_sbcu_codigo varchar) IS
+        SELECT count(*)
+          FROM co_tsbcu
+         WHERE sbcu_codigo = vc_sbcu_codigo
+         ;
         
+        v_dummy             varchar(500) := '';
+        --Variable con la cual se evaluara si existe la subcuenta
+        v_con_sub           INTEGER := 0;
+        --
+        c_mov_cont  cursor (vc_cod_prod varchar) IS
+        SELECT sbcu_sbcu, movimSbCu.valor, movimSbCu.natu
+          FROM co_tsbcu,
+        (SELECT tem_mvco_sbcu subcuenta,cast(tem_mvco_valor as numeric) valor, tem_mvco_naturaleza natu
+          FROM co_ttem_mvco
+         WHERE tem_mvco_trans = p_idTrans
+         UNION ALL
+        SELECT '1435' || vc_cod_prod , p_cost,'D'
+         UNION ALL 
+        SELECT sbft_sbcu_codigo, cast(coalesce(((sbft_porcentaje*p_cost)/100),0) as numeric) ,sbft_naturaleza
+          FROM co_ttido,co_tsbft
+         WHERE upper(tido_nombre) = 'FACTCOMPRA'
+           AND sbft_tido = tido_tido) movimSbCu
+        WHERE movimSbCu.subcuenta = sbcu_codigo
+         ;    
+
       BEGIN
       
          OPEN c_dska_dska;
@@ -169,11 +263,76 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
          --Acciones para realizar la contabilidad de las facturas de compra
          --
          
+         OPEN c_deb_param;
+         FETCH c_deb_param INTO v_debitos;
+         CLOSE c_deb_param;
          
+         OPEN c_cre_param;
+         FETCH c_cre_param INTO v_creditos;
+         CLOSE c_cre_param;
          
-         RETURN rta;
+         v_debitos := v_debitos + p_cost;
          
-          EXCEPTION WHEN OTHERS THEN
+         OPEN c_deb_usua;
+         FETCH c_deb_usua INTO v_deb_usu;
+         CLOSE c_deb_usua;
+         
+         OPEN c_cre_usua;
+         FETCH c_cre_usua INTO v_cre_usu;
+         CLOSE c_cre_usua;
+         
+        v_debitos :=  v_deb_usu + v_debitos;
+         
+        v_creditos := v_creditos + v_cre_usu;
+        
+        IF v_debitos = v_creditos THEN
+            --
+            OPEN c_id_ttido;
+            FETCH c_id_ttido INTO v_tipoDocumento;
+            CLOSE c_id_ttido;
+            --        
+            FOR subcuenta in c_sbcu_impli(v_codigosbcu)
+            LOOP
+                --
+                OPEN c_valida_sbcu(subcuenta.subcuenta);
+                FETCH c_valida_sbcu INTO v_con_sub;
+                CLOSE c_valida_sbcu;
+                --
+                IF v_con_sub = 0 THEN 
+                
+                    RAISE EXCEPTION 'La subcuenta % no existe por favor verifique he intente de nuevo ', subcuenta.subcuenta;
+                    
+                END IF;               
+                --
+            END LOOP; 
+            --
+            FOR movi IN c_mov_cont(v_codigosbcu)
+            LOOP
+                --
+                INSERT INTO co_tmvco(mvco_trans, 
+                                     mvco_sbcu, mvco_naturaleza, 
+                                     mvco_tido, mvco_valor, 
+                                     mvco_lladetalle, mvco_id_llave, 
+                                     mvco_tercero, mvco_tipo)
+                VALUES ( p_idTrans, 
+                         movi.sbcu_sbcu , movi.natu, 
+                         v_tipoDocumento, movi.valor,
+                         'mvin', v_kapr_kapr,
+                         1, 2);
+
+                --
+            END LOOP;
+            --
+        ELSE 
+            --
+            RAISE EXCEPTION 'Las sumas de los debitos y los creditos no coinciden DEBITOS: %, CREDITOS: % ', v_debitos,v_creditos;
+            --
+        END IF;
+        
+        RETURN rta;
+         
+        EXCEPTION 
+            WHEN OTHERS THEN
                RETURN 'ERR' || ' Error postgres: ' || SQLERRM;
-       END;
+        END;
 $$ LANGUAGE 'plpgsql';

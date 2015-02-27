@@ -8,4 +8,4 @@ COMMENT ON COLUMN   CO_TMVCO.MVCO_VALOR             IS     'Valor por el cual se
 COMMENT ON COLUMN   CO_TMVCO.MVCO_LLADETALLE        IS     'Identificador con el cual se sabe si genero un movimiento de inventario o una factura etc.';
 COMMENT ON COLUMN   CO_TMVCO.MVCO_ID_LLAVE          IS     'Identificador del movimiento que genera el movimiento';
 COMMENT ON COLUMN   CO_TMVCO.MVCO_TERCERO           IS     'Identificador primario del tercero que genero el movimiento si es -1 es por que no existe tercero';
-COMMENT ON COLUMN   CO_TMVCO.MVCO_TIPO              IS     'Indica que tipo de tercero esta implicado en el movimiento';
+COMMENT ON COLUMN   CO_TMVCO.MVCO_TIPO              IS     'Indica que tipo de tercero esta implicado en el movimiento Cliente(1) y Proveedor(2)';
