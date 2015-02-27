@@ -329,6 +329,10 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
             --
         END IF;
         
+        DELETE FROM co_ttem_mvco
+        WHERE tem_mvco_trans = p_idTrans
+        ;
+        
         RETURN rta;
          
         EXCEPTION 
