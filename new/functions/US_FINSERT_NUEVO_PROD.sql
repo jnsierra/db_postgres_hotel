@@ -41,6 +41,10 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
         GROUP BY mvin_mvin
         ;
         --
+        c_valor_unidad CURSOR FOR
+        select p_cost/p_cant::numeric(15,5) vlr_Unidad
+        ;
+        --
         c_codigo CURSOR FOR
         SELECT '1-' || coalesce(count(*), 0 )+1 AS Id
           FROM in_tdska 
@@ -58,6 +62,7 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
         v_codigo        varchar(100) := '';
         v_codigosbcu    varchar(50) :='';
         v_sbcu_sbcu     INTEGER := 0;        --Id de la futura subcuenta
+        v_costo_unidad  numeric(15,5) := 0;
         --
         --Contabilidad
         --
@@ -200,7 +205,11 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                          
              IF v_dska_dska IS NOT NULL THEN
                
-               v_cost_tot := p_cant*p_cost;
+               v_cost_tot := p_cost;
+               
+               OPEN c_valor_unidad;
+               FETCH c_valor_unidad INTO v_costo_unidad;
+               CLOSE c_valor_unidad;
                
                v_tius_tius := US_FRETORNA_ID_USUARIO(trim(p_usua));
                
@@ -234,9 +243,16 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                             ;
 
                     --
-                    insert into in_tkapr (KAPR_KAPR,KAPR_DSKA, KAPR_FECHA, KAPR_MVIN, KAPR_CANT_MVTO, KAPR_COST_MVTO_UNI, KAPR_COST_MVTO_TOT, KAPR_COST_SALDO_UNI, KAPR_COST_SALDO_TOT, KAPR_CANT_SALDO, KAPR_TIUS,KAPR_CONS_PRO,KAPR_SEDE)
-                          values(v_kapr_kapr,v_dska_dska, now(), v_mvin_inicial , p_cant,p_cost , v_cost_tot, p_cost, v_cost_tot, p_cant, v_tius_tius, 1, p_sede )
-                          ;
+                    insert into in_tkapr (KAPR_KAPR,                KAPR_DSKA,                  KAPR_FECHA, 
+                                          KAPR_MVIN,                KAPR_CANT_MVTO,             KAPR_COST_MVTO_UNI, 
+                                          KAPR_COST_MVTO_TOT,       KAPR_COST_SALDO_UNI,        KAPR_COST_SALDO_TOT, 
+                                          KAPR_CANT_SALDO,          KAPR_TIUS,                  KAPR_CONS_PRO,    
+                                          KAPR_SEDE)
+                                   values(v_kapr_kapr,              v_dska_dska,                now(),         
+                                          v_mvin_inicial,           p_cant,                     v_costo_unidad,      
+                                          v_cost_tot,               v_costo_unidad,             v_cost_tot,
+                                          p_cant,                   v_tius_tius,                1,
+                                          p_sede );
                     --
                ELSIF v_cont_mvin = 0 OR v_cont_mvin is null THEN 
                     --
@@ -333,7 +349,7 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
         WHERE tem_mvco_trans = p_idTrans
         ;
         
-        RETURN rta;
+        RETURN rta||'&'||v_codigo;
          
         EXCEPTION 
             WHEN OTHERS THEN

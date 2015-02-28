@@ -173,5 +173,6 @@
 \i C:/db_postgres_hotel/new/inserts/ins_co_tclas.sql;    
 \i C:/db_postgres_hotel/new/inserts/ins_co_tgrup.sql;  
 \i C:/db_postgres_hotel/new/inserts/ins_co_tcuen.sql; 
+\i C:/db_postgres_hotel/new/inserts/ins_cuentas_por_tipo_documento.sql; 
 
 --\i C:/db_postgres_hotel/new/inserts/ins_in_tmvin.sql;
