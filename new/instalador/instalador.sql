@@ -29,6 +29,7 @@
 \i C:/db_postgres_hotel/new/tables/co_ttido.sql;
 \i C:/db_postgres_hotel/new/tables/co_tsbft.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_mvco.sql;
+\i C:/db_postgres_hotel/new/tables/co_ttem_fact.sql;
 --
 -- Cheks constrains
 --
@@ -164,6 +165,7 @@
 --SECUENCIAS
 --
 \i C:/db_postgres_hotel/new/secuence/co_temp_movi_contables_sec.sql;
+\i C:/db_postgres_hotel/new/secuence/co_temp_tran_factu_sec.sql;
 --
 --  Inserts
 --
