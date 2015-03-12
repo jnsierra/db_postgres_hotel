@@ -5,10 +5,13 @@ COMMENT ON COLUMN   FA_TDTPR.DTPR_FACT          IS     'Factura asociada a al de
 COMMENT ON COLUMN   FA_TDTPR.DTPR_FECHA         IS     'Fecha en la cual se registro la venta';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_NUM_PROD      IS     'Numero de productos vendidos en la factura';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_CANT          IS     'Cantidad de productos vendidos';
-COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_PR      IS     'Valor total de todos los productos sin iva';
-COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_IVA     IS     'Valor del iva de todos los producto';
-COMMENT ON COLUMN   FA_TDTPR.DTPR_VL_UNI_PROD   IS     'Valor unitario de los productos';
-COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_VENTA   IS     'Valor de venta de todos los productos con el iva';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VLR_PR_TOT    IS     'Valor del total de la venta de todos los productos (Valor del promedio pondendarado del inventario)';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VLR_UNI_PROD  IS     'Valor de la unidad del producto (Valor del promedio pondendarado del inventario)';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VLR_IVA_TOT   IS     'Valor total que se debe pagar por el o los productos adquiridos';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VLR_IVA_UNI   IS     'Valor del iva por cada unidad del producto';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VLR_VENTA_TOT IS     'Valor total de los productos con el precio parametrizado para cada sede';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VLR_VENTA_UNI IS     'Valor que en el momento de ser vendido estaba parametrizado en el sistema';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_VLR_TOTAL     IS     'Valor total de la venta por todos los productos con el iva y el precio parametrizado';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_DESC          IS     'Identificador del descuento del cual se aplico al detalle de la venta';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_CON_DESC      IS     'Valor de los productos con descuentos';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_VALOR_DESC    IS     'Valor del descuento del detalle del producto';

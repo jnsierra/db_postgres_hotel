@@ -152,6 +152,7 @@
 \i C:/db_postgres_hotel/new/functions/FA_ELIMINA_PRODUCTOSXDTPR.sql;
 \i C:/db_postgres_hotel/new/functions/FA_CREA_DETALLE_SERVFACTURA.sql;
 \i C:/db_postgres_hotel/new/functions/FA_REGISTRA_VENTA_PROD.sql;
+\i C:/db_postgres_hotel/new/functions/FA_CREA_FACTURA_COMPLETO.sql;
 --
 -- Triggers
 --
