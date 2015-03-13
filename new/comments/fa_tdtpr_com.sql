@@ -1,6 +1,6 @@
 COMMENT ON TABLE    FA_TDTPR                    IS     'Tabla encargada de almacenar el detalle de los productos';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_DTPR          IS     'Identificador primario de la tabla';
-COMMENT ON COLUMN   FA_TDTPR.DTPR_DSKA          IS     'Llave foranea con el movimento de inventario implicado';
+COMMENT ON COLUMN   FA_TDTPR.DTPR_DSKA          IS     'Llave foranea con el producto la tabla in_tdska';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_FACT          IS     'Factura asociada a al detalle del producto';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_FECHA         IS     'Fecha en la cual se registro la venta';
 COMMENT ON COLUMN   FA_TDTPR.DTPR_NUM_PROD      IS     'Numero de productos vendidos en la factura';
