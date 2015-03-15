@@ -12,13 +12,21 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     v_vlr_total     NUMERIC  :=0;
     v_vlr_iva       NUMERIC  :=0;
     --Identificador primario de la tabla fa_tfact
-    v_fact_fact     varchar(10);
+    v_fact_fact     NUMERIC  :=0;
+    v_kapr_kapr     NUMERIC  :=0;
     --
     --Cursor utilizado para generar el id de la factura
     --    
     c_fact_fact CURSOR FOR
     SELECT coalesce(max(fact_fact),0) + 1
       from fa_tfact     
+    ;
+    --
+    --
+    --
+    c_kapr_kapr CURSOR FOR
+    SELECT coalesce(max(kapr_kapr),0) + 1
+      from in_tkapr     
     ;
     --
     --Cursor el cual obtiene todos los productos que fueron facturados teniendo en cuenta el id de transaccion
@@ -45,7 +53,9 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     v_vlr_mvt_uni           NUMERIC(15,6):=0;
     v_vlr_saldo_total       NUMERIC(15,6):=0;
     v_cant_exis_prod        NUMERIC(15,6):=0;
+    --
     --Cursor con el cual obtengo el valor del promedio pornderado del producto
+    --
     c_prom_pond_prod CURSOR(vc_dska_dska INT) IS
     SELECT kapr_cost_saldo_uni, kapr_cant_saldo,kapr_cost_saldo_tot
       FROM in_tkapr
@@ -77,20 +87,59 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
        and prpr_sede = p_sede
        ;
     --
+    --Cursor con el cual obtengo el id de la tabal fa_tdtpr
+    --
+    c_dtpr_dtpr CURSOR FOR
+    SELECT coalesce(max(dtpr_dtpr),0) + 1
+      from fa_tdtpr
+    ;
+    --
     --Variable para el precio del producto
     --
     v_precio_prod           NUMERIC(15,6):=0;
-
+    v_dtpr_dtpr             NUMERIC;
+    v_vlr_total_fact        NUMERIC(15,6):=0;
+    v_vlr_uni_fact          NUMERIC(15,6):=0;
+    v_vlr_uni_fact_iva      NUMERIC(15,6):=0;
+    v_vlr_tot_fact_iva    NUMERIC(15,6):=0;
+    v_vlr_iva_uni           NUMERIC(15,6):=0;
+    v_vlr_iva_tot           NUMERIC(15,6):=0;
+    --
+    --Cursor con el cual se calcula el valor del iva parametrizado
+    --
+    c_calc_iva CURSOR(vc_valor  NUMERIC)IS
+    SELECT (cast(para_valor as numeric) *vc_valor) / 100 vlrIva
+    FROM em_tpara where para_clave = 'IVAPR'
+    ;
+    --
     BEGIN
+    --
+    --Ini Validacion de PreRequisitos del sistema
+    --
+    --
+    --Creacion del movimiento de inventario
+    --    
+    OPEN c_mvin_venta;
+    FETCH c_mvin_venta INTO v_mvin_mvin;
+    CLOSE c_mvin_venta;
+    --
+    IF v_mvin_mvin is null THEN
+    --
+        RAISE EXCEPTION 'No existe ningun movimiento de inventario que referencie la facturacion';
+    --
+    END IF;
+    --
+    --Fin Validacion de PreRequisitos del sistema
+    --
     --
     --Inicio generacion de una Factura
     --
-    OPEN c_id_fact;
-    FETCH c_id_fact INTO v_fact_fact;
-    CLOSE c_id_fact;
+    OPEN c_fact_fact;
+    FETCH c_fact_fact INTO v_fact_fact;
+    CLOSE c_fact_fact;
     
     INSERT INTO FA_TFACT(fact_fact,fact_tius, fact_clien,fact_vlr_total,fact_vlr_iva)
-    VALUES (v_fact_fact,ptius,pclien,v_vlr_total,v_vlr_iva)
+    VALUES (v_fact_fact,p_tius,p_clien,v_vlr_total,v_vlr_iva)
     ;
     --
     --Fin generacion de una Factura
@@ -100,17 +149,15 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     FOR prod IN c_prod_fact
     LOOP
         --
-        --Creacion del movimiento de inventario
-        --    
-        OPEN c_mvin_venta;
-        FETCH c_mvin_venta INTO v_mvin_mvin;
-        CLOSE c_mvin_venta;
+        OPEN c_kapr_kapr;
+        FETCH c_kapr_kapr INTO v_kapr_kapr;
+        CLOSE c_kapr_kapr;
         --
         OPEN c_cons_prod(prod.tem_fact_dska);
         FETCH c_cons_prod INTO v_cons_prod;
         CLOSE c_cons_prod;
         --
-        OPEN c_prom_pond_prod;
+        OPEN c_prom_pond_prod(prod.tem_fact_dska);
         FETCH c_prom_pond_prod INTO v_prom_pond_prod,v_cant_exis_prod, v_vlr_saldo_total;
         CLOSE c_prom_pond_prod;
         --
@@ -124,14 +171,16 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
         v_vlr_saldo_total := v_vlr_saldo_total - v_vlr_mvt_total;
         --
         INSERT INTO in_tkapr(
-            kapr_cons_pro, kapr_dska, kapr_mvin, 
-            kapr_cant_mvto, kapr_cost_mvto_uni, kapr_cost_mvto_tot, 
-            kapr_cost_saldo_uni, kapr_cost_saldo_tot, kapr_cant_saldo, 
-            kapr_prov, kapr_tius, kapr_sede)
-        VALUES (v_cons_prod, prod.tem_fact_dska, v_mvin_mvin, 
-                prod.tem_fact_cant, v_vlr_mvt_uni , v_vlr_mvt_total, 
-                v_prom_pond_prod, v_vlr_saldo_total, v_cant_exis_prod, 
-                0, p_tius, p_sede);
+            kapr_kapr,kapr_cons_pro, kapr_dska, 
+            kapr_mvin, kapr_cant_mvto, kapr_cost_mvto_uni, 
+            kapr_cost_mvto_tot, kapr_cost_saldo_uni, kapr_cost_saldo_tot, 
+            kapr_cant_saldo, kapr_prov, kapr_tius, 
+            kapr_sede)
+        VALUES (v_kapr_kapr, v_cons_prod, prod.tem_fact_dska, 
+                v_mvin_mvin, prod.tem_fact_cant, v_vlr_mvt_uni , 
+                v_vlr_mvt_total, v_prom_pond_prod, v_vlr_saldo_total, 
+                v_cant_exis_prod, 0, p_tius, 
+                p_sede);
         --
         --Fin del movimiento de inventario
         --
@@ -139,8 +188,43 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
         FETCH c_precio_prod INTO v_precio_prod;
         CLOSE c_precio_prod;
         --
+        OPEN c_dtpr_dtpr;
+        FETCH c_dtpr_dtpr INTO v_dtpr_dtpr;
+        CLOSE c_dtpr_dtpr;
         --
+        -- Ini Calculos para la facturacion
         --
+        v_vlr_total_fact := prod.tem_fact_cant*v_precio_prod;
+        v_vlr_uni_fact := v_precio_prod;
+        --
+        OPEN c_calc_iva(v_vlr_total_fact);
+        FETCH c_calc_iva INTO v_vlr_iva_tot;
+        CLOSE c_calc_iva;
+        --
+        v_vlr_tot_fact_iva := v_vlr_total_fact + v_vlr_iva_tot;
+        --
+        OPEN c_calc_iva(v_vlr_uni_fact);
+        FETCH c_calc_iva INTO v_vlr_iva_uni;
+        CLOSE c_calc_iva;
+        --
+        v_vlr_uni_fact_iva := v_vlr_uni_fact+v_vlr_iva_uni;
+        --
+        -- Fin Calculos para la facturacion
+        --
+        --RAISE EXCEPTION 'Llego aqui: %,  %, %, %, %, % ' ,v_precio_prod ,v_vlr_total_fact, v_vlr_iva_tot, v_vlr_iva_uni, v_vlr_tot_fact_iva, v_vlr_uni_fact_iva ;
+        INSERT INTO fa_tdtpr(
+            dtpr_dtpr, dtpr_dska, dtpr_fact, 
+            dtpr_num_prod, dtpr_cant, dtpr_vlr_pr_tot, 
+            dtpr_vlr_uni_prod, dtpr_vlr_iva_tot, dtpr_vlr_iva_uni, 
+            dtpr_vlr_venta_tot, dtpr_vlr_venta_uni, dtpr_vlr_total, 
+            dtpr_desc, dtpr_kapr)
+        VALUES (
+            v_dtpr_dtpr, prod.tem_fact_dska, v_fact_fact, 
+            0, prod.tem_fact_cant, v_vlr_total_fact, 
+            v_vlr_uni_fact, v_vlr_iva_tot, v_vlr_iva_uni, 
+            v_vlr_tot_fact_iva, v_vlr_uni_fact_iva, v_vlr_tot_fact_iva,
+            'N', v_kapr_kapr);
+
         
         
         

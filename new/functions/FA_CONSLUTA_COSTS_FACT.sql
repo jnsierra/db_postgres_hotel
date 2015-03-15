@@ -36,7 +36,7 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
         -- Suma el valor total del iva de los productos
         --
         c_valor_iva_pr CURSOR FOR
-        SELECT COALESCE(SUM(dtpr_valor_iva),0)
+        SELECT COALESCE(SUM(dtpr_vlr_iva_tot),0)
           FROM fa_tdtpr
          WHERE dtpr_estado = 'A'
            AND dtpr_fact = p_fact_fact
@@ -45,7 +45,7 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
         -- Suma el valor total de los productos sin iva
         --
         c_valor_prod CURSOR FOR
-        SELECT COALESCE(SUM(DTPR_VALOR_PR),0)
+        SELECT COALESCE(SUM(dtpr_vlr_pr_tot),0)
           FROM fa_tdtpr
          WHERE dtpr_estado = 'A'
            AND dtpr_fact = p_fact_fact
@@ -54,12 +54,12 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
         -- Suma el valor total de los productos y el iva
         --
         c_valor_total_pr CURSOR FOR
-        SELECT COALESCE(SUM(DTPR_VALOR_VENTA),0) 
+        SELECT COALESCE(SUM(dtpr_vlr_total),0) 
           FROM fa_tdtpr
          WHERE dtpr_estado = 'A'
            AND dtpr_fact = p_fact_fact
            ;
-        
+        --
         v_valor     NUMERIC := 0;
         --
         --Variables para el calculo total de toda la factura
