@@ -254,6 +254,11 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  
                                           p_cant,                   v_tius_tius,                1,
                                           p_sede );
                     --
+                    UPDATE in_tdska
+                       SET dska_sbcu = v_sbcu_sbcu
+                     WHERE dska_dska = v_dska_dska
+                     ;
+                    --
                ELSIF v_cont_mvin = 0 OR v_cont_mvin is null THEN 
                     --
                     RAISE EXCEPTION 'Error US_FINSERT_NUEVO_PROD no esta referenciado ningun movimiento de inventario en el sistema para inventario inicial porfavor referencie un movimiento e intente de nuevo';

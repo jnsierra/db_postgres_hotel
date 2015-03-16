@@ -7,7 +7,7 @@
 CREATE TABLE US_TTIUS(
 TIUS_TIUS                SERIAL                                    , -- Identificador primario de la tabla
 TIUS_PERS                INT              NOT NULL                 , -- Llave foranea que se une con la tabla us_tpers
-TIUS_PERF				 INT              NOT NULL				   , -- 
+TIUS_PERF                INT              NOT NULL                 , -- 
 TIUS_TIPO_USUARIO        VARCHAR(50)      NOT NULL                 , -- Indica el tipo de usuario de que tiene dentro del sistema (C)Cajero (A) Administrador 
 TIUS_USUARIO             VARCHAR(50)      NOT NULL                 , -- Usuario con el cual ingresa al sistema (Unique)
 TIUS_FECHA_REGISTRO      TIMESTAMP        NOT NULL DEFAULT NOW()   ,-- Fecha en la cual ingreso al sistema
