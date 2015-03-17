@@ -360,7 +360,7 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
                                  mvco_tercero, mvco_tipo)
                 VALUES ( v_idTrans_con, 
                          v_sbcu_sbcu , movi.tem_mvco_naturaleza, 
-                         2, movi.tem_mvco_valor,
+                         2, cast(movi.tem_mvco_valor as NUMERIC),
                          'fact', v_fact_fact,
                          1, 1);
             
@@ -368,7 +368,7 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
         --
     ELSE
         --
-        RAISE EXCEPTION 'Las sumas de las cuentas al facturar no coinciden por favor contactese con el administrador ';
+        RAISE EXCEPTION 'Las sumas de las cuentas al facturar no coinciden por favor contactese con el administrador Debitos %, Creditos %',v_sum_deb,v_sum_cre;
         --
     END IF;
     
