@@ -124,6 +124,9 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     --
     v_idTrans_con           INT:= 0;
     v_iva_mvco              NUMERIC(15,6):=0;
+    v_sum_deb               NUMERIC(15,6):=0;
+    v_sum_cre               NUMERIC(15,6):=0;
+    v_sbcu_sbcu             INT := 0;
     --
     c_cod_sbcu CURSOR (vc_dska_dska  INT) IS
     SELECT sbcu_codigo
@@ -137,7 +140,7 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
       FROM co_tsbcu
      WHERE sbcu_codigo = '240802'
       ;
-    --
+    --    
     c_vlr_total_fact CURSOR(vc_fact_fact INT) FOR
     SELECT fact_vlr_total + fact_vlr_iva
       FROM fa_tfact
@@ -147,6 +150,34 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     v_val_iva_generado      INT := 0;
     v_sbcu_cod_prod         varchar(100) := '';
     v_vlr_total_fact_co     NUMERIC(15,6) := 0;
+    --
+    --Cursores necesarios para la contabilizacion
+    --
+    c_sum_debitos CURSOR FOR
+    SELECT sum(coalesce(cast(tem_mvco_valor as numeric),0) )
+      FROM co_ttem_mvco
+     WHERE upper(tem_mvco_naturaleza) = 'D'
+       AND tem_mvco_trans = p_idTrans
+       ;
+    --
+    c_sum_creditos CURSOR FOR
+    SELECT sum(coalesce(cast(tem_mvco_valor as numeric),0) )
+      FROM co_ttem_mvco
+     WHERE tem_mvco_naturaleza = 'C'
+       AND tem_mvco_trans = p_idTrans
+       ;
+    --
+    c_sbcu_factura  CURSOR FOR
+    SELECT tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza
+      FROM co_ttem_mvco
+     WHERE tem_mvco_trans = p_idTrans
+     ;    
+    --
+    c_sbcu_sbcu CURSOR(vc_sbcu_codigo VARCHAR) IS
+    SELECT sbcu_sbcu
+      FROM co_tsbcu
+     WHERE sbcu_codigo = vc_sbcu_codigo
+     ;
     --
     BEGIN
     --
@@ -305,6 +336,41 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
                 tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
         VALUES (v_idTrans_con, '110501' , v_vlr_total_fact_co , 'D');
     
+    OPEN c_sum_debitos;
+    FETCH c_sum_debitos INTO v_sum_deb;
+    CLOSE c_sum_debitos;
+    
+    OPEN c_sum_creditos;
+    FETCH c_sum_creditos INTO v_sum_cre;
+    CLOSE c_sum_creditos;
+    
+    IF v_sum_deb = v_sum_cre THEN
+        --
+        FOR movi IN c_sbcu_factura 
+        LOOP
+            --
+            OPEN c_sbcu_sbcu(movi.tem_mvco_sbcu);
+            FETCH c_sbcu_sbcu INTO v_sbcu_sbcu;
+            CLOSE c_sbcu_sbcu;
+            --
+            INSERT INTO co_tmvco(mvco_trans, 
+                                 mvco_sbcu, mvco_naturaleza, 
+                                 mvco_tido, mvco_valor, 
+                                 mvco_lladetalle, mvco_id_llave, 
+                                 mvco_tercero, mvco_tipo)
+                VALUES ( v_idTrans_con, 
+                         v_sbcu_sbcu , movi.tem_mvco_naturaleza, 
+                         2, movi.tem_mvco_valor,
+                         'fact', v_fact_fact,
+                         1, 1);
+            
+        END LOOP;
+        --
+    ELSE
+        --
+        RAISE EXCEPTION 'Las sumas de las cuentas al facturar no coinciden por favor contactese con el administrador ';
+        --
+    END IF;
     
     RETURN 'Ok-'||v_fact_fact;
     
