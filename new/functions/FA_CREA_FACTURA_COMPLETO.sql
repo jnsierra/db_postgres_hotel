@@ -153,24 +153,24 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     --
     --Cursores necesarios para la contabilizacion
     --
-    c_sum_debitos CURSOR FOR
+    c_sum_debitos CURSOR(vc_temIdTrans INT) IS
     SELECT sum(coalesce(cast(tem_mvco_valor as numeric),0) )
       FROM co_ttem_mvco
      WHERE upper(tem_mvco_naturaleza) = 'D'
-       AND tem_mvco_trans = p_idTrans
+       AND tem_mvco_trans = vc_temIdTrans
        ;
     --
-    c_sum_creditos CURSOR FOR
+    c_sum_creditos CURSOR(vc_temIdTrans INT) IS
     SELECT sum(coalesce(cast(tem_mvco_valor as numeric),0) )
       FROM co_ttem_mvco
      WHERE tem_mvco_naturaleza = 'C'
-       AND tem_mvco_trans = p_idTrans
+       AND tem_mvco_trans = vc_temIdTrans
        ;
     --
-    c_sbcu_factura  CURSOR FOR
+    c_sbcu_factura  CURSOR(vc_temIdTrans INT) IS
     SELECT tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza
       FROM co_ttem_mvco
-     WHERE tem_mvco_trans = p_idTrans
+     WHERE tem_mvco_trans = vc_temIdTrans
      ;    
     --
     c_sbcu_sbcu CURSOR(vc_sbcu_codigo VARCHAR) IS
@@ -324,6 +324,7 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     WHERE tem_fact_trans = p_idTrans
     ;
     
+    
     INSERT INTO co_ttem_mvco(
             tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
     VALUES (v_idTrans_con, '240802' , v_iva_mvco , 'C');
@@ -332,21 +333,24 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     FETCH c_vlr_total_fact INTO v_vlr_total_fact_co;
     CLOSE c_vlr_total_fact;
     
+    
+    
     INSERT INTO co_ttem_mvco(
                 tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
         VALUES (v_idTrans_con, '110501' , v_vlr_total_fact_co , 'D');
     
-    OPEN c_sum_debitos;
+    
+    OPEN c_sum_debitos(v_idTrans_con);
     FETCH c_sum_debitos INTO v_sum_deb;
     CLOSE c_sum_debitos;
     
-    OPEN c_sum_creditos;
+    OPEN c_sum_creditos(v_idTrans_con);
     FETCH c_sum_creditos INTO v_sum_cre;
     CLOSE c_sum_creditos;
     
     IF v_sum_deb = v_sum_cre THEN
         --
-        FOR movi IN c_sbcu_factura 
+        FOR movi IN c_sbcu_factura(v_idTrans_con) 
         LOOP
             --
             OPEN c_sbcu_sbcu(movi.tem_mvco_sbcu);
