@@ -11,5 +11,7 @@ MVIN_USIM                 VARCHAR(20)    NOT NULL     ,
 MVIN_VENTA                VARCHAR(2)     NOT NULL     ,
 MVIN_INICIAL              VARCHAR(2)     NOT NULL     ,
 MVIN_REVFACT              VARCHAR(2)     NOT NULL     ,
+MVIN_COMPRA               VARCHAR(2)     NOT NULL    DEFAULT 'N' ,
+MVIN_PERDIDA              VARCHAR(2)     NOT NULL    DEFAULT 'N' ,
 PRIMARY KEY (MVIN_MVIN)
 );
