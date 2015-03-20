@@ -1,24 +1,24 @@
 --
-insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM)
-values('Devolución del Cliente', 'I','C')
+insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM, MVIN_VENTA, MVIN_INICIAL, MVIN_REVFACT )
+values('Devolución del Cliente', 'I','C','N','N','N')
 ;
 --
-insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM)
-values('Inventario inicial', 'I', 'N')
+insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM, MVIN_VENTA, MVIN_INICIAL, MVIN_REVFACT)
+values('Inventario inicial', 'I', 'N','N','S','N')
 ;
 --
-insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM)
-values('Compra', 'I', 'P')
+insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM, MVIN_VENTA, MVIN_INICIAL, MVIN_REVFACT,MVIN_COMPRA)
+values('Compra', 'I', 'P','N','N','N','S')
 ;
 --
-insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM)
-values('Venta', 'E', 'C')
+insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM, MVIN_VENTA, MVIN_INICIAL, MVIN_REVFACT)
+values('Venta', 'E', 'C','S','N','N')
 ;
 --
-insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM)
-values('Perdida', 'E','N')
+insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM, MVIN_VENTA, MVIN_INICIAL, MVIN_REVFACT,MVIN_PERDIDA)
+values('Perdida', 'E','N','N','N','N','S')
 ;
 --
-insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM)
-values('Cancelacion de Factura','I','C')
+insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM, MVIN_VENTA, MVIN_INICIAL, MVIN_REVFACT)
+values('Cancelacion de Factura','I','C','N','N','S')
 ;
