@@ -153,6 +153,7 @@
 \i C:/db_postgres_hotel/new/functions/FA_CREA_DETALLE_SERVFACTURA.sql;
 \i C:/db_postgres_hotel/new/functions/FA_REGISTRA_VENTA_PROD.sql;
 \i C:/db_postgres_hotel/new/functions/FA_CREA_FACTURA_COMPLETO.sql;
+\i C:/db_postgres_hotel/new/functions/IN_ADICIONA_PROD_EXIS.sql;
 --
 -- Triggers
 --
