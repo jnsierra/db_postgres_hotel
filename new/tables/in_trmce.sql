@@ -22,6 +22,7 @@ CREATE TABLE in_trmce(
    rmce_estado              VARCHAR(2)          NOT NULL  DEFAULT 'E' ,
    rmce_pagado              VARCHAR(2)          NOT NULL  DEFAULT 'N' ,
    rmce_comdev              varchar(100)                    ,
-   rmce_fact                int                 NOT NULL  DEFAULT -1 ,
+   rmce_trans               int                 NOT NULL  DEFAULT -1 ,
+   rmce_clien               int                  ,
    PRIMARY KEY (rmce_rmce)
 );

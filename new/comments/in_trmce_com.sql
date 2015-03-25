@@ -16,3 +16,5 @@ COMMENT ON COLUMN in_trmce.rmce_sede            IS          'Sede en el cual se 
 COMMENT ON COLUMN in_trmce.rmce_estado          IS          'Indica el estado en cual se encuentra en el momento el equipo celular E(En estand listo para vender) V(Vendido) D(Devuelto)';
 COMMENT ON COLUMN in_trmce.rmce_pagado          IS          'Indica si el equipo ya fue pagado a el proveedor si ya fue cancelado';
 COMMENT ON COLUMN in_trmce.rmce_comdev          IS          'Aplica si es equipo fue devuelto a el proveedor por alguna razon (Comentario de devolucion)';
+COMMENT ON COLUMN in_trmce.rmce_trans          IS           'Identificador con el cual cual fue la transaccion realizada por si en una sola transaccion se realizan dos compras de equipos';
+COMMENT ON COLUMN in_trmce.rmce_clien          IS           'Indica el cliente el cual compro el equipo celular';
