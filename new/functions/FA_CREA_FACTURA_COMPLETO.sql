@@ -5,7 +5,9 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
                                                         p_tius          INT,
                                                         p_clien         INT,
                                                         p_idTrans       INT,
-                                                        p_sede          INT
+                                                        p_sede          INT,
+                                                        p_tipoPago      varchar,
+                                                        p_idVoucher     NUMERIC(15,6)
                                                     ) RETURNS VARCHAR  AS $$
     DECLARE
     --Variables utilizadas para los valores principales de facturacion
@@ -179,6 +181,17 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
      WHERE sbcu_codigo = vc_sbcu_codigo
      ;
     --
+    --Cursor el cual encuentra la subcuenta parametrizada en 
+    --el sistema para ingresar los pagos con tarjeta
+    --
+    c_cuenta_tarjeta CURSOR FOR 
+    SELECT para_valor
+      FROM em_tpara
+     WHERE para_clave = 'SBCUTARJETA'
+     ;
+    --
+    v_sbcu_cod_pgtj         varchar(10);
+    --
     BEGIN
     --
     OPEN c_val_iva_generado;
@@ -220,9 +233,21 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     FETCH c_fact_fact INTO v_fact_fact;
     CLOSE c_fact_fact;
     
-    INSERT INTO FA_TFACT(fact_fact,fact_tius, fact_clien,fact_vlr_total,fact_vlr_iva)
-    VALUES (v_fact_fact,p_tius,p_clien,v_vlr_total,v_vlr_iva)
-    ;
+    IF upper(p_tipoPago) = 'T' THEN
+        --
+        INSERT INTO FA_TFACT(fact_fact,fact_tius, fact_clien,fact_vlr_total,fact_vlr_iva,fact_tipo_pago,fact_id_voucher)
+        VALUES (v_fact_fact,p_tius,p_clien,v_vlr_total,v_vlr_iva,'T',p_idVoucher)
+        ;
+        --
+    ELSE
+        --
+        INSERT INTO FA_TFACT(fact_fact,fact_tius, fact_clien,fact_vlr_total,fact_vlr_iva)
+        VALUES (v_fact_fact,p_tius,p_clien,v_vlr_total,v_vlr_iva)
+        ;
+        --
+    END IF;
+    
+    
     --
     --Fin generacion de una Factura
     --   
@@ -293,7 +318,6 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
         --
         -- Fin Calculos para la facturacion
         --
-        --RAISE EXCEPTION 'Llego aqui: %,  %, %, %, %, % ' ,v_precio_prod ,v_vlr_total_fact, v_vlr_iva_tot, v_vlr_iva_uni, v_vlr_tot_fact_iva, v_vlr_uni_fact_iva ;
         INSERT INTO fa_tdtpr(
             dtpr_dtpr, dtpr_dska, dtpr_fact, 
             dtpr_num_prod, dtpr_cant, dtpr_vlr_pr_tot, 
@@ -333,11 +357,25 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     FETCH c_vlr_total_fact INTO v_vlr_total_fact_co;
     CLOSE c_vlr_total_fact;
     
-    
-    
-    INSERT INTO co_ttem_mvco(
+    IF upper(p_tipoPago) = 'T' THEN
+        --
+        OPEN c_cuenta_tarjeta;
+        FETCH c_cuenta_tarjeta INTO v_sbcu_cod_pgtj;
+        CLOSE c_cuenta_tarjeta;        
+        --
+        INSERT INTO co_ttem_mvco(
                 tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
-        VALUES (v_idTrans_con, '110501' , v_vlr_total_fact_co , 'D');
+                         VALUES (v_idTrans_con, v_sbcu_cod_pgtj , v_vlr_total_fact_co , 'D');
+        --
+    ELSE
+        --
+        INSERT INTO co_ttem_mvco(
+                tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
+                         VALUES (v_idTrans_con, '110501' , v_vlr_total_fact_co , 'D');
+        --
+    END IF;
+    
+    
     
     
     OPEN c_sum_debitos(v_idTrans_con);
