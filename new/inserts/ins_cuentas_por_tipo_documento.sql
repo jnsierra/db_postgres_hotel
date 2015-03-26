@@ -20,5 +20,5 @@ INSERT INTO co_ttido(
 INSERT INTO co_tsbft(
             sbft_tido, sbft_sbcu_codigo, sbft_naturaleza, sbft_porcentaje, 
             sbft_visible, sbft_comentario)
-    VALUES ( 1, '240801', 'D', 16,'N','COBRO DE IVA PAGADO');
+    VALUES ( 1, '240801', 'D', 16,'N','IVA EL CUAL SE DESCONTARA AL PAGAR IMPUESTOS');
 

@@ -168,6 +168,7 @@
 --
 \i C:/db_postgres_hotel/new/secuence/co_temp_movi_contables_sec.sql;
 \i C:/db_postgres_hotel/new/secuence/co_temp_tran_factu_sec.sql;
+\i C:/db_postgres_hotel/new/secuence/in_tsec_trans_rmce.sql;
 --
 --  Inserts
 --
