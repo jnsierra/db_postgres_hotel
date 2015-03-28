@@ -5,7 +5,7 @@
 
 CREATE TABLE IN_TDSKA(
 DSKA_DSKA                SERIAL           NOT NULL ,
-DSKA_REFE                VARCHAR(10)      NOT NULL ,
+DSKA_REFE                VARCHAR(50)      NOT NULL ,
 DSKA_COD                 VARCHAR(10)      NOT NULL ,
 DSKA_NOM_PROD            VARCHAR(50)      NOT NULL ,
 DSKA_DESC                VARCHAR(100)     ,
