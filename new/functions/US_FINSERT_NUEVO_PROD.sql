@@ -1,6 +1,6 @@
 -- Funcion encargada de insertar en la base de datos un producto por primera vez
 
-CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        VARCHAR(10)  ,      -- Referencia del producto
+CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        INT          ,      -- Referencia del producto
                                                       p_cod        VARCHAR(10)  ,      -- Codigo Unico que identificara el producto para la empresa
                                                       p_nom_prod   VARCHAR(50)  ,      -- Nombre del producto
                                                       p_desc       VARCHAR(50)  ,      -- Pequeña descripción del producto
