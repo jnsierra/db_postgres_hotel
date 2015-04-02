@@ -7,3 +7,8 @@ ALTER TABLE in_tdska
 ADD FOREIGN KEY (dska_sbcu)
 REFERENCES co_tsbcu(sbcu_sbcu)
 ;
+
+ALTER TABLE in_tdska
+ADD FOREIGN KEY (dska_refe)
+REFERENCES in_trefe(refe_refe)
+;

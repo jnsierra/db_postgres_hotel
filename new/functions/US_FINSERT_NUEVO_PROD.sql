@@ -165,7 +165,7 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        INT          
         --Variable con la cual se evaluara si existe la subcuenta
         v_con_sub           INTEGER := 0;
         --
-        c_mov_cont  cursor (vc_cod_prod varchar) IS
+        c_mov_cont  CURSOR (vc_cod_prod varchar) IS
         SELECT sbcu_sbcu, movimSbCu.valor, movimSbCu.natu
           FROM co_tsbcu,
         (SELECT tem_mvco_sbcu subcuenta,cast(tem_mvco_valor as numeric) valor, tem_mvco_naturaleza natu
@@ -179,8 +179,28 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        INT          
          WHERE upper(tido_nombre) = 'FACTCOMPRA'
            AND sbft_tido = tido_tido) movimSbCu
         WHERE movimSbCu.subcuenta = sbcu_codigo
-         ;    
-
+         ;
+        --
+        --Cursor con el cual obtengo el valor de la subcuenta de la categoria
+        --
+        c_categoria CURSOR FOR
+        SELECT cate_sbcu, cate_cate,cate_desc
+          FROM in_tcate
+         WHERE cate_cate = p_cate
+           AND cate_estado = 'A'
+         ;
+        --
+        v_cate_cate             int := 0;
+        v_cate_sbcu             int := 0;
+        v_cate_desc             varchar(100):= '';
+        --
+        --
+        --
+        c_codigo_sbcu CURSOR (vc_sbcu_sbcu int) IS
+        SELECT substring(sbcu_codigo from character_length(sbcu_codigo)-1 for character_length(sbcu_codigo))
+          FROM co_tsbcu
+         WHERE sbcu_sbcu = vc_sbcu_sbcu
+         ;
       BEGIN
       
          OPEN c_dska_dska;
@@ -219,29 +239,56 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        INT          
                
                IF v_cont_mvin = 1 THEN
                     --
-                    --Creacion de la subcuenta por productos                    
+                    --Creacion de la subcuenta por categoria                    
                     --
-                    IF v_dska_dska < 10 THEN
-                        
-                        v_codigosbcu := '0'||CAST(v_dska_dska AS VARCHAR);
-                    
+                    OPEN c_categoria;
+                    FETCH c_categoria INTO v_cate_sbcu,v_cate_cate,v_cate_desc;
+                    CLOSE c_categoria;
+                    --
+                    IF v_cate_cate is not null THEN                        
+                        --
+                        IF v_cate_sbcu is null THEN
+                            --
+                            IF v_cate_cate < 10 THEN
+                                --
+                                v_codigosbcu := '0'||CAST(v_cate_cate AS VARCHAR);
+                                --
+                            ELSE
+                                --
+                                v_codigosbcu := cast(v_cate_cate as VARCHAR);
+                                --
+                            END IF;
+                            --
+                            OPEN c_sec_sbcu;
+                            FETCH c_sec_sbcu INTO v_sbcu_sbcu;
+                            CLOSE c_sec_sbcu;
+                            
+                            
+                            INSERT INTO co_tsbcu(
+                                    sbcu_sbcu,sbcu_cuen, sbcu_clas, sbcu_grup, sbcu_estado, sbcu_nombre, 
+                                    sbcu_codigo, sbcu_descripcion, sbcu_naturaleza)
+                            VALUES (v_sbcu_sbcu,47, 1, 4, 'A', 'CATEGORIA '|| v_cate_desc , 
+                                    v_codigosbcu,'Se almacenaran las entradas y salidas de los producto que pertenescan a la categoria ' || v_cate_desc  , 'C')
+                                    ;
+                            --
+                            UPDATE in_tcate
+                               SET cate_sbcu = v_sbcu_sbcu
+                             WHERE cate_cate = v_cate_cate
+                             ;
+                            --
+                        ELSE
+                            --
+                            v_sbcu_sbcu := v_cate_sbcu;
+                            --
+                            OPEN c_codigo_sbcu(v_cate_sbcu);
+                            FETCH c_codigo_sbcu INTO v_codigosbcu;
+                            CLOSE c_codigo_sbcu;
+                            --
+                        END IF;
+                        --
                     ELSE
-                        v_codigosbcu := cast(v_dska_dska as VARCHAR);
-                                            
+                        RAISE EXCEPTION 'La categoria asociada al producto no existe o se encuentra inactiva por favor intente de nuevo. ';
                     END IF;
-                    
-                    OPEN c_sec_sbcu;
-                    FETCH c_sec_sbcu INTO v_sbcu_sbcu;
-                    CLOSE c_sec_sbcu;
-                    
-                    
-                    INSERT INTO co_tsbcu(
-                            sbcu_sbcu,sbcu_cuen, sbcu_clas, sbcu_grup, sbcu_estado, sbcu_nombre, 
-                            sbcu_codigo, sbcu_descripcion, sbcu_naturaleza)
-                    VALUES (v_sbcu_sbcu,47, 1, 4, 'A', 'PRODUCTOS '|| p_nom_prod , 
-                            v_codigosbcu,'Se almacenaran las entradas y salidas del producto ' , 'C')
-                            ;
-
                     --
                     insert into in_tkapr (KAPR_KAPR,                KAPR_DSKA,                  KAPR_FECHA, 
                                           KAPR_MVIN,                KAPR_CANT_MVTO,             KAPR_COST_MVTO_UNI, 

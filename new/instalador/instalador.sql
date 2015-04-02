@@ -107,6 +107,7 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsbcu.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsbft.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tmvco.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_in_tcate.sql;
 --
 --Vistas
 --
