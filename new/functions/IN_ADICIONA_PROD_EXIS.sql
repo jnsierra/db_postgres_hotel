@@ -104,9 +104,7 @@ CREATE OR REPLACE FUNCTION IN_ADICIONA_PROD_EXIS (
       WHERE tem_mvco_sbcu = sbcu_codigo
         AND tem_mvco_trans = p_idTrans
         ;
-     
-     
-     
+    --
     BEGIN
         --
         OPEN c_mvIn_compra;

@@ -120,7 +120,7 @@
 \i C:/db_postgres_hotel/new/types/return_usua_com.sql;
 \i C:/db_postgres_hotel/new/types/return_perfil.sql;
 --
--- Procediminetos
+-- Procedimientos
 --
 \i C:/db_postgres_hotel/new/functions/US_FCAMBIO_CLAVE.sql;
 \i C:/db_postgres_hotel/new/functions/US_FRECUPERAR_DATOS.sql;
@@ -155,6 +155,7 @@
 \i C:/db_postgres_hotel/new/functions/FA_REGISTRA_VENTA_PROD.sql;
 \i C:/db_postgres_hotel/new/functions/FA_CREA_FACTURA_COMPLETO.sql;
 \i C:/db_postgres_hotel/new/functions/IN_ADICIONA_PROD_EXIS.sql;
+\i C:/db_postgres_hotel/new/functions/IN_CAMBIOSEDE_PROD.sql;
 --
 -- Triggers
 --
