@@ -116,9 +116,7 @@ CREATE OR REPLACE FUNCTION IN_CAMBIOSEDE_PROD(
         --
     END IF;
     --
-    RAISE EXCEPTION '';
-    --
-    IF v_exist_org > p_cantidad THEN
+    IF v_exist_org < p_cantidad THEN
         --
         RAISE EXCEPTION 'La sede origen no tiene suficinetes productos para hacer el traslado';
         --
@@ -146,7 +144,7 @@ CREATE OR REPLACE FUNCTION IN_CAMBIOSEDE_PROD(
                                         p_sede_origen                                                   
                                         );
     --
-    IF UPPER(v_rta_egr) = 'OK' THEN
+    IF UPPER(v_rta_egr) like '%OK%' THEN
         --
         v_rta_ing := IN_FINSERTA_PROD_KARDEX(p_dska_dska,
                                             v_mvin_ing,

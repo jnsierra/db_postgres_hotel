@@ -30,3 +30,7 @@ values('Cambio de Sede Egreso','E','N','N','N','N','S')
 insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM, MVIN_VENTA, MVIN_INICIAL,MVIN_REVFACT, MVIN_CAMBSEDE_ING)
 values('Cambio de Sede Ingreso','I','N','N','N','N','S')
 ;
+--
+insert into IN_TMVIN (MVIN_DESCR, MVIN_NATU, MVIN_USIM, MVIN_VENTA, MVIN_INICIAL,MVIN_REVFACT, MVIN_CORRIGE_ING)
+values('Correccion de ingreso de Productos','E','N','N','N','N','S')
+;

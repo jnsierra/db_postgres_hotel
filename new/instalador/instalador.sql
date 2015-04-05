@@ -156,6 +156,7 @@
 \i C:/db_postgres_hotel/new/functions/FA_CREA_FACTURA_COMPLETO.sql;
 \i C:/db_postgres_hotel/new/functions/IN_ADICIONA_PROD_EXIS.sql;
 \i C:/db_postgres_hotel/new/functions/IN_CAMBIOSEDE_PROD.sql;
+\i C:/db_postgres_hotel/new/functions/IN_CORRIGEING_PROD.sql;
 --
 -- Triggers
 --
