@@ -30,7 +30,6 @@
 \i C:/db_postgres_hotel/new/tables/co_tsbft.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_mvco.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_fact.sql;
-\i C:/db_postgres_hotel/new/tables/ad_tcier.sql;
 --
 -- Cheks constrains
 --
@@ -89,7 +88,6 @@
 \i C:/db_postgres_hotel/new/comments/co_ttido_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_tsbft_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_ttem_mvco_com.sql;
-\i C:/db_postgres_hotel/new/comments/co_tcier_com.sql;
 --
 -- Llaves foraneas
 --
