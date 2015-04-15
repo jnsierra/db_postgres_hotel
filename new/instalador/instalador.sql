@@ -30,6 +30,7 @@
 \i C:/db_postgres_hotel/new/tables/co_tsbft.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_mvco.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_fact.sql;
+\i C:/db_postgres_hotel/new/tables/in_tcopr.sql;
 --
 -- Cheks constrains
 --
@@ -50,6 +51,7 @@
 \i C:/db_postgres_hotel/new/checks/co_tsbcu_chks.sql;
 \i C:/db_postgres_hotel/new/checks/co_ttido_chks.sql;
 \i C:/db_postgres_hotel/new/checks/co_tsbft_chks.sql;
+\i C:/db_postgres_hotel/new/checks/in_tcopr_chks.sql;
 --
 -- Uniques Constrains
 --
@@ -88,6 +90,7 @@
 \i C:/db_postgres_hotel/new/comments/co_ttido_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_tsbft_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_ttem_mvco_com.sql;
+\i C:/db_postgres_hotel/new/comments/in_tcopr_com.sql;
 --
 -- Llaves foraneas
 --
@@ -108,6 +111,7 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsbft.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tmvco.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tcate.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_in_tcopr.sql;
 --
 --Vistas
 --

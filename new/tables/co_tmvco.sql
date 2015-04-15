@@ -12,5 +12,6 @@ CREATE TABLE CO_TMVCO(
     MVCO_ID_LLAVE               INT                 NOT NULL    , 
     MVCO_TERCERO                INT                 NOT NULL    , 
     MVCO_TIPO                   INT                 NOT NULL    , 
+    MVCO_FECHA                  TIMESTAMP           NOT NULL  DEFAULT now()   , 
 PRIMARY KEY (MVCO_MVCO)
 );
