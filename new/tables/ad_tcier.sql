@@ -6,5 +6,6 @@ CREATE TABLE AD_TCIER(
     CIER_VLRT                   INT      		NOT NULL			    ,
     CIER_VLRC                 	INT			    NOT NULL                ,
     CIER_SEDE                   INT     		NOT NULL                ,
+    CIER_ESTADO                 VARCHAR(2)    	NOT NULL                ,
 PRIMARY KEY (CIER_CIER)
 );
