@@ -190,3 +190,4 @@
 \i C:/db_postgres_hotel/new/inserts/ins_in_tmvin.sql; 
 
 --\i C:/db_postgres_hotel/new/inserts/ins_in_tmvin.sql;
+\i C:/db_postgres_hotel/new/cambios/001/instalador001.sql
