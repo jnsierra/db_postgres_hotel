@@ -14,3 +14,4 @@
 -- Funciones
 --
 \i C:/db_postgres_hotel/new/functions/IN_CIERRA_CONTEO.sql;
+\i C:/db_postgres_hotel/new/functions/IN_OBTIENEEXIS_PROD_SEDE.sql;
