@@ -31,7 +31,7 @@
 \i C:/db_postgres_hotel/new/tables/co_ttem_mvco.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_fact.sql;
 \i C:/db_postgres_hotel/new/tables/in_tcopr.sql;
-\i C:/db_postgres_hotel/new/tables/ad_tcier.sql;
+
 --
 -- Cheks constrains
 --
