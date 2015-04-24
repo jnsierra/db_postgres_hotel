@@ -57,6 +57,9 @@ CREATE OR REPLACE  FUNCTION IN_FINSERT_CIERRE_DIARIO(p_cfecha  TIMESTAMP,       
         INSERT INTO  ad_tcier (CIER_CIER,CIER_FECH,CIER_USUA,CIER_VLRI,CIER_VLRT,CIER_VLRC,CIER_SEDE,CIER_ESTADO)
         VALUES (cierre_cierre,p_cfecha,p_usuar,vlr_iva,vrl_tot,(vlr_iva+vrl_tot),p_sede,'A')
         ;
+
+        UPDATE fa_tfact SET fact_cierre = cierre_cierre WHERE to_date(fact_fec_ini,'dd/MM/yyyy') =  to_date(p_cfecha,'dd/MM/yyyy')
+        ;
         RETURN 'Ok';
     --
     EXCEPTION WHEN OTHERS THEN
