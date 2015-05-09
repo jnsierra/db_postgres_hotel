@@ -3,11 +3,13 @@
 --
 \i C:/db_postgres_hotel/new/tables/in_tecop.sql;
 \i C:/db_postgres_hotel/new/tables/ad_tcier.sql;
+\i C:/db_postgres_hotel/new/tables/in_tmarca.sql;
 --
 -- Comentarios de las tablas
 --
 \i C:/db_postgres_hotel/new/comments/in_tecop_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_tcier_com.sql;
+\i C:/db_postgres_hotel/new/comments/in_tmarca_com.sql;
 --
 -- Llaves foraneas
 --
