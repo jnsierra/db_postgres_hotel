@@ -25,3 +25,4 @@
 -- Alters
 --
 \i C:/db_postgres_hotel/new/alters/al_fa_tfact.sql;
+\i C:/db_postgres_hotel/new/alters/al_in_tdska.sql;

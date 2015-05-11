@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        INT          
                                                       p_desc       VARCHAR(50)  ,      -- Pequeña descripción del producto
                                                       p_iva        VARCHAR(1)   ,      -- Identifica si el producto es gravado con iva
                                                       p_porc_iva   INTEGER      ,      -- Porcentaje con el cual se gravara el producto
-                                                      p_marca      VARCHAR(20)  ,      -- Marca del producto el cual se 
+                                                      p_marca      INTEGER      ,      -- Marca del producto el cual se 
                                                       p_cant       INTEGER      ,      -- Cantidad de productos que se desean inventariar
                                                       p_cost       NUMERIC(50,6),      -- Costo del producto por unidad
                                                       p_usua       VARCHAR(50)  ,      -- Usuario el cual registra el inventario
@@ -201,8 +201,17 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        INT          
           FROM co_tsbcu
          WHERE sbcu_sbcu = vc_sbcu_sbcu
          ;
+        --
+        --
+        --
+        v_nom_prod  varchar(50):= '';
+        --
       BEGIN
-      
+        --
+        --
+        --
+        v_nom_prod := p_desc;
+        --
          OPEN c_dska_dska;
          FETCH c_dska_dska INTO v_dska_dska;
          CLOSE c_dska_dska;
@@ -221,7 +230,7 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        INT          
          IF v_cod_prod = 'N' THEN
             --
             insert into in_tdska(dska_dska,DSKA_REFE,DSKA_COD, DSKA_NOM_PROD, DSKA_DESC, DSKA_IVA, DSKA_PORC_IVA, DSKA_MARCA,DSKA_CATE)
-                          values(v_dska_dska,p_ref,v_codigo,p_nom_prod,p_desc,upper(p_iva),p_porc_iva,p_marca,p_cate);
+                          values(v_dska_dska,p_ref,v_codigo,v_nom_prod,p_desc,upper(p_iva),p_porc_iva,p_marca,p_cate);
                          
              IF v_dska_dska IS NOT NULL THEN
                
