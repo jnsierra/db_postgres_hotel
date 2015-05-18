@@ -206,11 +206,24 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        INT          
         --
         v_nom_prod  varchar(50):= '';
         --
+        --
+        --
+        c_creaRefeProd CURSOR FOR
+        SELECT (
+            (SELECT cate_desc from in_tcate where cate_cate = p_cate)
+        || ' ' ||
+            (SELECT marca_nombre from in_tmarca where marca_marca = p_marca)
+        || ' ' ||
+            (select refe_desc from in_trefe where refe_refe = p_ref)
+        )
+        ;
       BEGIN
         --
         --
         --
-        v_nom_prod := p_desc;
+        OPEN c_creaRefeProd;
+        FETCH c_creaRefeProd INTO v_nom_prod;
+        CLOSE c_creaRefeProd;
         --
          OPEN c_dska_dska;
          FETCH c_dska_dska INTO v_dska_dska;
@@ -230,7 +243,7 @@ CREATE OR REPLACE FUNCTION US_FINSERT_NUEVO_PROD (    p_ref        INT          
          IF v_cod_prod = 'N' THEN
             --
             insert into in_tdska(dska_dska,DSKA_REFE,DSKA_COD, DSKA_NOM_PROD, DSKA_DESC, DSKA_IVA, DSKA_PORC_IVA, DSKA_MARCA,DSKA_CATE)
-                          values(v_dska_dska,p_ref,v_codigo,v_nom_prod,p_desc,upper(p_iva),p_porc_iva,p_marca,p_cate);
+                          values(v_dska_dska,p_ref,v_codigo,v_nom_prod,v_nom_prod,upper(p_iva),p_porc_iva,p_marca,p_cate);
                          
              IF v_dska_dska IS NOT NULL THEN
                
