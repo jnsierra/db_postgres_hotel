@@ -470,6 +470,8 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
     FETCH c_vlr_total_fact INTO v_vlr_total_fact_co;
     CLOSE c_vlr_total_fact;
     
+    v_vlr_total_fact_co := v_vlr_total_fact_co - v_vlr_dscto_fact;
+    
     IF upper(p_tipoPago) = 'T' THEN
         --
         OPEN c_cuenta_tarjeta;
