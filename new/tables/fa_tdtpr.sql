@@ -19,7 +19,7 @@ CREATE TABLE fa_tdtpr(
     DTPR_VLR_TOTAL          NUMERIC(50,6)    NOT NULL                 ,
     DTPR_DESC               VARCHAR(1)       NOT NULL                 , --DESCUENTO
     DTPR_CON_DESC           VARCHAR(1)       NOT NULL   DEFAULT 'N'   ,
-    DTPR_VALOR_DESC         VARCHAR(1)       NOT NULL   DEFAULT 0     ,
+    DTPR_VALOR_DESC         NUMERIC(50,6)    NOT NULL   DEFAULT 0     ,
     DTPR_ESTADO             VARCHAR(1)       NOT NULL   DEFAULT 'A'   ,
     DTPR_KAPR               INT              NOT NULL   DEFAULT 0     , --Referencia del movimiento de inventario
     DTPR_DEV_KAPR           INT                         DEFAULT 0     , --Devolucion de un producto ya vendido
