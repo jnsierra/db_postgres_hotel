@@ -67,6 +67,7 @@
 \i C:/db_postgres_hotel/new/uniques/IN_TRMCE_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/CO_TSBCU_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/CO_TTIDO_UNIQUES.sql;
+\i C:/db_postgres_hotel/new/uniques/llaves_unicas_producto.sql;
 --
 -- Comentarios de las tablas
 --

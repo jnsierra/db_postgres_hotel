@@ -6,5 +6,5 @@ CREATE TABLE CO_TTEM_FACT(
     TEM_FACT_TRANS                 INT                 NOT NULL                   ,
     TEM_FACT_DSKA                  INT                 NOT NULL                   ,
     TEM_FACT_CANT                  INT                 NOT NULL                   ,
-    TEM_FACT_DCTO                  INT                 NOT NULL                   ,
+    TEM_FACT_DCTO                  INT                 NOT NULL                   
 );
