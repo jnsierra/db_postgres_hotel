@@ -137,7 +137,7 @@ CREATE OR REPLACE FUNCTION IN_CORRIGEING_PROD(
                                             );
     IF UPPER(v_rta_egr) NOT LIKE '%OK%' THEN
         --
-        RAISE EXCEPTION 'Error al realizar el egreso de los productos';
+        RAISE EXCEPTION 'Error al realizar el egreso de los productos, Error funcion IN_FINSERTA_PROD_KARDEX %' ,v_rta_egr ;
         --
     ELSE
         --

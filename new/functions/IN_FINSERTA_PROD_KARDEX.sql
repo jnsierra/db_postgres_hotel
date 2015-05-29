@@ -81,13 +81,27 @@ CREATE OR REPLACE FUNCTION IN_FINSERTA_PROD_KARDEX (
         
         v_cantSaldoSig = v_cantSaldoAnt - p_numProd;
         
-        v_valorUnitario = v_costUniSalAnt; 
+        IF v_cantSaldoSig = 0 THEN 
+            --
+            v_valorUnitario = v_costUniSalAnt; 
         
-        v_costoTotalMovi = v_valorUnitario * p_numProd;
+            v_costoTotalMovi = v_valorUnitario * p_numProd;
         
-        v_costTotProdNew = v_costTotProdOld - v_costoTotalMovi;
+            v_costTotProdNew = 0;
 
-        v_uniPonderado = v_costTotProdNew / v_cantSaldoSig;
+            v_uniPonderado = 0;
+            --
+        ELSE 
+            --
+            v_valorUnitario = v_costUniSalAnt; 
+        
+            v_costoTotalMovi = v_valorUnitario * p_numProd;
+        
+            v_costTotProdNew = v_costTotProdOld - v_costoTotalMovi;
+
+            v_uniPonderado = v_costTotProdNew / v_cantSaldoSig;
+            -- 
+        END IF;
         
       END IF;
       
