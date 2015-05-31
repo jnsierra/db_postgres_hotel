@@ -1,8 +1,8 @@
 CREATE OR REPLACE 
 FUNCTION FA_CONSLUTA_COSTS_FACT (  
                             p_fact_fact     INT,
-                            p_tipo          INT, -- (1) SERVICIO (2) PRODUCTO (3) PRODUCTOS + SERVICIOS
-                            p_accion        INT  -- (1) VALOR TOTAL(IVA +VALOR) (2) VALOR DE LOS SERVICIOS O PRODUCTOS (3) VALOR IVA
+                            p_tipo          INT, -- (1) SERVICIO (2) PRODUCTO (3) PRODUCTOS + SERVICIOS 
+                            p_accion        INT  -- (1) VALOR TOTAL(IVA +VALOR) (2) VALOR DE LOS SERVICIOS O PRODUCTOS (3) VALOR IVA (4) DESCUENTOS
                          ) RETURNS NUMERIC  AS $$
     DECLARE
         --
@@ -60,6 +60,13 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
            AND dtpr_fact = p_fact_fact
            ;
         --
+        c_valor_dcto_pr CURSOR FOR
+        SELECT COALESCE(SUM(dtpr_valor_desc),0) 
+          FROM fa_tdtpr
+         WHERE dtpr_estado = 'A'
+           AND dtpr_fact = p_fact_fact
+           ;
+        --
         v_valor     NUMERIC := 0;
         --
         --Variables para el calculo total de toda la factura
@@ -69,6 +76,8 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
         --
         v_iva_servicios         NUMERIC := 0;
         v_iva_productos         NUMERIC := 0;
+        --
+        v_dcto_productos        NUMERIC := 0;
         --
         --Valor a pagar discriminado
         --
@@ -157,6 +166,14 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
                 CLOSE c_valor_iva;
                 
                 v_valor := v_iva_productos+v_iva_servicios;
+                
+            ELSIF p_accion = 4 THEN
+                
+                OPEN c_valor_dcto_pr;
+                FETCH c_valor_dcto_pr INTO v_dcto_productos;
+                CLOSE c_valor_dcto_pr;
+                
+                v_valor := v_dcto_productos; 
                 
             END IF;
         ELSE

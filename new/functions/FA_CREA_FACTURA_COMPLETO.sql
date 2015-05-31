@@ -7,7 +7,8 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
                                                         p_idTrans       INT,
                                                         p_sede          INT,
                                                         p_tipoPago      varchar,
-                                                        p_idVoucher     NUMERIC(15,6)
+                                                        p_idVoucher     NUMERIC(15,6),
+                                                        p_valrTarjeta   NUMERIC(15,6)
                                                     ) RETURNS VARCHAR  AS $$
     DECLARE
     --
@@ -235,7 +236,10 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
            offset 1) as tabla
     ;
     --
-    BEGIN    
+    v_valor_real_apagar         NUMERIC(15,6) := 0;
+    v_valor_pago_efectivo       NUMERIC(15,6) := 0;
+    --
+    BEGIN
     --
     --Inicio de Validacion de Subcuentas Contables necesarias para la contabilizacion
     --
@@ -314,6 +318,12 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
         --
         INSERT INTO FA_TFACT(fact_fact,   fact_tius, fact_clien, fact_vlr_total, fact_vlr_iva, fact_tipo_pago, fact_id_voucher)
                      VALUES (v_fact_fact, p_tius,    p_clien,    v_vlr_total,    v_vlr_iva,    'T',            p_idVoucher)
+                    ;
+        --
+    ELSIF upper(p_tipoPago) = 'M' THEN
+        --
+        INSERT INTO FA_TFACT(fact_fact,   fact_tius, fact_clien, fact_vlr_total, fact_vlr_iva, fact_tipo_pago, fact_id_voucher)
+                     VALUES (v_fact_fact, p_tius,    p_clien,    v_vlr_total,    v_vlr_iva,    'M',            p_idVoucher)
                     ;
         --
     ELSE
@@ -482,11 +492,67 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
                 tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
                          VALUES (v_idTrans_con, v_sbcu_cod_pgtj , v_vlr_total_fact_co , 'D');
         --
-    ELSE
+        UPDATE fa_tfact
+        SET fact_vlr_tarjeta = v_vlr_total_fact_co
+        WHERE fact_fact = v_fact_fact
+        ;
+        --
+    ELSIF upper(p_tipoPago) = 'M' THEN
+        --
+        --Validaciones necesarias para el pago mixto(tarjeta y efectivo)
+        --
+        IF p_valrTarjeta = 0 THEN
+            --
+            RAISE EXCEPTION 'SI DESA PAGAR CON TARJETA Y EN EFECTIVO EL VALOR DEL PAGO CON TARJETA NO PUEDE SER 0';
+            --
+        END IF;
+        --
+        v_valor_real_apagar := v_vlr_total_fact_co - v_vlr_dscto_fact;
+        --
+        IF v_valor_real_apagar = p_valrTarjeta THEN
+            --
+            RAISE EXCEPTION  'Cuando se realiza el pago mixto no es posible que el pago con tarjeta sea la totatalida de la compra y si desea realizarlo asi por favor seleccione PAGO CON TARJETA ';
+            --
+        END IF;
+        
+        IF v_valor_real_apagar < p_valrTarjeta THEN
+            --
+            RAISE EXCEPTION  'El pago con tarjeta no puede ser mayor a la totalidad de la compra';
+            --
+        END IF;        
+        --
+        v_valor_pago_efectivo := v_vlr_total_fact_co - p_valrTarjeta;
+        --
+        OPEN c_cuenta_tarjeta;
+        FETCH c_cuenta_tarjeta INTO v_sbcu_cod_pgtj;
+        CLOSE c_cuenta_tarjeta;        
+        --        
+        INSERT INTO co_ttem_mvco(
+                tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
+                         VALUES (v_idTrans_con, v_sbcu_cod_pgtj , p_valrTarjeta , 'D');
+        --
+        INSERT INTO co_ttem_mvco(
+                tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
+                         VALUES (v_idTrans_con, '110501' , v_valor_pago_efectivo , 'D');
+        --
+        --Actualizaciones en la factura de los pagos
+        --
+        UPDATE fa_tfact
+        SET fact_vlr_efectivo = v_valor_pago_efectivo,
+        fact_vlr_tarjeta = p_valrTarjeta
+        WHERE fact_fact = v_fact_fact
+        ;
+        --
+    ELSE 
         --
         INSERT INTO co_ttem_mvco(
                 tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
                          VALUES (v_idTrans_con, '110501' , v_vlr_total_fact_co , 'D');
+        --
+        UPDATE fa_tfact
+        SET fact_vlr_efectivo = v_vlr_total_fact_co
+        WHERE fact_fact = v_fact_fact
+        ;
         --
     END IF;
     --
