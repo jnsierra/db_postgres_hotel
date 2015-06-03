@@ -2,6 +2,7 @@
 -- Tablas
 --
 \i C:/db_postgres_hotel/new/tables/co_tsimc.sql;
+\i C:/db_postgres_hotel/new/tables/co_ttem_sifc.sql;
 --
 -- Comentarios de las tablas
 --
@@ -11,9 +12,9 @@
 --
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsimc.sql;
 --
--- Funciones
+-- secuencias
 --
-
+\i C:/db_postgres_hotel/new/secuence/co_temp_sim_movi_contables.sql;
 --
 -- Alters
 --
