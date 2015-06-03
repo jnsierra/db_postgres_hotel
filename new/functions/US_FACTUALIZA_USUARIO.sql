@@ -33,7 +33,7 @@ CREATE OR REPLACE FUNCTION US_FACTUALIZA_USUARIO (
     FETCH c_pers INTO v_pers_pers;
     CLOSE c_pers;
     
-    IF v_pers_pers is not null THEN
+    IF v_pers_pers is not null  or v_pers_pers = 0 THEN
     
         UPDATE US_TPERS 
         SET pers_nombre = upper(p_nombre)
@@ -42,7 +42,9 @@ CREATE OR REPLACE FUNCTION US_FACTUALIZA_USUARIO (
         , pers_fecha_nac = p_fecha_nac
         , pers_email =  p_correo
         WHERE pers_pers = v_pers_pers
-        ;                
+        ;   
+    ELSE 
+        RETURN 'Error al encontrar el usuario a actualizar';
     END IF;   
     
     RETURN 'OK';
