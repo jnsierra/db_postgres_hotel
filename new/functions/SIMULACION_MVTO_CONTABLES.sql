@@ -371,7 +371,9 @@ CREATE OR REPLACE FUNCTION SIMULACION_MVTO_CONTABLES (
         RAISE EXCEPTION 'Las sumas de las cuentas al facturar no coinciden por favor contactese con el administrador Debitos %, Creditos %',v_sum_deb,v_sum_cre;
         --
     END IF;
-                                                    
+    --
+    return 'Ok';
+    --
     EXCEPTION WHEN OTHERS THEN
          RETURN 'Error '|| sqlerrm;
     END;
