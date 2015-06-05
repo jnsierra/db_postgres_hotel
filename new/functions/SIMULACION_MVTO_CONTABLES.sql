@@ -219,17 +219,17 @@ CREATE OR REPLACE FUNCTION SIMULACION_MVTO_CONTABLES (
         --
         --Obtiene el precio de venta del producto
         --
-        OPEN c_precio_prod(prod.tem_fact_dska);
+        OPEN c_precio_prod(prod.tem_sifc_dska);
         FETCH c_precio_prod INTO v_precio_prod;
         CLOSE c_precio_prod;
         --
         --Obtenemos el precio en el cual se va ha dejar el producto realmente al cliente
         --
-        v_diferencia_precio := v_precio_prod - prod.tem_sifc_dcto;
+        v_diferencia_precio := v_precio_prod - (prod.tem_sifc_dcto/prod.tem_sifc_cant);
         --
         --Valiamos si el descuento es viable o va ha producir perdidas al negocio
         --
-        IF v_diferencia_precio >= v_vlr_prom_pond THEN 
+        IF v_diferencia_precio <= v_vlr_prom_pond THEN 
         --
             RAISE EXCEPTION 'El sistema no permite descuentos que superen el valor del promedio ponderado';
         --
@@ -262,6 +262,7 @@ CREATE OR REPLACE FUNCTION SIMULACION_MVTO_CONTABLES (
     ;
     --
     --Insercion para contabilizar el iva
+    --
     INSERT INTO co_ttem_simmvco(
             tem_simmvco_trans, tem_simmvco_sbcu, tem_simmvco_valor, tem_simmvco_naturaleza) 
     VALUES (v_idTrans_con, '240802' , v_iva_mvco , 'C');
@@ -278,7 +279,7 @@ CREATE OR REPLACE FUNCTION SIMULACION_MVTO_CONTABLES (
             tem_simmvco_trans, tem_simmvco_sbcu, tem_simmvco_valor, tem_simmvco_naturaleza) 
     VALUES (v_idTrans_con, '530535' , v_vlr_dscto_fact , 'D');
     --
-    v_vlr_total_fact_co := v_vlr_total_factura;
+    v_vlr_total_fact_co := (v_vlr_total_factura + v_iva_mvco) - v_vlr_dscto_fact;
     --
     IF upper(p_tipoPago) = 'T' THEN
         --
@@ -349,7 +350,7 @@ CREATE OR REPLACE FUNCTION SIMULACION_MVTO_CONTABLES (
         FOR movi IN c_sbcu_factura(v_idTrans_con) 
         LOOP
             --
-            OPEN c_sbcu_sbcu(movi.tem_mvco_sbcu);
+            OPEN c_sbcu_sbcu(movi.tem_simmvco_sbcu);
             FETCH c_sbcu_sbcu INTO v_sbcu_sbcu;
             CLOSE c_sbcu_sbcu;
             --
@@ -372,7 +373,7 @@ CREATE OR REPLACE FUNCTION SIMULACION_MVTO_CONTABLES (
         --
     END IF;
     --
-    return 'Ok';
+    return 'Ok-'|| v_idTrans_con;
     --
     EXCEPTION WHEN OTHERS THEN
          RETURN 'Error '|| sqlerrm;
