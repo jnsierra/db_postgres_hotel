@@ -84,7 +84,7 @@ CREATE OR REPLACE  FUNCTION IN_FINSERT_CIERRE_DIARIO(p_cfecha  DATE,            
         ;
         --
         UPDATE fa_tfact 
-           SET fact_cierre = cierre_cierre 
+           SET fact_cierre = v_cierre_cierre 
          WHERE fact_fec_ini = p_cfecha
         ;
         --
