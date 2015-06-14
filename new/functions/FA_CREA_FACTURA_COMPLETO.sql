@@ -552,7 +552,7 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
                          VALUES (v_idTrans_con, '110501' , v_vlr_total_fact_co , 'D');
         --
         UPDATE fa_tfact
-        SET fact_vlr_efectivo = v_vlr_total_fact_co
+        SET fact_vlr_efectivo = v_vlr_total_fact_co,
         fact_vlr_dcto = v_vlr_dscto_fact
         WHERE fact_fact = v_fact_fact
         ;
