@@ -493,7 +493,8 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
                          VALUES (v_idTrans_con, v_sbcu_cod_pgtj , v_vlr_total_fact_co , 'D');
         --
         UPDATE fa_tfact
-        SET fact_vlr_tarjeta = v_vlr_total_fact_co
+        SET fact_vlr_tarjeta = v_vlr_total_fact_co,
+        fact_vlr_dcto = v_vlr_dscto_fact
         WHERE fact_fact = v_fact_fact
         ;
         --
@@ -539,7 +540,8 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
         --
         UPDATE fa_tfact
         SET fact_vlr_efectivo = v_valor_pago_efectivo,
-        fact_vlr_tarjeta = p_valrTarjeta
+        fact_vlr_tarjeta = p_valrTarjeta,
+        fact_vlr_dcto = v_vlr_dscto_fact
         WHERE fact_fact = v_fact_fact
         ;
         --
@@ -551,6 +553,7 @@ CREATE OR REPLACE FUNCTION FA_CREA_FACTURA_COMPLETO (
         --
         UPDATE fa_tfact
         SET fact_vlr_efectivo = v_vlr_total_fact_co
+        fact_vlr_dcto = v_vlr_dscto_fact
         WHERE fact_fact = v_fact_fact
         ;
         --
