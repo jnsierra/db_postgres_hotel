@@ -23,7 +23,7 @@ CREATE OR REPLACE FUNCTION f_ins_sbcuenta() RETURNS trigger AS $f_ins_sbcuenta$
         --
         IF CAST(NEW.sbcu_codigo AS INT) <10 THEN
             --
-            NEW.sbcu_codigo = '0'||NEW.sbcu_codigo;
+            NEW.sbcu_codigo = '0'||CAST(NEW.sbcu_codigo AS INT);
             --
         END IF;
         --
