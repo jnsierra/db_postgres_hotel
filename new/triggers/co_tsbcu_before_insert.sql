@@ -16,17 +16,23 @@ CREATE OR REPLACE FUNCTION f_ins_sbcuenta() RETURNS trigger AS $f_ins_sbcuenta$
         v_dummy             int;
         
     BEGIN
-        
+        --
         OPEN c_codigo;
         FETCH c_codigo INTO v_codigo; 
         CLOSE c_codigo;        
-        
+        --
+        IF CAST(NEW.sbcu_codigo AS INT) <10 THEN
+            --
+            NEW.sbcu_codigo = '0'||NEW.sbcu_codigo;
+            --
+        END IF;
+        --
         v_codigo = v_codigo||NEW.sbcu_codigo;
-        
+        --
         NEW.sbcu_codigo := v_codigo;
-        
+        --
         RETURN NEW;        
-    
+        --
     END;
 $f_ins_sbcuenta$ LANGUAGE plpgsql;
 
