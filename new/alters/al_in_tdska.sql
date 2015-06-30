@@ -15,3 +15,4 @@ ALTER TABLE in_tdska
 ADD FOREIGN KEY (dska_marca)
 REFERENCES in_tmarca(marca_marca)
 ;
+

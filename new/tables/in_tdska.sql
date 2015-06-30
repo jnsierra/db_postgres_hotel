@@ -16,5 +16,6 @@ DSKA_ESTADO              VARCHAR(1)       NOT NULL   DEFAULT 'A'   ,
 DSKA_FEC_INGRESO         TIMESTAMP        NOT NULL   DEFAULT NOW() ,
 DSKA_CATE                INT              NOT NULL                 , 
 DSKA_SBCU                INT              ,
+DSKA_PROV				 INT 	          NOT NULL,
 PRIMARY KEY (DSKA_DSKA)
 );

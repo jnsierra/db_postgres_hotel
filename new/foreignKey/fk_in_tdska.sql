@@ -26,3 +26,9 @@ ALTER TABLE in_tdska
 ADD FOREIGN KEY (dska_marca)
 REFERENCES in_tmarca(marca_marca)
 ;
+--
+--Referencia a la tabla de proveedores
+--
+alter table in_tdska 
+add  foreign key (dska_prov)
+references in_tprov (prov_prov);
