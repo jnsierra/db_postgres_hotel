@@ -37,6 +37,7 @@
 \i C:/db_postgres_hotel/new/tables/co_ttem_simmvco.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_mvco.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_fact.sql;
+\i C:/db_postgres_hotel/new/tables/ad_tpara.sql;
 --
 -- Cheks constrains
 --
@@ -104,6 +105,7 @@
 \i C:/db_postgres_hotel/new/comments/co_tcier_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_tmarca_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_tsimc_com.sql;
+\i C:/db_postgres_hotel/new/comments/in_tpara_com.sql;
 --
 -- Llaves foraneas
 --
