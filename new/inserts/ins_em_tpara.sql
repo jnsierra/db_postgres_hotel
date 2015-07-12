@@ -18,3 +18,7 @@ values('TELEFONOS', '2335566-7788995')
 insert into em_tpara(para_clave, para_valor)
 values('CIUDAD', 'BOGOTA D.C.')
 ;
+--
+insert into em_tpara(para_clave, para_valor)
+values('IVAPRVENTA', '16')
+;

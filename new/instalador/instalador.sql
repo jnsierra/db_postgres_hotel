@@ -38,6 +38,7 @@
 \i C:/db_postgres_hotel/new/tables/co_ttem_mvco.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_fact.sql;
 \i C:/db_postgres_hotel/new/tables/ad_tpara.sql;
+\i C:/db_postgres_hotel/new/tables/in_trece.sql;
 --
 -- Cheks constrains
 --
@@ -59,6 +60,7 @@
 \i C:/db_postgres_hotel/new/checks/co_tsbcu_chks.sql;
 \i C:/db_postgres_hotel/new/checks/co_ttido_chks.sql;
 \i C:/db_postgres_hotel/new/checks/co_tsbft_chks.sql;
+\i C:/db_postgres_hotel/new/checks/in_trece_chks.sql;
 --
 -- Uniques Constrains
 --
@@ -76,6 +78,7 @@
 \i C:/db_postgres_hotel/new/uniques/EM_TPARA_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/CO_TSBCU_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/CO_TTIDO_UNIQUES.sql;
+\i C:/db_postgres_hotel/new/uniques/IN_TRECE_UNIQUES.sql;
 --
 -- Comentarios de las tablas
 --
@@ -106,6 +109,7 @@
 \i C:/db_postgres_hotel/new/comments/in_tmarca_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_tsimc_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_tpara_com.sql;
+\i C:/db_postgres_hotel/new/comments/in_trece_com.sql;
 --
 -- Llaves foraneas
 --
