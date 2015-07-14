@@ -39,6 +39,7 @@
 \i C:/db_postgres_hotel/new/tables/co_ttem_fact.sql;
 \i C:/db_postgres_hotel/new/tables/ad_tpara.sql;
 \i C:/db_postgres_hotel/new/tables/in_trece.sql;
+\i C:/db_postgres_hotel/new/tables/in_tprre.sql;
 --
 -- Cheks constrains
 --
@@ -134,6 +135,7 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tecop.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsimc.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsimc.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_in_tprre.sql;
 --
 --Vistas
 --
