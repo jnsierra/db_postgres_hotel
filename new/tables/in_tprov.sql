@@ -5,7 +5,7 @@
 
 CREATE TABLE IN_TPROV(
 PROV_PROV                 SERIAL                      ,
-PROV_NOMBRE               VARCHAR(10)    NOT NULL     ,
+PROV_NOMBRE               VARCHAR(50)    NOT NULL     ,
 PROV_NIT                  VARCHAR(40)    NOT NULL     ,
 PROV_RAZON_SOCIAL         VARCHAR(50)    NOT NULL     ,
 PROV_REPRESENTANTE        VARCHAR(50)    NOT NULL     ,

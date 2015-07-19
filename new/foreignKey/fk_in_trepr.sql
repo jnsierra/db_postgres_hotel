@@ -1,0 +1,14 @@
+--
+--Referencia a la tabla de productos
+--
+ALTER TABLE IN_TREPR
+ADD FOREIGN KEY (REPR_DSKA)
+REFERENCES IN_TDSKA(DSKA_DSKA)
+;
+--
+--Referencia a la tabla de usuario
+--
+ALTER TABLE IN_TREPR
+ADD FOREIGN KEY (REPR_TIUS)
+REFERENCES US_TTIUS(TIUS_TIUS)
+;

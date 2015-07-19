@@ -40,6 +40,7 @@
 \i C:/db_postgres_hotel/new/tables/ad_tpara.sql;
 \i C:/db_postgres_hotel/new/tables/in_trece.sql;
 \i C:/db_postgres_hotel/new/tables/in_tprre.sql;
+\i C:/db_postgres_hotel/new/tables/in_trepr.sql;
 --
 -- Cheks constrains
 --
@@ -136,6 +137,7 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsimc.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsimc.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tprre.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_in_trepr.sql;
 --
 --Vistas
 --
