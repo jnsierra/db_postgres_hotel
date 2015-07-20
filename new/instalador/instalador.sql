@@ -81,6 +81,7 @@
 \i C:/db_postgres_hotel/new/uniques/CO_TSBCU_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/CO_TTIDO_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TRECE_UNIQUES.sql;
+\i C:/db_postgres_hotel/new/uniques/IN_TREPR_UNIQUES.sql;
 --
 -- Comentarios de las tablas
 --
