@@ -9,5 +9,6 @@ CREATE TABLE IN_TPPFA(
     PPFA_NOMBRE                     VARCHAR(500)        NOT NULL    ,
     PPFA_POSICION                   INT                 NOT NULL    , 
     PPGA_RUTA_IMG                   VARCHAR(900)        NOT NULL    ,
+    PPFA_EXTENSION                  VARCHAR(10)         NOT NULL    ,    
 PRIMARY KEY (PPFA_PPFA)
 );
