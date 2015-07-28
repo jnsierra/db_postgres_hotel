@@ -114,7 +114,7 @@
 \i C:/db_postgres_hotel/new/comments/co_tcier_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_tmarca_com.sql;
 \i C:/db_postgres_hotel/new/comments/co_tsimc_com.sql;
-\i C:/db_postgres_hotel/new/comments/in_tpara_com.sql;
+\i C:/db_postgres_hotel/new/comments/ad_tpara_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_trece_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_ppfa_com.sql;
 --
