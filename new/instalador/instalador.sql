@@ -42,6 +42,7 @@
 \i C:/db_postgres_hotel/new/tables/in_tprre.sql;
 \i C:/db_postgres_hotel/new/tables/in_trepr.sql;
 \i C:/db_postgres_hotel/new/tables/in_tppfa.sql;
+\i C:/db_postgres_hotel/new/tables/co_ttem_fact_rece.sql;
 --
 -- Cheks constrains
 --
