@@ -3,10 +3,10 @@
 --
 
 CREATE TABLE co_ttem_fact_rece(
-    TEM_RECE_RECE                  serial                                         ,
+    TEM_FACT_RECE                  serial                                         ,
     TEM_RECE_TRANS                 INT                 NOT NULL                   ,
     TEM_RECE_RECE                  INT                 NOT NULL                   ,
     TEM_RECE_CANT                  INT                 NOT NULL                   ,
     TEM_RECE_DCTO                  INT                 NOT NULL                   ,
-PRIMARY KEY (TEM_RECE_RECE)    
+PRIMARY KEY (TEM_FACT_RECE)    
 );
