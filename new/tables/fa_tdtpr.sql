@@ -23,6 +23,7 @@ CREATE TABLE fa_tdtpr(
     DTPR_ESTADO             VARCHAR(1)       NOT NULL   DEFAULT 'A'   ,
     DTPR_KAPR               INT              NOT NULL   DEFAULT 0     , --Referencia del movimiento de inventario
     DTPR_DEV_KAPR           INT                         DEFAULT 0     , --Devolucion de un producto ya vendido
+    DTPR_UTILIDAD           NUMERIC(50,6)    NOT NULL   DEFAULT 0     ,
 PRIMARY KEY (DTPR_DTPR)
 );
 

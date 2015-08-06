@@ -197,6 +197,8 @@
 \i C:/db_postgres_hotel/new/functions/IN_OBTIENEEXIS_PROD_SEDE.sql;
 \i C:/db_postgres_hotel/new/functions/IN_FINSERT_CIERRE_DIARIO.sql;
 \i C:/db_postgres_hotel/new/functions/SIMULACION_MVTO_CONTABLES.sql;
+\i C:/db_postgres_hotel/new/functions/FA_FACTURACION.sql;
+\i C:/db_postgres_hotel/new/functions/FA_FACTURA_PRODUCTO.sql;
 --
 -- Triggers
 --
