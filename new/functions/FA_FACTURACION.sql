@@ -12,6 +12,43 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
                                             ) RETURNS VARCHAR  AS $$
     DECLARE
     --
+    --Logica para validaciones previas a la facturacion
+    --
+    --
+    --Cursor el cual valida si la subcuenta para el iva generado existe
+    --
+    c_val_iva_generado CURSOR FOR
+    SELECT count(*)
+      FROM co_tsbcu
+     WHERE sbcu_codigo = '240802'
+      ;
+    --
+    --Cursor el cual verifica si existe la subcuenta para el costo por ventas
+    --
+    c_costo_ventas CURSOR FOR
+    SELECT count(*)
+      FROM co_tsbcu
+     WHERE sbcu_codigo = '613535'
+      ;
+    --
+    --Cursor el cual verifica si existe la subcuenta para la Mercancia al por mayor y menor
+    --
+    c_mercancia_mm CURSOR FOR
+    SELECT count(*)
+      FROM co_tsbcu
+     WHERE sbcu_codigo = '413535'
+      ;
+    --
+    --Cursor el cual verifica si existe la subcuenta para los descuentos
+    --
+    c_descuentos CURSOR FOR
+    SELECT count(*)
+      FROM co_tsbcu
+     WHERE sbcu_codigo = '530535'
+      ;
+    --
+    v_vlr_total_fact_co     NUMERIC(15,6) := 0;
+    --
     --Variables utilizadas para los valores principales de facturacion
     --
     v_vlr_total     NUMERIC  :=0;
@@ -40,6 +77,80 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
       FROM co_ttem_fact
      WHERE tem_fact_trans = p_idTrans
      ;
+    --
+    --Variable con la cual utilizo para almacenar la respuesta de 
+    --
+    v_rta_fact_prod             varchar(500):= '';
+    --
+    --Cursor el cual sirve para obtener el id temporal de transaccion para la tabla temporal
+    --de movimientos contables
+    --
+    c_sec_tem_mvco CURSOR FOR
+    SELECT nextval('co_temp_movi_contables') 
+    ;
+    --
+    --Cursores necesarios para la contabilizacion
+    --
+    c_sum_debitos CURSOR(vc_temIdTrans INT) IS
+    SELECT sum(coalesce(cast(tem_mvco_valor as numeric),0) )
+      FROM co_ttem_mvco
+     WHERE upper(tem_mvco_naturaleza) = 'D'
+       AND tem_mvco_trans = vc_temIdTrans
+       ;
+    --
+    c_sum_creditos CURSOR(vc_temIdTrans INT) IS
+    SELECT sum(coalesce(cast(tem_mvco_valor as numeric),0) )
+      FROM co_ttem_mvco
+     WHERE tem_mvco_naturaleza = 'C'
+       AND tem_mvco_trans = vc_temIdTrans
+       ;
+    --
+    v_sum_deb               NUMERIC(15,6):=0;
+    v_sum_cre               NUMERIC(15,6):=0;
+    v_sbcu_sbcu             INT := 0;
+    --
+    --Obtiene el id de una subcuenta basandose en el codigo de la misma
+    --
+    c_sbcu_sbcu CURSOR(vc_sbcu_codigo VARCHAR) IS
+    SELECT sbcu_sbcu
+      FROM co_tsbcu
+     WHERE sbcu_codigo = vc_sbcu_codigo
+     ;
+    --
+    c_sbcu_factura  CURSOR(vc_temIdTrans INT) IS
+    SELECT tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza
+      FROM co_ttem_mvco
+     WHERE tem_mvco_trans = vc_temIdTrans
+     ;
+    --
+    --Cursor con el cual obtengo el valor total de los productos de la factura
+    --
+    c_vlr_total_fact CURSOR(vc_fact_fact INT) FOR
+    SELECT fact_vlr_total + fact_vlr_iva
+      FROM fa_tfact
+     WHERE fact_fact = vc_fact_fact
+     ;
+    --
+    --Cursor con el cual obtenemos el valor total del iva de la factura
+    --
+    c_vlr_iva_fact CURSOR(vc_fact_fact INT) FOR
+    SELECT fact_vlr_iva
+      FROM fa_tfact
+     WHERE fact_fact = vc_fact_fact
+     ;
+    --
+    --Cursor con el cual obtnemos el valor de la factura sin iva
+    --
+    c_vlr_total_fact_sin_iva CURSOR(vc_fact_fact INT) FOR
+    SELECT fact_vlr_total 
+      FROM fa_tfact
+     WHERE fact_fact = vc_fact_fact
+     ;
+    --
+    v_valor_iva_fact        NUMERIC(15,6) := 0;
+    v_vlr_total_factura     NUMERIC(15,6) := 0;
+    v_idTrans_con           INT := 0;
+    --
     BEGIN
     --
     --Inicio de Validacion de Subcuentas Contables necesarias para la contabilizacion
@@ -110,13 +221,120 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
         --
     END IF;
     --
+    --Cursor con el cual obtengo el id de movimientos contables
+    --
+    OPEN c_sec_tem_mvco;
+    FETCH c_sec_tem_mvco INTO v_idTrans_con;
+    CLOSE c_sec_tem_mvco;
+    --
     --For con el cual recorro todos los productos vendidos en la factura
     --
     FOR prod IN c_prod_fact
     LOOP
-        
+        --
+        v_rta_fact_prod := FA_FACTURA_PRODUCTO(
+                                                p_tius,
+                                                prod.tem_fact_dska,
+                                                p_sede,
+                                                prod.tem_fact_cant,
+                                                v_idTrans_con,
+                                                v_fact_fact
+                                                );
+        --
+        IF UPPER(v_rta_fact_prod) <> 'OK' THEN 
+        --
+            RAISE EXCEPTION 'Error al facturar el producto con el id % ',prod.tem_fact_dska;
+        --
+        END IF;
+        --
     END LOOP;
-    --    
+    --
+    DELETE FROM co_ttem_fact
+    WHERE tem_fact_trans = p_idTrans
+    ;
+    --
+    OPEN c_vlr_iva_fact(v_fact_fact);
+    FETCH c_vlr_iva_fact INTO v_valor_iva_fact;  
+    CLOSE c_vlr_iva_fact;
+    --
+    --Insercion para contabilizar el iva
+    --
+    INSERT INTO co_ttem_mvco(
+            tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
+    VALUES (v_idTrans_con, '240802' , v_valor_iva_fact , 'C');
+    --
+    --
+    --
+    OPEN c_vlr_total_fact_sin_iva(v_fact_fact);
+    FETCH c_vlr_total_fact_sin_iva INTO v_vlr_total_factura;
+    CLOSE c_vlr_total_fact_sin_iva;
+    --
+    --Insercion de Mercancias al por mayor y menor
+    --
+    INSERT INTO co_ttem_mvco(
+            tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
+    VALUES (v_idTrans_con, '413535' , v_vlr_total_factura , 'C');
+    --
+    --Insercion de descuentos para la factura
+    --
+    INSERT INTO co_ttem_mvco(
+            tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
+    VALUES (v_idTrans_con, '530535' , 0 , 'D');
+    --
+    --Obtengo el valor total de la factura
+    --
+    OPEN c_vlr_total_fact(v_fact_fact);
+    FETCH c_vlr_total_fact INTO v_vlr_total_fact_co;
+    CLOSE c_vlr_total_fact;
+    --
+    --Logica para que el dinero valla directo a la caja menor
+    --
+    INSERT INTO co_ttem_mvco(
+            tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
+                     VALUES (v_idTrans_con, '110501' , v_vlr_total_fact_co , 'D');
+    --
+    UPDATE fa_tfact
+    SET fact_vlr_efectivo = v_vlr_total_fact_co
+    WHERE fact_fact = v_fact_fact
+    ;
+    --
+    --
+    OPEN c_sum_debitos(v_idTrans_con);
+    FETCH c_sum_debitos INTO v_sum_deb;
+    CLOSE c_sum_debitos;
+    --
+    OPEN c_sum_creditos(v_idTrans_con);
+    FETCH c_sum_creditos INTO v_sum_cre;
+    CLOSE c_sum_creditos;
+    --
+    IF v_sum_deb = v_sum_cre THEN
+        --
+        FOR movi IN c_sbcu_factura(v_idTrans_con) 
+        LOOP
+            --
+            OPEN c_sbcu_sbcu(movi.tem_mvco_sbcu);
+            FETCH c_sbcu_sbcu INTO v_sbcu_sbcu;
+            CLOSE c_sbcu_sbcu;
+            --
+            INSERT INTO co_tmvco(mvco_trans, 
+                                 mvco_sbcu, mvco_naturaleza, 
+                                 mvco_tido, mvco_valor, 
+                                 mvco_lladetalle, mvco_id_llave, 
+                                 mvco_tercero, mvco_tipo)
+                VALUES ( v_idTrans_con, 
+                         v_sbcu_sbcu , movi.tem_mvco_naturaleza, 
+                         2, cast(movi.tem_mvco_valor as NUMERIC),
+                         'fact', v_fact_fact,
+                         1, p_clien );
+            
+        END LOOP;
+        --
+    ELSE
+        --
+        RAISE EXCEPTION 'Las sumas de las cuentas al facturar no coinciden por favor contactese con el administrador Debitos %, Creditos %',v_sum_deb,v_sum_cre;
+        --
+    END IF;
+    
     RETURN 'Ok-'||v_fact_fact;
     --    
     EXCEPTION WHEN OTHERS THEN

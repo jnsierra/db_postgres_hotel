@@ -89,6 +89,17 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
      WHERE dska_dska = vc_dska_dska
        AND sbcu_sbcu = dska_sbcu
      ;
+    --
+    --Cursor con el cual obtengo el valor del promedio pornderado del producto
+    --
+    c_prom_pond_prod CURSOR(vc_dska_dska INT) IS
+    SELECT kapr_cost_saldo_uni, kapr_cant_saldo,kapr_cost_saldo_tot
+      FROM in_tkapr
+     WHERE kapr_kapr = (select max(kapr_kapr) from in_tkapr where kapr_dska = vc_dska_dska)
+    ;
+    --
+    v_sbcu_cod_prod         varchar(100) := '';
+    --
     BEGIN
     --
     --Validacion de existencia de movimientos de inventario referenciando facturacion
@@ -121,7 +132,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
     --
     IF upper(v_rta_insrt_kar) NOT LIKE '%OK%' THEN
         --
-        RAISE EXCEPTION 'Error al hacer la salida de inventario. % ',v_rta_insrt_kar ;
+        RAISE EXCEPTION 'Error al hacer la salida de inventario. % ', v_rta_insrt_kar ;
         --
     ELSE
         --
@@ -143,13 +154,16 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
     FETCH c_prom_pond_prod INTO v_vlr_prom_pond;
     CLOSE c_prom_pond_prod;
     --
+    --Realiza el calculo de utilidad del que dejara el producto
+    --
     v_utilidad_prod := v_precio_prod - v_vlr_prom_pond;
+    v_utilidad_prod := v_utilidad_prod * p_cantidad;
     --
     IF v_utilidad_prod <= 0 THEN
         --
         RAISE EXCEPTION 'La venta del producto produce una perdida de: % ',v_utilidad_prod ;
         --
-    END IF
+    END IF;
     --
     --Cursor el cual obtiene el id para el ingreso de detalles de facturacion
     --
@@ -203,7 +217,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
     INSERT INTO co_ttem_mvco(
             tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
     VALUES (p_idmvco, '613535' , v_vlr_prom_pond , 'D');
-        --
+    --
     RETURN 'Ok';
     -- 
     EXCEPTION WHEN OTHERS THEN
