@@ -221,20 +221,20 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
     --
     IF upper(p_tipoPago) = 'T' THEN
         --
-        INSERT INTO FA_TFACT(fact_fact,   fact_tius, fact_clien, fact_vlr_total, fact_vlr_iva, fact_tipo_pago, fact_id_voucher)
-                     VALUES (v_fact_fact, p_tius,    p_clien,    v_vlr_total,    v_vlr_iva,    'T',            p_idVoucher)
+        INSERT INTO FA_TFACT(fact_fact,   fact_tius, fact_clien, fact_vlr_total, fact_vlr_iva, fact_tipo_pago, fact_id_voucher, fact_sede)
+                     VALUES (v_fact_fact, p_tius,    p_clien,    v_vlr_total,    v_vlr_iva,    'T',            p_idVoucher,p_sede)
                     ;
         --
     ELSIF upper(p_tipoPago) = 'M' THEN
         --
-        INSERT INTO FA_TFACT(fact_fact,   fact_tius, fact_clien, fact_vlr_total, fact_vlr_iva, fact_tipo_pago, fact_id_voucher)
+        INSERT INTO FA_TFACT(fact_fact,   fact_tius, fact_clien, fact_vlr_total, fact_vlr_iva, fact_tipo_pago, fact_id_voucher, fact_sede)
                      VALUES (v_fact_fact, p_tius,    p_clien,    v_vlr_total,    v_vlr_iva,    'M',            p_idVoucher)
                     ;
         --
     ELSE
         --
-        INSERT INTO FA_TFACT(fact_fact,   fact_tius, fact_clien, fact_vlr_total, fact_vlr_iva)
-                     VALUES (v_fact_fact, p_tius,    p_clien,    v_vlr_total,    v_vlr_iva)
+        INSERT INTO FA_TFACT(fact_fact,   fact_tius, fact_clien, fact_vlr_total, fact_vlr_iva, fact_sede)
+                     VALUES (v_fact_fact, p_tius,    p_clien,    v_vlr_total,    v_vlr_iva, p_sede)
         ;
         --
     END IF;
@@ -353,6 +353,9 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
         --
     END IF;
     --
+    DELETE FROM co_ttem_mvco
+    WHERE tem_mvco_trans =  v_idTrans_con
+    ;
     RETURN 'Ok-'||v_fact_fact;
     --    
     EXCEPTION WHEN OTHERS THEN

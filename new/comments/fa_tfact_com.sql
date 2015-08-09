@@ -16,3 +16,4 @@ COMMENT ON COLUMN FA_TFACT.FACT_VLR_DCTO            IS          'Indica cual fue
 COMMENT ON COLUMN FA_TFACT.FACT_VLR_EFECTIVO        IS          'Indica el valor que pago el cliente en efectivo';
 COMMENT ON COLUMN FA_TFACT.FACT_VLR_TARJETA         IS          'Indica el valor que pago el cliente en tarjeta';
 COMMENT ON COLUMN FA_TFACT.FACT_CIERRE              IS          'Referencia el id del cierre en el cual fue realizado la factura';
+COMMENT ON COLUMN FA_TFACT.FACT_SEDE                IS          'Referencia el id de la sede en la cual fue realizada la factura';

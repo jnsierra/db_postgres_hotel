@@ -22,5 +22,6 @@ CREATE TABLE FA_TFACT(
     FACT_VLR_EFECTIVO        NUMERIC(50,6)      NOT NULL   DEFAULT  0    ,
     FACT_VLR_TARJETA         NUMERIC(50,6)      NOT NULL   DEFAULT  0    ,
     FACT_CIERRE              INT                                         ,
+    FACT_SEDE                INT                NOT NULL                 ,
 PRIMARY KEY (FACT_FACT)
 );
