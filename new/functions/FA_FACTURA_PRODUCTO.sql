@@ -194,13 +194,13 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
             dtpr_num_prod, dtpr_cant, dtpr_vlr_pr_tot, 
             dtpr_vlr_uni_prod, dtpr_vlr_iva_tot, dtpr_vlr_iva_uni, 
             dtpr_vlr_venta_tot, dtpr_vlr_venta_uni, dtpr_vlr_total, 
-            dtpr_desc, dtpr_kapr,dtpr_valor_desc)
+            dtpr_desc, dtpr_kapr,dtpr_valor_desc,dtpr_utilidad)
         VALUES (
             v_dtpr_dtpr, p_dska, p_fact, 
             0, p_cantidad, v_vlr_total_fact, 
             v_precio_prod, v_vlr_iva_tot, v_vlr_iva_uni, 
             v_vlr_tot_fact_iva, v_vlr_uni_fact_iva, v_vlr_tot_fact_iva,
-            'N', v_kapr_kapr,0);
+            'N', v_kapr_kapr,0,v_utilidad_prod );
     --
     OPEN c_cod_sbcu(p_dska);
     FETCH c_cod_sbcu INTO v_sbcu_cod_prod;
@@ -221,6 +221,6 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
     RETURN 'Ok';
     -- 
     EXCEPTION WHEN OTHERS THEN
-         RETURN 'Error '|| sqlerrm;
+         RETURN 'Error FA_FACTURA_PRODUCTO '|| sqlerrm;
     END;
 $$ LANGUAGE 'plpgsql';

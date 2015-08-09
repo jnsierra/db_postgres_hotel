@@ -17,6 +17,14 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
     --
     --Cursor el cual valida si la subcuenta para el iva generado existe
     --
+    c_val_caja_menor CURSOR FOR
+    SELECT count(*)
+      FROM co_tsbcu
+     WHERE sbcu_codigo = '110501'
+      ;
+    --
+    --Cursor el cual valida si la subcuenta para el iva generado existe
+    --
     c_val_iva_generado CURSOR FOR
     SELECT count(*)
       FROM co_tsbcu
@@ -60,6 +68,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
     v_val_costo_ventas          int :=0;
     v_val_mercancias_mm         int :=0;
     v_val_descuentos            int :=0;
+    v_val_caja_menor            int :=0;
     --
     v_fact_fact     NUMERIC  :=0;
     --
@@ -172,6 +181,9 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
     FETCH c_descuentos INTO v_val_descuentos;
     CLOSE c_descuentos;
     --
+    OPEN c_val_caja_menor;
+    FETCH c_val_caja_menor INTO v_val_caja_menor;
+    CLOSE c_val_caja_menor;
     --
     IF v_val_iva_generado <> 1 THEN
         --
@@ -194,6 +206,12 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
     IF v_val_descuentos <> 1 THEN
         --
         RAISE EXCEPTION 'Error cuenta de descuentos por ventas 530535 no se encuentra parametrizada por favor comunicarse con el administrador del sistema ';
+        --
+    END IF;
+    --
+    IF v_val_caja_menor <> 1 THEN
+        --
+        RAISE EXCEPTION 'Error cuenta de caja menor 110501 no se encuentra parametrizada por favor comunicarse con el administrador del sistema ';
         --
     END IF;
     --
@@ -238,12 +256,12 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
                                                 p_sede,
                                                 prod.tem_fact_cant,
                                                 v_idTrans_con,
-                                                v_fact_fact
+                                                cast(v_fact_fact as int)
                                                 );
         --
         IF UPPER(v_rta_fact_prod) <> 'OK' THEN 
         --
-            RAISE EXCEPTION 'Error al facturar el producto con el id % ',prod.tem_fact_dska;
+            RAISE EXCEPTION 'Error al facturar el producto con el id % con el siguiente error % ',prod.tem_fact_dska, v_rta_fact_prod;
         --
         END IF;
         --
@@ -334,10 +352,10 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
         RAISE EXCEPTION 'Las sumas de las cuentas al facturar no coinciden por favor contactese con el administrador Debitos %, Creditos %',v_sum_deb,v_sum_cre;
         --
     END IF;
-    
+    --
     RETURN 'Ok-'||v_fact_fact;
     --    
     EXCEPTION WHEN OTHERS THEN
-         RETURN 'Error '|| sqlerrm;
+         RETURN 'Error FA_FACTURACION '|| sqlerrm;
     END;
 $$ LANGUAGE 'plpgsql';
