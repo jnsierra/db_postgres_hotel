@@ -66,6 +66,7 @@
 \i C:/db_postgres_hotel/new/checks/co_tsbft_chks.sql;
 \i C:/db_postgres_hotel/new/checks/in_trece_chks.sql;
 \i C:/db_postgres_hotel/new/checks/in_tppfa_chks.sql;
+\i C:/db_postgres_hotel/new/checks/in_tcate_chks.sql;
 --
 -- Uniques Constrains
 --
