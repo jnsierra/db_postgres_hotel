@@ -224,11 +224,12 @@ CREATE OR REPLACE FUNCTION IN_ADICIONA_PROD_EXIS (
             
         ELSE
             --
-            RAISE EXCEPTION 'Error al realizar el movimiento de inventario';
+            RAISE EXCEPTION 'Error al realizar el movimiento de inventario: % ',v_rta_insrt_kar ;
             --
         END IF;
+        --
         RETURN 'Ok';
-    
+        --
     EXCEPTION WHEN OTHERS THEN
          RETURN 'Error '|| sqlerrm;
     END;

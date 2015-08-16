@@ -43,6 +43,7 @@
 \i C:/db_postgres_hotel/new/tables/in_trepr.sql;
 \i C:/db_postgres_hotel/new/tables/in_tppfa.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_fact_rece.sql;
+\i C:/db_postgres_hotel/new/tables/in_tcepr.sql;
 --
 -- Cheks constrains
 --
@@ -87,6 +88,7 @@
 \i C:/db_postgres_hotel/new/uniques/IN_TRECE_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TREPR_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TPPFA_UNIQUES.sql;
+\i C:/db_postgres_hotel/new/uniques/IN_TCEPR_UNIQUES.sql;
 --
 -- Comentarios de las tablas
 --
@@ -119,6 +121,7 @@
 \i C:/db_postgres_hotel/new/comments/ad_tpara_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_trece_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_ppfa_com.sql;
+\i C:/db_postgres_hotel/new/comments/in_tcepr_com.sql;
 --
 -- Llaves foraneas
 --
@@ -145,6 +148,7 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_co_tsimc.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tprre.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_trepr.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_in_tcepr.sql;
 --
 --Vistas
 --
@@ -210,6 +214,7 @@
 \i C:/db_postgres_hotel/new/triggers/co_tcuen_before_insert.sql;
 \i C:/db_postgres_hotel/new/triggers/co_tsbcu_before_insert.sql;
 \i C:/db_postgres_hotel/new/triggers/in_tkapr_before_insert_or_update.sql;
+\i C:/db_postgres_hotel/new/triggers/in_trepr_after_insert_or_update.sql;
 --
 --SECUENCIAS
 --
