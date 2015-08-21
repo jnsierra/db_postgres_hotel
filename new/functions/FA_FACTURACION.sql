@@ -87,9 +87,17 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
      WHERE tem_fact_trans = p_idTrans
      ;
     --
+    --Cursro el cual obtiene todas las recetas que fueron facturados teniendo en cuenta el id de transaccion
+    --
+    c_rece_fact CURSOR FOR
+    SELECT tem_fact_rece, tem_rece_cant, tem_fact_dcto
+    FROM co_ttem_fact_rece
+    ;
+    --
     --Variable con la cual utilizo para almacenar la respuesta de 
     --
     v_rta_fact_prod             varchar(500):= '';
+    v_rta_fact_rece             varchar(500):= '';    
     --
     --Cursor el cual sirve para obtener el id temporal de transaccion para la tabla temporal
     --de movimientos contables
@@ -264,6 +272,20 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
             RAISE EXCEPTION 'Error al facturar el producto con el id % con el siguiente error % ',prod.tem_fact_dska, v_rta_fact_prod;
         --
         END IF;
+        --
+    END LOOP;
+    --
+    FOR receta IN c_rece_fact 
+    LOOP
+        --
+        v_rta_fact_rece := FA_FACTURA_RECETA(
+                                            p_tius,
+                                            receta.tem_fact_rece,
+                                            p_sede,
+                                            receta.tem_rece_cant,
+                                            v_idTrans_con,
+                                            cast(v_fact_fact as int)                                            
+                                            );
         --
     END LOOP;
     --
