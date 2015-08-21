@@ -12,5 +12,6 @@ CREATE TABLE IN_TRECE(
     RECE_ESTADO                 VARCHAR(1)          NOT NULL   DEFAULT 'A'   ,
     RECE_FEC_INGRESO            TIMESTAMP           NOT NULL   DEFAULT NOW() ,
     RECE_PROMEDIO               NUMERIC(15,6)       NOT NULL ,
+    RECE_COSTO                  NUMERIC(15,6)       NOT NULL  DEFAULT 0 ,
 PRIMARY KEY (RECE_RECE)
 );
