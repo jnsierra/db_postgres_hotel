@@ -5,7 +5,7 @@ COMMENT ON COLUMN   FA_TDTRE.DTRE_FACT                     IS     'Factura asoci
 COMMENT ON COLUMN   FA_TDTRE.DTRE_FECHA                    IS     'Fecha en la cual se registro la venta';
 COMMENT ON COLUMN   FA_TDTRE.DTRE_CANT                     IS     'Numero de recetas o platos vendidos en la factura';
 COMMENT ON COLUMN   FA_TDTRE.DTRE_VLR_RE_TOT               IS     'Valor de todas las recetas en el momento de la venta (costo de produccion de la receta en el momento de la venta)';
-COMMENT ON COLUMN   FA_TDTRE.DTRE_VLR_UNI_RE               IS     'Valor de un receta en el momento de la venta (costo de produccion una receta en el momento de la venta)';
+COMMENT ON COLUMN   FA_TDTRE.DTRE_VLR_UNI_RECE             IS     'Valor de un receta en el momento de la venta (costo de produccion una receta en el momento de la venta)';
 COMMENT ON COLUMN   FA_TDTRE.DTRE_VLR_IVA_TOT              IS     'Valor total del iva de todas las recetas facturadas';
 COMMENT ON COLUMN   FA_TDTRE.DTRE_VLR_IVA_UNI              IS     'Valor del iva de una sola receta';
 COMMENT ON COLUMN   FA_TDTRE.DTRE_VLR_VENTA_TOT            IS     'Valor total de la venta de las recetas Iva + precio ';

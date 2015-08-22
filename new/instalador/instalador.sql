@@ -44,6 +44,7 @@
 \i C:/db_postgres_hotel/new/tables/in_tppfa.sql;
 \i C:/db_postgres_hotel/new/tables/co_ttem_fact_rece.sql;
 \i C:/db_postgres_hotel/new/tables/in_tcepr.sql;
+\i C:/db_postgres_hotel/new/tables/fa_tdtre.sql;
 --
 -- Cheks constrains
 --
@@ -122,6 +123,7 @@
 \i C:/db_postgres_hotel/new/comments/in_trece_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_ppfa_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_tcepr_com.sql;
+\i C:/db_postgres_hotel/new/comments/fa_tdtre_com.sql;
 --
 -- Llaves foraneas
 --
@@ -227,6 +229,8 @@
 --
 --Usuario maestro de la aplicacion
 \i C:/db_postgres_hotel/new/usuario_maestro.sql;
+\i C:/db_postgres_hotel/new/inserts/ins_ad_tpara.sql
+
 --inserts de parametrizacion
 \i C:/db_postgres_hotel/new/inserts/ins_co_tclas.sql;    
 \i C:/db_postgres_hotel/new/inserts/ins_co_tgrup.sql;  

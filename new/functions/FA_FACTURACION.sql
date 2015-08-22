@@ -90,7 +90,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
     --Cursro el cual obtiene todas las recetas que fueron facturados teniendo en cuenta el id de transaccion
     --
     c_rece_fact CURSOR FOR
-    SELECT tem_fact_rece, tem_rece_cant, tem_fact_dcto
+    SELECT tem_fact_rece, tem_rece_cant, tem_rece_dcto
     FROM co_ttem_fact_rece
     ;
     --
@@ -286,6 +286,12 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
                                             v_idTrans_con,
                                             cast(v_fact_fact as int)                                            
                                             );
+        --
+        IF UPPER(v_rta_fact_rece) <> 'OK' THEN 
+        --
+            RAISE EXCEPTION 'Error al facturar la receta o plato con el id % con el siguiente error % ',receta.tem_fact_rece, v_rta_fact_rece;
+        --
+        END IF;
         --
     END LOOP;
     --
