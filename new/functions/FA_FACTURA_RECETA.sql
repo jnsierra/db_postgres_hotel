@@ -25,6 +25,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_RECETA(
            AND prre_estado = 'A'
            AND rece_estado = 'A'
            AND rece_rece = p_rece
+           AND rece_sede = p_sede
            ;
         --
         c_calcula_iva CURSOR (vc_valor NUMERIC) IS
@@ -54,6 +55,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_RECETA(
         v_costo_tot_rece    NUMERIC := 0;
         --
     BEGIN
+        raise exception 'parametro %, %, %, %, %, %',p_tius,p_rece,p_sede,p_cantidad,p_idmvco,p_fact;
         --
         OPEN c_id_dtre;
         FETCH c_id_dtre INTO v_dtre_dtre;
@@ -89,7 +91,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_RECETA(
         --
         INSERT INTO fa_tdtre(
             dtre_dtre, dtre_rece, dtre_fact, dtre_cant, dtre_vlr_re_tot, 
-            dtre_vlr_uni_prod, dtre_vlr_iva_tot, dtre_vlr_iva_uni, dtre_vlr_venta_tot, 
+            dtre_vlr_uni_rece, dtre_vlr_iva_tot, dtre_vlr_iva_uni, dtre_vlr_venta_tot, 
             dtre_vlr_venta_uni, dtre_vlr_total, dtre_desc, dtre_utilidad)
                     VALUES (v_dtre_dtre, p_rece, p_fact, p_cantidad, v_costo_tot_rece, 
                             v_costo_rece, v_iva_total, v_iva_unidad , v_venta_total, 

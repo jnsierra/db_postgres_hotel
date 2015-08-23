@@ -206,6 +206,7 @@
 \i C:/db_postgres_hotel/new/functions/SIMULACION_MVTO_CONTABLES.sql;
 \i C:/db_postgres_hotel/new/functions/FA_FACTURACION.sql;
 \i C:/db_postgres_hotel/new/functions/FA_FACTURA_PRODUCTO.sql;
+\i C:/db_postgres_hotel/new/functions/FA_FACTURA_RECETA.sql;
 --
 -- Triggers
 --

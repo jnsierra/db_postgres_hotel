@@ -6,10 +6,11 @@
 
 CREATE TABLE in_trefe(
    refe_refe              SERIAL                        ,  
-   refe_desc              varchar(200)                  , 
+   refe_nombre            varchar(200) NOT NULL         ,
+   refe_desc              varchar(200) NOT NULL         , 
    refe_estado            varchar(200) default  'A'     , 
-   refe_came              int                      		, 
-   refe_memori            int                       	,
-   refe_pantalla          int                      		,
+   refe_came              varchar(200) default  'N/A'   , 
+   refe_memori            varchar(200) default  'N/A'   ,
+   refe_pantalla          varchar(200) default  'N/A'   ,
    PRIMARY KEY (refe_refe)	
 ); 
