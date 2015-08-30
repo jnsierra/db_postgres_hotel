@@ -100,6 +100,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
     --
     v_sbcu_cod_prod         varchar(100) := '';
     --
+    v_vlr_prom_pond_tot     NUMERIC := 0;
     BEGIN
     --
     --Validacion de existencia de movimientos de inventario referenciando facturacion
@@ -206,17 +207,21 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
     FETCH c_cod_sbcu INTO v_sbcu_cod_prod;
     CLOSE c_cod_sbcu;
     --
+    --Calculo el promedio ponderado total de todos los productos
+    --
+    v_vlr_prom_pond_tot := v_vlr_prom_pond * p_cantidad;    
+    --
     --Insercion para que se contabilice la salida del producto
     --
     INSERT INTO co_ttem_mvco(
             tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
-    VALUES (p_idmvco, v_sbcu_cod_prod , v_vlr_prom_pond , 'C');
+    VALUES (p_idmvco, v_sbcu_cod_prod , v_vlr_prom_pond_tot , 'C');
     --
     --Insercion para la entrada de costo de ventas
     --
     INSERT INTO co_ttem_mvco(
             tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
-    VALUES (p_idmvco, '613535' , v_vlr_prom_pond , 'D');
+    VALUES (p_idmvco, '613535' , v_vlr_prom_pond_tot , 'D');
     --
     RETURN 'Ok';
     -- 

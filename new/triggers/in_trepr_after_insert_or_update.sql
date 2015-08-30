@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION f_ins_upd_repr() RETURNS trigger AS $f_ins_upd_repr$
         --Cursor el cual suma todos los promedios ponderados
         --
         c_sum_promedios CURSOR FOR
-        SELECT sum(repr_promedio)
+        SELECT sum(repr_promedio*repr_cantidad)
          FROM in_trepr
         WHERE repr_rece = NEW.repr_rece
         ;

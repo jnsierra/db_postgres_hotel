@@ -54,6 +54,59 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_RECETA(
         v_costo_rece        NUMERIC := 0;
         v_costo_tot_rece    NUMERIC := 0;
         --
+        --Facturacion de los productos de la receta
+        --
+        --  
+        --Valida si el movimiento de inventario para facturacion esta parametrizado
+        --
+        c_valida_movi_fact CURSOR FOR
+        SELECT count(*)
+          FROM in_tmvin
+         WHERE mvin_venta = 'S'
+         ;
+        --
+        --Moviento de inventario parametrizado para la venta de productos
+        --
+        c_mvin_venta CURSOR FOR
+        SELECT mvin_mvin
+          FROM in_tmvin
+         WHERE mvin_venta = 'S'
+         ;
+        --
+        v_mvin_mvin             INT :=0;
+        v_val_mvin_fact         INT := 0;
+        v_sbcu_cod_prod         varchar(100) := '';
+        --
+        --Obtengo los productos asociados a la receta
+        --
+        c_prod_rece CURSOR FOR
+        SELECT repr_cantidad, repr_dska
+          FROM in_trepr
+         WHERE repr_rece = p_rece
+        ;
+        --
+        v_total_productos       INT := 0;
+        v_prom_pond_prod        NUMERIC := 0;
+        --
+        --Cursor con el cual obtengo el valor del promedio pornderado del producto
+        --
+        c_prom_pond_prod CURSOR(vc_dska_dska INT) IS
+        SELECT kapr_cost_saldo_uni
+          FROM in_tkapr
+         WHERE kapr_kapr = (select max(kapr_kapr) from in_tkapr where kapr_dska = vc_dska_dska)
+        ;
+        --
+        v_rta_insrt_kar         VARCHAR(1000) := '';
+        v_vlr_prom_pond         NUMERIC := 0;
+        --
+        --Obtiene el codico de la subcuenta para un producto
+        --
+        c_cod_sbcu CURSOR (vc_dska_dska  INT) IS
+        SELECT sbcu_codigo
+          FROM co_tsbcu, in_tdska
+         WHERE dska_dska = vc_dska_dska
+           AND sbcu_sbcu = dska_sbcu
+         ;
     BEGIN
         --raise exception 'parametro %, %, %, %, %, %',p_tius,p_rece,p_sede,p_cantidad,p_idmvco,p_fact;
         --
@@ -98,8 +151,80 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_RECETA(
                             v_costo_rece, v_iva_total, v_iva_unidad , v_venta_total, 
                             v_venta_unidad, v_venta_total, 'N', v_utilidad );
         --
-    RETURN 'Ok';
-    -- 
+        --Realizamos la logica para la facturacion de productos asociados
+        --
+        --Verificamos si existe el movimiento de inventario para facturacion
+        --
+        --
+        OPEN c_valida_movi_fact;
+        FETCH c_valida_movi_fact INTO v_val_mvin_fact;
+        CLOSE c_valida_movi_fact;
+        --
+        IF v_val_mvin_fact <> 1 THEN
+            --
+            RAISE EXCEPTION 'No existe ningun movimiento de inventario que referencie la facturacion de productos';
+            --
+        ELSE
+            --
+            OPEN c_mvin_venta;
+            FETCH c_mvin_venta INTO v_mvin_mvin;
+            CLOSE c_mvin_venta;
+            --
+        END IF;        
+        --
+        --Ciclo en el cual se registra la salida y la contabilizacion de cada
+        --producto de las recetas
+        --
+        FOR producto IN c_prod_rece
+        LOOP
+            --
+            v_total_productos := producto.repr_cantidad * p_cantidad;
+            --
+            OPEN c_prom_pond_prod(producto.repr_dska);
+            FETCH c_prom_pond_prod INTO v_prom_pond_prod;
+            CLOSE c_prom_pond_prod;
+            --
+            --
+            --Realizamos la salida del inventario del producto 
+            --
+            v_rta_insrt_kar := IN_FINSERTA_PROD_KARDEX(producto.repr_dska,
+                                                       v_mvin_mvin,
+                                                       p_tius,
+                                                       v_total_productos,
+                                                       0,
+                                                       p_sede                                                   
+                                                       );
+            --
+            IF upper(v_rta_insrt_kar) NOT LIKE '%OK%' THEN
+                --
+                RAISE EXCEPTION 'Error al hacer la salida de inventario. % ', v_rta_insrt_kar ;
+                --            
+            END IF;
+            --
+            v_vlr_prom_pond := v_prom_pond_prod * v_total_productos; 
+            --
+            --Obtengo la subcuenta del producto
+            --
+            OPEN c_cod_sbcu(producto.repr_dska);
+            FETCH c_cod_sbcu INTO v_sbcu_cod_prod;
+            CLOSE c_cod_sbcu;
+            --
+            --Insercion para que se contabilice la salida del producto
+            --
+            INSERT INTO co_ttem_mvco(
+                    tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
+            VALUES (p_idmvco, v_sbcu_cod_prod , v_vlr_prom_pond , 'C');
+            --
+            --Insercion para la entrada de costo de ventas
+            --
+            INSERT INTO co_ttem_mvco(
+                    tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
+            VALUES (p_idmvco, '613535' , v_vlr_prom_pond , 'D');
+            --
+        END LOOP;
+        --
+        RETURN 'Ok';
+        -- 
     EXCEPTION WHEN OTHERS THEN
          RETURN 'Error FA_FACTURA_RECETA '|| sqlerrm;
     END;

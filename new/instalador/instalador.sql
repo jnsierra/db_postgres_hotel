@@ -207,6 +207,7 @@
 \i C:/db_postgres_hotel/new/functions/FA_FACTURACION.sql;
 \i C:/db_postgres_hotel/new/functions/FA_FACTURA_PRODUCTO.sql;
 \i C:/db_postgres_hotel/new/functions/FA_FACTURA_RECETA.sql;
+\i C:/db_postgres_hotel/new/functions/cambio_nombre_prod.sql;
 --
 -- Triggers
 --
