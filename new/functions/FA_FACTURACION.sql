@@ -90,8 +90,9 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
     --Cursro el cual obtiene todas las recetas que fueron facturados teniendo en cuenta el id de transaccion
     --
     c_rece_fact CURSOR FOR
-    SELECT tem_fact_rece, tem_rece_cant, tem_rece_dcto
-    FROM co_ttem_fact_rece
+    SELECT tem_fact_rece, tem_rece_cant, tem_rece_dcto, tem_rece_rece
+      FROM co_ttem_fact_rece
+     WHERE tem_rece_trans = p_idTrans
     ;
     --
     --Variable con la cual utilizo para almacenar la respuesta de 
@@ -280,7 +281,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURACION   (
         --
         v_rta_fact_rece := FA_FACTURA_RECETA(
                                             p_tius,
-                                            receta.tem_fact_rece,
+                                            receta.tem_rece_rece,
                                             p_sede,
                                             receta.tem_rece_cant,
                                             v_idTrans_con,

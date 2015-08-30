@@ -1,7 +1,7 @@
 CREATE OR REPLACE 
 FUNCTION FA_CONSLUTA_COSTS_FACT (  
                             p_fact_fact     INT,
-                            p_tipo          INT, -- (1) SERVICIO (2) PRODUCTO (3) PRODUCTOS + SERVICIOS 
+                            p_tipo          INT, -- (1) SERVICIO (2) PRODUCTO (3) PRODUCTOS + SERVICIOS (4) RECETAS
                             p_accion        INT  -- (1) VALOR TOTAL(IVA +VALOR) (2) VALOR DE LOS SERVICIOS O PRODUCTOS (3) VALOR IVA (4) DESCUENTOS
                          ) RETURNS NUMERIC  AS $$
     DECLARE
@@ -67,22 +67,56 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
            AND dtpr_fact = p_fact_fact
            ;
         --
+        --Funciones para las recetas
+        --
+        --
+        --Suma el valor del iva de las recetas
+        --
+        c_valor_iva_rece CURSOR FOR
+        SELECT coalesce(sum(dtre_vlr_iva_tot),0)
+          FROM fa_tdtre
+         WHERE dtre_fact = p_fact_fact
+           AND UPPER(dtre_estado) = 'A'
+        ;
+        --
+        -- Suma el valor de las recetas sin iva
+        --
+        c_valor_rece CURSOR FOR
+        SELECT coalesce(sum(dtre_vlr_venta_tot),0)
+          FROM fa_tdtre
+         WHERE dtre_fact = p_fact_fact
+           AND UPPER(dtre_estado) = 'A'
+         ;
+        --
+        -- Suma el valor total de las recetas y el iva
+        --
+        c_valor_total_rece CURSOR FOR
+        SELECT coalesce(SUM(dtre_vlr_total), 0)
+          FROM fa_tdtre
+         WHERE dtre_fact = p_fact_fact
+           AND UPPER(dtre_estado) = 'A'
+         ;
+        --
         v_valor     NUMERIC := 0;
         --
         --Variables para el calculo total de toda la factura
         --
         v_total_servicios       NUMERIC := 0;
         v_total_productos       NUMERIC := 0;
+        v_total_recetas         NUMERIC := 0;
         --
         v_iva_servicios         NUMERIC := 0;
         v_iva_productos         NUMERIC := 0;
+        v_iva_recetas           NUMERIC := 0;
         --
         v_dcto_productos        NUMERIC := 0;
+        v_dcto_recetas          NUMERIC := 0;
         --
         --Valor a pagar discriminado
         --
         v_total_pag_servicio    NUMERIC := 0;
         v_total_pag_producto    NUMERIC := 0;
+        v_total_pag_receta    NUMERIC := 0;
         
     BEGIN
     
@@ -141,7 +175,11 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
                 FETCH c_valor_total_pr INTO v_total_pag_producto;
                 CLOSE c_valor_total_pr;
                 
-                v_valor := v_total_pag_servicio+v_total_pag_producto;
+                OPEN c_valor_total_rece;
+                FETCH c_valor_total_rece INTO v_total_pag_producto;
+                CLOSE c_valor_total_rece;
+                
+                v_valor := v_total_pag_servicio + v_total_pag_producto + v_total_pag_receta;  
             
             ELSIF p_accion = 2 THEN            
               
@@ -153,7 +191,11 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
                 FETCH c_valor_sv INTO v_total_servicios;
                 CLOSE c_valor_sv;
                 
-                v_valor := v_total_productos + v_total_servicios;
+                OPEN c_valor_rece; 
+                FETCH c_valor_rece INTO v_iva_recetas;
+                CLOSE c_valor_rece;
+                
+                v_valor := v_total_productos + v_total_servicios + v_iva_recetas;
             
             ELSIF p_accion = 3 THEN             
                 
@@ -165,7 +207,70 @@ FUNCTION FA_CONSLUTA_COSTS_FACT (
                 FETCH c_valor_iva INTO v_iva_servicios;
                 CLOSE c_valor_iva;
                 
-                v_valor := v_iva_productos+v_iva_servicios;
+                OPEN c_valor_iva_rece;
+                FETCH c_valor_iva_rece INTO v_iva_recetas;
+                CLOSE c_valor_iva_rece;
+                
+                v_valor := v_iva_productos+v_iva_servicios + v_iva_recetas;
+                
+            ELSIF p_accion = 4 THEN
+                
+                OPEN c_valor_dcto_pr;
+                FETCH c_valor_dcto_pr INTO v_dcto_productos;
+                CLOSE c_valor_dcto_pr;
+                
+                v_valor := v_dcto_productos; 
+                
+            END IF;
+        ELSIF p_tipo = 4 THEN
+        
+             IF p_accion = 1 THEN 
+            
+                OPEN c_valor_total;
+                FETCH c_valor_total INTO v_total_pag_servicio;
+                CLOSE c_valor_total;
+                
+                OPEN c_valor_total_pr;
+                FETCH c_valor_total_pr INTO v_total_pag_producto;
+                CLOSE c_valor_total_pr;
+                
+                OPEN c_valor_total_rece;
+                FETCH c_valor_total_rece INTO v_total_pag_producto;
+                CLOSE c_valor_total_rece;
+                
+                v_valor := v_total_pag_servicio + v_total_pag_producto + v_total_pag_receta;  
+            
+            ELSIF p_accion = 2 THEN            
+              
+                OPEN c_valor_prod; 
+                FETCH c_valor_prod INTO v_total_productos;
+                CLOSE c_valor_prod;
+                
+                OPEN c_valor_sv; 
+                FETCH c_valor_sv INTO v_total_servicios;
+                CLOSE c_valor_sv;
+                
+                OPEN c_valor_rece; 
+                FETCH c_valor_rece INTO v_iva_recetas;
+                CLOSE c_valor_rece;
+                
+                v_valor := v_total_productos + v_total_servicios + v_iva_recetas;
+            
+            ELSIF p_accion = 3 THEN             
+                
+                OPEN c_valor_iva_pr;
+                FETCH c_valor_iva_pr INTO v_iva_productos;
+                CLOSE c_valor_iva_pr;
+                
+                OPEN c_valor_iva;
+                FETCH c_valor_iva INTO v_iva_servicios;
+                CLOSE c_valor_iva;
+                
+                OPEN c_valor_iva_rece;
+                FETCH c_valor_iva_rece INTO v_iva_recetas;
+                CLOSE c_valor_iva_rece;
+                
+                v_valor := v_iva_productos+v_iva_servicios + v_iva_recetas;
                 
             ELSIF p_accion = 4 THEN
                 
