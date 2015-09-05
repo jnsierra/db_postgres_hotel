@@ -10,5 +10,6 @@ CREATE TABLE US_TCLIEN(
    CLIEN_APELLIDOS        VARCHAR(50)                         ,
    CLIEN_TELEFONO         VARCHAR(50)                         ,
    CLIEN_CORREO           VARCHAR(50)                         ,   
+   CLIEN_DIRECCION        VARCHAR(50)                         ,   
    PRIMARY KEY (CLIEN_CLIEN)
 );

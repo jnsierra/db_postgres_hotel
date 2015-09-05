@@ -90,6 +90,7 @@
 \i C:/db_postgres_hotel/new/uniques/IN_TREPR_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TPPFA_UNIQUES.sql;
 \i C:/db_postgres_hotel/new/uniques/IN_TCEPR_UNIQUES.sql;
+\i C:/db_postgres_hotel/new/uniques/US_TCLIEN_UNIQUES.sql;
 --
 -- Comentarios de las tablas
 --
