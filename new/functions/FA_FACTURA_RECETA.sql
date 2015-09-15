@@ -107,6 +107,18 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_RECETA(
          WHERE dska_dska = vc_dska_dska
            AND sbcu_sbcu = dska_sbcu
          ;
+        --
+        -- Cursor con el cual encuentro el id del movimiento de inventario
+        --
+        c_kapr_kapr CURSOR (vc_expresion varchar) IS
+        SELECT cast(kapr_kapr as int)
+          FROM (
+               SELECT regexp_split_to_table(vc_expresion, '-') kapr_kapr
+               offset 1) as tabla
+        ;
+        --
+        v_kapr_kapr     NUMERIC  :=0;
+        --
     BEGIN
         --raise exception 'parametro %, %, %, %, %, %',p_tius,p_rece,p_sede,p_cantidad,p_idmvco,p_fact;
         --
@@ -220,6 +232,16 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_RECETA(
             INSERT INTO co_ttem_mvco(
                     tem_mvco_trans, tem_mvco_sbcu, tem_mvco_valor, tem_mvco_naturaleza)
             VALUES (p_idmvco, '613535' , v_vlr_prom_pond , 'D');
+            --
+            --Registro la insercion en tabla de relacion de recetas, productos y kardex
+            --
+            OPEN c_kapr_kapr(v_rta_insrt_kar);
+            FETCH c_kapr_kapr INTO v_kapr_kapr;
+            CLOSE c_kapr_kapr;
+            --
+            INSERT INTO fa_trrka(
+                            rrka_dtre, rrka_rece, rrka_dska, rrka_kapr)
+            VALUES (v_dtre_dtre, p_rece, producto.repr_dska, v_kapr_kapr);
             --
         END LOOP;
         --

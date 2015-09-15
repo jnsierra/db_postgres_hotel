@@ -45,6 +45,7 @@
 \i C:/db_postgres_hotel/new/tables/co_ttem_fact_rece.sql;
 \i C:/db_postgres_hotel/new/tables/in_tcepr.sql;
 \i C:/db_postgres_hotel/new/tables/fa_tdtre.sql;
+\i C:/db_postgres_hotel/new/tables/fa_trrka.sql;
 --
 -- Cheks constrains
 --
@@ -125,6 +126,7 @@
 \i C:/db_postgres_hotel/new/comments/in_ppfa_com.sql;
 \i C:/db_postgres_hotel/new/comments/in_tcepr_com.sql;
 \i C:/db_postgres_hotel/new/comments/fa_tdtre_com.sql;
+\i C:/db_postgres_hotel/new/comments/fa_trrka_com.sql;
 --
 -- Llaves foraneas
 --
@@ -152,6 +154,7 @@
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tprre.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_trepr.sql;
 \i C:/db_postgres_hotel/new/foreignKey/fk_in_tcepr.sql;
+\i C:/db_postgres_hotel/new/foreignKey/fk_fa_trrka.sql;
 --
 --Vistas
 --
@@ -209,6 +212,7 @@
 \i C:/db_postgres_hotel/new/functions/FA_FACTURA_PRODUCTO.sql;
 \i C:/db_postgres_hotel/new/functions/FA_FACTURA_RECETA.sql;
 \i C:/db_postgres_hotel/new/functions/cambio_nombre_prod.sql;
+\i C:/db_postgres_hotel/new/functions/FA_CANCELA_FACTURA.sql;
 --
 -- Triggers
 --
