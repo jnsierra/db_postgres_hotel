@@ -160,9 +160,9 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
     v_utilidad_prod := v_precio_prod - v_vlr_prom_pond;
     v_utilidad_prod := v_utilidad_prod * p_cantidad;
     --
-    IF v_utilidad_prod <= 0 THEN
+    IF v_utilidad_prod < 0 THEN
         --
-        RAISE EXCEPTION 'La venta del producto produce una perdida de: % ',v_utilidad_prod ;
+        RAISE EXCEPTION 'La venta del producto produce una perdida  mayor a 500 pesos lo cual no es permitido exactamente de: % ',v_utilidad_prod ;
         --
     END IF;
     --

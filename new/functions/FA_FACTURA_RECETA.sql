@@ -209,7 +209,7 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_RECETA(
             --
             IF upper(v_rta_insrt_kar) NOT LIKE '%OK%' THEN
                 --
-                RAISE EXCEPTION 'Error al hacer la salida de inventario. % ', v_rta_insrt_kar ;
+                RAISE EXCEPTION 'Error al hacer la salida de inventario. Con la receta con codigo 3-%, % ',p_rece, v_rta_insrt_kar ;
                 --            
             END IF;
             --

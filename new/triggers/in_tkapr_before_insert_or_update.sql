@@ -16,7 +16,7 @@ CREATE OR REPLACE FUNCTION f_ins_kapr_negativos() RETURNS trigger AS $f_ins_kapr
         --
         IF NEW.kapr_cant_saldo < 0 THEN 
             --
-            raise exception 'El movimiento que esta generando da como resultado un saldo negativo lo cual no es permitido ';
+            raise exception 'El movimiento que esta generando da como resultado un saldo negativo lo cual no es permitido con el siguiente codigo 1-%', NEW.kapr_dska;
             --
         END IF;
         --
