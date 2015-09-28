@@ -1,10 +1,9 @@
--- Function: in_finsert_cierre_diario(date, integer, integer)
+--Funcion encargada de insertar un cierre diario 
 
--- DROP FUNCTION in_finsert_cierre_diario(date, integer, integer);
-
-CREATE OR REPLACE FUNCTION in_finsert_cierre_diario(p_cfecha date, p_usuar integer, p_sede integer)
-  RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE  FUNCTION IN_FINSERT_CIERRE_DIARIO(p_cfecha  DATE,            --Fecha del cierre
+                                                     p_usuar   INT,             --Usuario que hace el cierre
+                                                     p_sede    INT              --Sede del cierre   
+                                                     )RETURNS VARCHAR AS $$
                                                     
     DECLARE 
         --
@@ -94,9 +93,4 @@ $BODY$
     EXCEPTION WHEN OTHERS THEN
                RETURN 'ERROR IN_FINSERT_CIERRE_DIARIO ' || SQLERRM;        
 END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-ALTER FUNCTION in_finsert_cierre_diario(date, integer, integer)
-  OWNER TO postgres;
-
+$$ LANGUAGE 'plpgsql';
