@@ -38,6 +38,7 @@ $BODY$
         SELECT fact_fact,fact_vlr_total,fact_vlr_iva 
           FROM fa_tfact 
          WHERE fact_fec_ini =  p_cfecha
+		 and fact_sede = p_sede
         ;
         
         c_traeDatos CURSOR FOR
