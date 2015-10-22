@@ -1,6 +1,7 @@
-﻿
-
-drop table if exists US_TPERS;
+--
+--Tabla en la cual se almacenan los datos principales de una persona
+--
+--drop table if exists US_TPERS;
 
 
 CREATE TABLE US_TPERS(

@@ -102,15 +102,6 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
     --
     v_vlr_prom_pond_tot     NUMERIC := 0;
     --
-    --
-    --Cursor con el cual obtengo el valor del promedio pornderado del producto
-    --
-    c_prom_pond_prod CURSOR(vc_dska_dska INT) IS
-    SELECT kapr_cost_saldo_uni
-      FROM in_tkapr
-     WHERE kapr_kapr = (select max(kapr_kapr) from in_tkapr where kapr_dska = vc_dska_dska)
-    ;
-    --
     v_prom_pond             NUMERIC := 0;
     v_prom_pond_tot         NUMERIC := 0;
     --
@@ -133,10 +124,6 @@ CREATE OR REPLACE FUNCTION FA_FACTURA_PRODUCTO(
         CLOSE c_mvin_venta;
         --
     END IF;
-    --
-    OPEN c_prom_pond_prod(producto.repr_dska);
-    FETCH c_prom_pond_prod INTO v_prom_pond_prod;
-    CLOSE c_prom_pond_prod;
     --
     --Realizamos la salida del inventario del producto 
     --
