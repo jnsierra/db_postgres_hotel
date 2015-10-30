@@ -23,6 +23,7 @@ $BODY$
             END 
         FROM ad_tcier 
         WHERE cier_fech = p_cfecha
+		AND cier_sede = p_sede
         ;
         --
         --Cursor que me trae le valor maximo del cierre
@@ -45,6 +46,7 @@ $BODY$
         SELECT sum(fact_vlr_total),sum(fact_vlr_iva)
           FROM fa_tfact 
          WHERE fact_fec_ini =  p_cfecha
+		 and fact_sede = p_sede
          ;
          
     BEGIN 
