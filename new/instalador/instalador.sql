@@ -226,7 +226,7 @@
 \i C:/db_postgres_hotel/new/triggers/in_trepr_after_insert_or_update.sql;
 \i C:/db_postgres_hotel/new/triggers/fa_tdtre_after_insert_or_update.sql;
 \i C:/db_postgres_hotel/new/triggers/fa_dtpr_before_insert_or_update.sql;
-\i C:/db_postgres_hotel/new/triggers/co_tcue_before_insert.sql;
+\i C:/db_postgres_hotel/new/triggers/em_tpara_before_insert_or_update.sql;
 --
 --SECUENCIAS
 --

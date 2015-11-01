@@ -105,6 +105,17 @@ CREATE OR REPLACE FUNCTION IN_ADICIONA_PROD_EXIS (
         AND tem_mvco_trans = p_idTrans
         ;
     --
+    --Cursor en el cual obtenemos el porcentaje de iva parametrizado para las compras
+    --
+    c_iva_compras CURSOR FOR
+    SELECT sbft_porcentaje
+      FROM co_tsbft
+     WHERE SBFT_SBCU_CODIGO = '240801'
+       AND sbft_tido = 1
+       ;
+    --
+    v_iva_compra            NUMERIC(15,6) :=0;
+    --
     BEGIN
         --
         OPEN c_mvIn_compra;
@@ -131,7 +142,8 @@ CREATE OR REPLACE FUNCTION IN_ADICIONA_PROD_EXIS (
             FETCH c_kapr_kapr INTO v_kapr_kapr;
             CLOSE c_kapr_kapr;
             --
-            --raise exception 'Este es el id de el movimiento de inventario: % ' , v_kapr_kapr;
+            --
+            --
             OPEN c_deb_param;
             FETCH c_deb_param INTO v_debi_para;
             CLOSE c_deb_param;
@@ -175,10 +187,13 @@ CREATE OR REPLACE FUNCTION IN_ADICIONA_PROD_EXIS (
                             p_costo, 
                             'D')
                             ;
+                    OPEN c_iva_compras;
+                    FETCH c_iva_compras into v_iva_compra;
+                    CLOSE c_iva_compras;
                     --
                     --Insercion del iva
                     --
-                    v_iva := (p_costo*16)/100;
+                    v_iva := (p_costo*v_iva_compra)/100;
                     --
                     INSERT INTO co_ttem_mvco(
                                             tem_mvco_trans, 
